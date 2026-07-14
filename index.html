@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPX Express — Gerador de Placas Operacionais</title>
+  <meta name="description" content="Gere placas operacionais SPX Express de forma simples e rápida. Suporte a placas Shopee, Saída (OUT), Nome e QR Gaiola." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- QR Code library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-wrap">
+        <div class="spx-logo">
+          <svg width="48" height="20" viewBox="0 0 120 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="40" font-family="Barlow Condensed, sans-serif" font-size="50" font-weight="900" fill="#fff" letter-spacing="-2">SPX</text>
+          </svg>
+        </div>
+        <div class="logo-divider"></div>
+        <div class="logo-text">
+          <span class="logo-title">Gerador de Placas</span>
+          <span class="logo-sub">Operacional · SPX Express</span>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        Sistema Ativo
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-lines"></div>
+    <div class="hero-content">
+      <div class="hero-tag">🚀 Novo Sistema</div>
+      <h1 class="hero-title">Gere suas Placas<br/><span class="accent">Operacionais</span> em Segundos</h1>
+      <p class="hero-sub">Selecione o tipo de placa abaixo, preencha os dados e imprima na hora. <br/>Simples assim — mesmo para quem nunca fez uma placa antes.</p>
+      <div class="hero-steps">
+        <div class="step"><span class="step-num">1</span><span>Escolha o tipo</span></div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="step-num">2</span><span>Preencha os dados</span></div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="step-num">3</span><span>Imprima!</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPE SELECTOR -->
+  <section class="type-section">
+    <div class="container">
+      <h2 class="section-title">Qual tipo de placa você precisa?</h2>
+      <p class="section-sub">Clique no card correspondente para começar a criar sua placa</p>
+      <div class="type-grid" id="typeGrid">
+
+        <button class="type-card active" data-type="shopee" id="btn-shopee">
+          <div class="type-card-icon">🛒</div>
+          <div class="type-card-info">
+            <h3>Placa Shopee / Gaiola</h3>
+            <p>Código MG, número de identificação, QR code e logo Shopee</p>
+          </div>
+          <div class="type-card-badge">Mais usada</div>
+          <div class="type-card-preview">
+            <div class="mini-plate shopee-mini">
+              <div class="mini-stripe"></div>
+              <div class="mini-body">
+                <div class="mini-logo">🛍️ Shopee</div>
+                <div class="mini-code">MG02</div>
+                <div class="mini-num">444</div>
+                <div class="mini-qr">▦</div>
+              </div>
+              <div class="mini-stripe"></div>
+            </div>
+          </div>
+        </button>
+
+        <button class="type-card" data-type="saida" id="btn-saida">
+          <div class="type-card-icon">📤</div>
+          <div class="type-card-info">
+            <h3>Placa de Saída (OUT)</h3>
+            <p>Código de saída com QR code e listras de identificação</p>
+          </div>
+          <div class="type-card-preview">
+            <div class="mini-plate saida-mini">
+              <div class="mini-corner top-left"></div>
+              <div class="mini-body center">
+                <div class="mini-out">OUT-041</div>
+                <div class="mini-qr large">▦</div>
+              </div>
+              <div class="mini-corner bottom-right"></div>
+            </div>
+          </div>
+        </button>
+
+        <button class="type-card" data-type="nome" id="btn-nome">
+          <div class="type-card-icon">👤</div>
+          <div class="type-card-info">
+            <h3>Placa de Nome</h3>
+            <p>Nome da pessoa em destaque com borda e listras zebra</p>
+          </div>
+          <div class="type-card-preview">
+            <div class="mini-plate nome-mini">
+              <div class="mini-corner top-left"></div>
+              <div class="mini-body center nome-body">
+                <div class="mini-nome">LETICIA</div>
+              </div>
+              <div class="mini-corner bottom-right"></div>
+            </div>
+          </div>
+        </button>
+
+        <button class="type-card" data-type="gaiola" id="btn-gaiola">
+          <div class="type-card-icon">📦</div>
+          <div class="type-card-info">
+            <h3>QR Gaiola SPX</h3>
+            <p>Placa completa com logo SPX, QR code de gaiola e instruções operacionais</p>
+          </div>
+          <div class="type-card-preview">
+            <div class="mini-plate gaiola-mini">
+              <div class="mini-spx-header">SPX ●</div>
+              <div class="mini-body">
+                <div class="mini-cg">CG515</div>
+                <div class="mini-qr">▦</div>
+                <div class="mini-inst">⚠ Instruções</div>
+              </div>
+            </div>
+          </div>
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN PANEL -->
+  <section class="main-panel">
+    <div class="container wide">
+      <div class="panel-grid">
+
+        <!-- FORM PANEL -->
+        <div class="form-panel" id="formPanel">
+          <div class="form-header">
+            <span class="form-header-icon" id="formIcon">🛒</span>
+            <div>
+              <h3 id="formTitle">Placa Shopee / Gaiola</h3>
+              <p id="formSub">Preencha os campos abaixo</p>
+            </div>
+          </div>
+
+          <!-- SHOPEE FORM -->
+          <div class="plate-form active" id="form-shopee">
+            <div class="field-group">
+              <label class="field-label" for="shopee-codigo">
+                <span class="field-icon">🏷️</span> Código da Gaiola (ex: MG02)
+              </label>
+              <input class="field-input" type="text" id="shopee-codigo" placeholder="MG02" maxlength="10" />
+              <span class="field-hint">Código de identificação da gaiola</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="shopee-numero">
+                <span class="field-icon">🔢</span> Número de Identificação
+              </label>
+              <input class="field-input" type="text" id="shopee-numero" placeholder="444" maxlength="10" />
+              <span class="field-hint">Número exibido abaixo do código</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="shopee-rodape">
+                <span class="field-icon">📋</span> Rodapé (número inferior)
+              </label>
+              <input class="field-input" type="text" id="shopee-rodape" placeholder="44" maxlength="10" />
+              <span class="field-hint">Número exibido na parte inferior da placa</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="shopee-qr">
+                <span class="field-icon">📱</span> Conteúdo do QR Code
+              </label>
+              <input class="field-input" type="text" id="shopee-qr" placeholder="MG02-444" />
+              <span class="field-hint">Texto/link que o QR code vai conter</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="shopee-qtd">
+                <span class="field-icon">🔁</span> Quantidade de cópias
+              </label>
+              <input class="field-input" type="number" id="shopee-qtd" placeholder="1" min="1" max="20" value="1" />
+              <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
+            </div>
+            <button class="btn-print" id="print-shopee">
+              🖨️ Imprimir Placa Shopee
+            </button>
+          </div>
+
+          <!-- SAÍDA FORM -->
+          <div class="plate-form" id="form-saida">
+            <div class="field-group">
+              <label class="field-label" for="saida-codigo">
+                <span class="field-icon">🔢</span> Número de Saída (ex: 041)
+              </label>
+              <input class="field-input" type="text" id="saida-codigo" placeholder="041" maxlength="10" />
+              <span class="field-hint">Será exibido como OUT-041</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="saida-qr">
+                <span class="field-icon">📱</span> Conteúdo do QR Code
+              </label>
+              <input class="field-input" type="text" id="saida-qr" placeholder="OUT-041" />
+              <span class="field-hint">Texto/link que o QR code vai conter</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="saida-qtd">
+                <span class="field-icon">🔁</span> Quantidade de cópias
+              </label>
+              <input class="field-input" type="number" id="saida-qtd" placeholder="1" min="1" max="20" value="1" />
+              <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
+            </div>
+            <button class="btn-print" id="print-saida">
+              🖨️ Imprimir Placa de Saída
+            </button>
+          </div>
+
+          <!-- NOME FORM -->
+          <div class="plate-form" id="form-nome">
+            <div class="field-group">
+              <label class="field-label" for="nome-texto">
+                <span class="field-icon">👤</span> Nome da Pessoa
+              </label>
+              <input class="field-input" type="text" id="nome-texto" placeholder="LETICIA" maxlength="20" style="text-transform:uppercase" />
+              <span class="field-hint">O nome será exibido em letras maiúsculas</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="nome-qtd">
+                <span class="field-icon">🔁</span> Quantidade de cópias
+              </label>
+              <input class="field-input" type="number" id="nome-qtd" placeholder="1" min="1" max="20" value="1" />
+              <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
+            </div>
+            <button class="btn-print" id="print-nome">
+              🖨️ Imprimir Placa de Nome
+            </button>
+          </div>
+
+          <!-- GAIOLA FORM -->
+          <div class="plate-form" id="form-gaiola">
+            <div class="field-group">
+              <label class="field-label" for="gaiola-inicio">
+                <span class="field-icon">🔢</span> Número CG Inicial
+              </label>
+              <input class="field-input" type="number" id="gaiola-inicio" placeholder="515" min="1" />
+              <span class="field-hint">Ex: 515 → gera "CG515"</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="gaiola-fim">
+                <span class="field-icon">🔢</span> Número CG Final
+              </label>
+              <input class="field-input" type="number" id="gaiola-fim" placeholder="520" min="1" />
+              <span class="field-hint">Ex: 520 → gera "CG520"</span>
+            </div>
+            <div class="field-group total-display">
+              <span class="total-label">Total de placas:</span>
+              <span class="total-count" id="gaiolaTotal">0</span>
+            </div>
+            <button class="btn-print" id="print-gaiola">
+              🖨️ Imprimir Placas de Gaiola
+            </button>
+          </div>
+
+        </div>
+
+        <!-- PREVIEW PANEL -->
+        <div class="preview-panel">
+          <div class="preview-header">
+            <span>👁 Pré-visualização em Tempo Real</span>
+            <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <!-- Preview injected by JS -->
+          </div>
+          <div class="preview-note">
+            💡 A placa impressa será idêntica à pré-visualização acima
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">SPX <span>Express</span></div>
+      <p>Sistema de Geração de Placas Operacionais · SPX Express © 2025</p>
+    </div>
+  </footer>
+
+  <!-- PRINT AREA (hidden, only for printing) -->
+  <div id="printArea" class="print-only"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
