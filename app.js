@@ -559,15 +559,15 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div style="position:absolute;right:0.25in;bottom:0.55in;width:4.0in;height:0.30in;
         background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:0.73in;top:2.31in;width:4.54in;height:0.85in;
+      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:1.05in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
         display:flex;align-items:center;justify-content:center;text-align:center;">
         ${escHtml(item.nome)}
       </div>
       <!-- QR -->
-      <div style="position:absolute;left:5.14in;top:1.01in;width:4.05in;height:3.60in;
+      <div style="position:absolute;right:8%;top:50%;transform:translateY(-50%);width:3.40in;height:3.40in;
         display:flex;align-items:center;justify-content:center;">
-        ${qrDataURL ? `<img src="${qrDataURL}" style="width:4.05in;height:3.60in;object-fit:contain;" />` : ''}
+        ${qrDataURL ? `<img src="${qrDataURL}" style="width:3.40in;height:3.40in;object-fit:contain;display:block;" />` : ''}
       </div>
     </section>`;
   }
