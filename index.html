@@ -156,27 +156,27 @@
 
           <!-- SHOPEE FORM -->
           <div class="plate-form active" id="form-shopee">
-            <div class="form-guide"><strong>Como fazer:</strong> preencha os IDs, informe o conteúdo do QR Code, escolha a quantidade e clique em imprimir.</div>
+            <div class="form-guide"><strong>Como fazer:</strong> preencha os nomes, informe o conteúdo do QR Code, confira a placa no painel e clique em imprimir.</div>
             <div class="field-group">
               <label class="field-label" for="shopee-codigo">
-                <span class="field-icon">🏷️</span> ID principal da placa
+                <span class="field-icon">🏷️</span> Nome da placa
               </label>
-              <input class="field-input" type="text" id="shopee-codigo" placeholder="ID" maxlength="10" />
-              <span class="field-hint">Aparece centralizado no topo da etiqueta.</span>
+              <input class="field-input" type="text" id="shopee-codigo" placeholder="NOME" maxlength="20" />
+              <span class="field-hint">Nome principal que aparece centralizado no topo da placa.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="shopee-numero">
-                <span class="field-icon">🔢</span> Número de Identificação
+                <span class="field-icon">🔤</span> Nome acima do QR Code
               </label>
-              <input class="field-input" type="text" id="shopee-numero" placeholder="ID" maxlength="10" />
-              <span class="field-hint">Aparece centralizado acima do QR Code.</span>
+              <input class="field-input" type="text" id="shopee-numero" placeholder="NOME" maxlength="20" />
+              <span class="field-hint">Texto que aparece centralizado imediatamente acima do QR Code.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="shopee-rodape">
-                <span class="field-icon">📋</span> Rodapé (número inferior)
+                <span class="field-icon">📋</span> Nome do rodapé
               </label>
-              <input class="field-input" type="text" id="shopee-rodape" placeholder="ID" maxlength="10" />
-              <span class="field-hint">Aparece centralizado logo abaixo do QR Code.</span>
+              <input class="field-input" type="text" id="shopee-rodape" placeholder="NOME" maxlength="20" />
+              <span class="field-hint">Texto inferior que aparece centralizado logo abaixo do QR Code.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="shopee-qr">
@@ -185,13 +185,7 @@
               <input class="field-input" type="text" id="shopee-qr" placeholder="ID ou link completo" />
               <span class="field-hint">Pode ser um ID, texto ou link. Esse conteúdo será lido pelo celular.</span>
             </div>
-            <div class="field-group">
-              <label class="field-label" for="shopee-qtd">
-                <span class="field-icon">🔁</span> Quantidade de cópias
-              </label>
-              <input class="field-input" type="number" id="shopee-qtd" placeholder="1" min="1" max="20" value="1" />
-              <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
-            </div>
+            <input type="hidden" id="shopee-qtd" value="1" />
             <button class="btn-print" id="print-shopee">
               🖨️ Imprimir Placa Shopee
             </button>

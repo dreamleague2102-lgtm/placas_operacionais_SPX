@@ -234,9 +234,9 @@ async function updatePreview() {
 
 // ---- SHOPEE / WS ----
 async function renderShopeePreview(area) {
-  const codigo = document.getElementById('shopee-codigo').value || 'ID';
-  const numero = document.getElementById('shopee-numero').value || 'ID';
-  const rodape = document.getElementById('shopee-rodape').value || 'ID';
+  const codigo = document.getElementById('shopee-codigo').value || 'NOME';
+  const numero = document.getElementById('shopee-numero').value || 'NOME';
+  const rodape = document.getElementById('shopee-rodape').value || 'NOME';
   const qrText = document.getElementById('shopee-qr').value || `${codigo}-${numero}`;
   const qtd = Math.min(parseInt(document.getElementById('shopee-qtd').value) || 1, 6);
 
