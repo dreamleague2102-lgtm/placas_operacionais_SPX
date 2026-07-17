@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPX Express — Gerador de Placas Operacionais</title>
+  <title>SPX Express — Painel de QR Code</title>
   <meta name="description" content="Gere placas operacionais SPX Express de forma simples e rápida. Suporte a placas Shopee, Saída (OUT), Nome e QR Gaiola." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,7 +25,7 @@
         </div>
         <div class="logo-divider"></div>
         <div class="logo-text">
-          <span class="logo-title">Gerador de Placas</span>
+          <span class="logo-title">Painel de QR Code</span>
           <span class="logo-sub">Operacional · SPX Express</span>
         </div>
       </div>
@@ -85,8 +85,8 @@
         <button class="type-card" data-type="saida" id="btn-saida">
           <div class="type-card-icon">📤</div>
           <div class="type-card-info">
-            <h3>Placa de Saída (OUT)</h3>
-            <p>Código de saída com QR code e listras de identificação</p>
+            <h3>Placas com QR Codes</h3>
+            <p>Placa horizontal com identificação, QR Code e listras</p>
           </div>
           <div class="type-card-preview">
             <div class="mini-plate saida-mini">
@@ -193,7 +193,7 @@
 
           <!-- SAÍDA FORM -->
           <div class="plate-form" id="form-saida">
-            <div class="form-guide"><strong>Como fazer:</strong> informe o ID e o QR Code, clique em “Adicionar placa à lista” e repita para cada placa. Depois imprima a lista completa.</div>
+            <div class="form-guide"><strong>Como fazer:</strong> informe o ID e o QR Code, clique em “Adicionar placa à lista” e repita para cada nova placa. Depois imprima a lista completa.</div>
             <div class="field-group">
               <label class="field-label" for="saida-codigo">
                 <span class="field-icon">🔢</span> ID da saída
@@ -208,23 +208,17 @@
               <input class="field-input" type="text" id="saida-qr" placeholder="OUT-ID ou link completo" />
               <span class="field-hint">Se ficar vazio, o QR usará o mesmo ID exibido na placa.</span>
             </div>
-            <div class="field-group">
-              <label class="field-label" for="saida-qtd">
-                <span class="field-icon">🔁</span> Quantidade de cópias
-              </label>
-              <input class="field-input" type="number" id="saida-qtd" placeholder="1" min="1" max="20" value="1" />
-              <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
-            </div>
+            <input type="hidden" id="saida-qtd" value="1" />
             <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>
             <div class="plate-batch" id="saida-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-saida">
-              🖨️ Imprimir lista de placas OUT
+              🖨️ Imprimir lista de placas com QR Codes
             </button>
           </div>
 
           <!-- NOME FORM -->
           <div class="plate-form" id="form-nome">
-            <div class="form-guide"><strong>Como fazer:</strong> digite um nome, escolha as cópias e adicione à lista. Repita se precisar de outros nomes e imprima tudo de uma vez.</div>
+            <div class="form-guide"><strong>Como fazer:</strong> digite um nome e adicione à lista. Repita para cada nova placa e imprima tudo de uma vez.</div>
             <div class="field-group">
               <label class="field-label" for="nome-texto">
                 <span class="field-icon">👤</span> Nome da placa
@@ -232,13 +226,7 @@
               <input class="field-input" type="text" id="nome-texto" placeholder="NOME" maxlength="40" style="text-transform:uppercase" />
               <span class="field-hint">Pode ser um nome, local ou identificação. Será impresso em maiúsculas.</span>
             </div>
-            <div class="field-group">
-              <label class="field-label" for="nome-qtd">
-                <span class="field-icon">🔁</span> Quantidade de cópias
-              </label>
-              <input class="field-input" type="number" id="nome-qtd" placeholder="1" min="1" max="20" value="1" />
-              <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
-            </div>
+            <input type="hidden" id="nome-qtd" value="1" />
             <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome">

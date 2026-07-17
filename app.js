@@ -37,13 +37,13 @@ function switchType(type) {
   const icons = { shopee: '🛒', saida: '📤', nome: '👤', gaiola: '📦' };
   const titles = {
     shopee: 'Placa Shopee / Gaiola',
-    saida: 'Placa de Saída (OUT)',
+    saida: 'Placas com QR Codes',
     nome: 'Placa de Nome',
     gaiola: 'QR Gaiola SPX'
   };
   const subs = {
     shopee: 'Preencha os campos abaixo',
-    saida: 'Código OUT + QR code com listras',
+    saida: 'Crie uma lista de placas com identificação e QR Code',
     nome: 'Nome grande em destaque com listras',
     gaiola: 'Placas em série com instruções SPX'
   };
@@ -122,13 +122,13 @@ document.getElementById('saida-qr').addEventListener('input', function() {
 function renderLotes() {
   const saidaLista = document.getElementById('saida-lista');
   saidaLista.innerHTML = saidaLote.length ? saidaLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.qtd} ${item.qtd === 1 ? 'cópia' : 'cópias'}</span></div>
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong></div>
     <button type="button" data-remove-saida="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 
   const nomeLista = document.getElementById('nome-lista');
   nomeLista.innerHTML = nomeLote.length ? nomeLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.qtd} ${item.qtd === 1 ? 'cópia' : 'cópias'}</span></div>
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong></div>
     <button type="button" data-remove-nome="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 }
