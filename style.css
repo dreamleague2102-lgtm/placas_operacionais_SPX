@@ -1188,6 +1188,13 @@ body {
   gap: 18px;
   box-shadow: 0 4px 18px rgba(0,0,0,.35);
 }
+.preview-pages {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
 .preview-ws-sheet .preview-ws {
   width: 100%;
   min-height: 0;

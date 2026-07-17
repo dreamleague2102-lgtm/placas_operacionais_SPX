@@ -156,7 +156,7 @@
 
           <!-- SHOPEE FORM -->
           <div class="plate-form active" id="form-shopee">
-            <div class="form-guide"><strong>Como fazer:</strong> preencha os nomes, informe o conteúdo do QR Code, confira a placa no painel e clique em imprimir.</div>
+            <div class="form-guide"><strong>Como fazer:</strong> preencha os campos e clique em “Adicionar placa”. Cada página recebe 3 placas; a quarta cria uma nova página automaticamente.</div>
             <div class="field-group">
               <label class="field-label" for="shopee-codigo">
                 <span class="field-icon">🏷️</span> Nome da placa
@@ -186,8 +186,10 @@
               <span class="field-hint">Pode ser um ID, texto ou link. Esse conteúdo será lido pelo celular.</span>
             </div>
             <input type="hidden" id="shopee-qtd" value="1" />
+            <button class="btn-add-plate" type="button" id="add-shopee">+ Adicionar placa ao painel</button>
+            <div class="plate-batch" id="shopee-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-shopee">
-              🖨️ Imprimir Workstation SPX
+              🖨️ Imprimir painel Workstation SPX
             </button>
           </div>
 

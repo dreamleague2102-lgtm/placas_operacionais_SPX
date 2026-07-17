@@ -6,6 +6,7 @@
 // ===================== STATE =====================
 let currentType = 'shopee';
 let qrCache = {};  // cache de QR codes gerados
+let shopeeLote = [];
 let saidaLote = [];
 let nomeLote = [];
 
@@ -120,6 +121,12 @@ document.getElementById('saida-qr').addEventListener('input', function() {
 });
 
 function renderLotes() {
+  const shopeeLista = document.getElementById('shopee-lista');
+  shopeeLista.innerHTML = shopeeLote.length ? shopeeLote.map((item, index) => `
+    <div class="batch-item"><div><strong>${escHtml(item.codigo)}</strong><span>${escHtml(item.numero)} · ${escHtml(item.rodape)}</span></div>
+    <button type="button" data-remove-shopee="${index}">Remover</button></div>`).join('')
+    : '<div class="batch-empty">Adicione até 3 placas por página.</div>';
+
   const saidaLista = document.getElementById('saida-lista');
   saidaLista.innerHTML = saidaLote.length ? saidaLote.map((item, index) => `
     <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong></div>
@@ -132,6 +139,21 @@ function renderLotes() {
     <button type="button" data-remove-nome="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 }
+
+document.getElementById('add-shopee').addEventListener('click', () => {
+  const codigo = document.getElementById('shopee-codigo').value.trim();
+  const numero = document.getElementById('shopee-numero').value.trim();
+  const rodape = document.getElementById('shopee-rodape').value.trim();
+  const qrText = document.getElementById('shopee-qr').value.trim();
+  if (!codigo) { alert('Preencha o nome da placa.'); return; }
+  shopeeLote.push({ codigo, numero, rodape, qrText: qrText || `${codigo}-${numero}` });
+  renderLotes(); updatePreview();
+  ['shopee-codigo', 'shopee-numero', 'shopee-rodape', 'shopee-qr'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('shopee-qr').dataset.manual = '';
+  document.getElementById('shopee-codigo').focus();
+});
 
 document.getElementById('add-saida').addEventListener('click', () => {
   const codigo = document.getElementById('saida-codigo').value.trim();
@@ -163,6 +185,13 @@ document.getElementById('saida-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-saida]');
   if (!botao) return;
   saidaLote.splice(Number(botao.dataset.removeSaida), 1);
+  renderLotes(); updatePreview();
+});
+
+document.getElementById('shopee-lista').addEventListener('click', event => {
+  const botao = event.target.closest('[data-remove-shopee]');
+  if (!botao) return;
+  shopeeLote.splice(Number(botao.dataset.removeShopee), 1);
   renderLotes(); updatePreview();
 });
 
@@ -238,25 +267,31 @@ async function renderShopeePreview(area) {
   const numero = document.getElementById('shopee-numero').value || 'NOME';
   const rodape = document.getElementById('shopee-rodape').value || 'NOME';
   const qrText = document.getElementById('shopee-qr').value || `${codigo}-${numero}`;
-  const qtd = Math.min(parseInt(document.getElementById('shopee-qtd').value) || 1, 6);
+  const itens = shopeeLote.length ? shopeeLote : [{ codigo, numero, rodape, qrText }];
 
   area.innerHTML = '';
-  const folha = document.createElement('div');
-  folha.className = 'preview-ws-sheet';
-  for (let i = 0; i < 3; i++) {
-    const preenchida = i < qtd;
-    const card = buildShopeeCard(codigo, numero, rodape, preenchida);
-    if (preenchida) {
-      const qrCanvas = await generateQR(qrText, 200);
+  const paginas = document.createElement('div');
+  paginas.className = 'preview-pages';
+
+  for (let inicio = 0; inicio < itens.length; inicio += 3) {
+    const folha = document.createElement('div');
+    folha.className = 'preview-ws-sheet';
+    for (let coluna = 0; coluna < 3; coluna++) {
+      const item = itens[inicio + coluna];
+      const card = buildShopeeCard(item?.codigo || '', item?.numero || '', item?.rodape || '', Boolean(item));
+      if (item) {
+        const qrCanvas = await generateQR(item.qrText, 200);
       if (qrCanvas) {
         const img = new Image();
         img.src = qrCanvas.toDataURL();
         card.querySelector('.ws-qr').appendChild(img);
       }
+      }
+      folha.appendChild(card);
     }
-    folha.appendChild(card);
+    paginas.appendChild(folha);
   }
-  area.appendChild(folha);
+  area.appendChild(paginas);
 }
 
 function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
@@ -275,20 +310,21 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   return div;
 }
 
-function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
+function buildWsPrintPages(itens) {
   const paginas = [];
-  for (let inicio = 0; inicio < quantidade; inicio += 3) {
+  for (let inicio = 0; inicio < itens.length; inicio += 3) {
     const etiquetas = [0, 1, 2].map(coluna => {
-      const preenchida = inicio + coluna < quantidade;
+      const item = itens[inicio + coluna];
+      const preenchida = Boolean(item);
       return `<div style="height:5.2in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
         <div style="width:60%;height:.32in;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
-          <div style="font-size:20pt;font-weight:700;padding-top:.15in;text-align:center;">${escHtml(codigo)}</div>
-          <div style="font-size:14pt;font-weight:700;margin-top:.22in;height:.25in;text-align:center;">${preenchida ? escHtml(numero) : ''}</div>
+          <div style="font-size:20pt;font-weight:700;padding-top:.15in;text-align:center;">${preenchida ? escHtml(item.codigo) : ''}</div>
+          <div style="font-size:14pt;font-weight:700;margin-top:.22in;height:.25in;text-align:center;">${preenchida ? escHtml(item.numero) : ''}</div>
           <div style="height:2.35in;margin-top:.06in;display:flex;align-items:center;justify-content:center;">
-            ${preenchida && qrDataURL ? `<img src="${qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
+            ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
-          <div style="width:100%;margin-top:.08in;font-size:14pt;font-weight:700;text-align:center;line-height:1;">${preenchida ? escHtml(rodape) : ''}</div>
+          <div style="width:100%;margin-top:.08in;font-size:14pt;font-weight:700;text-align:center;line-height:1;">${preenchida ? escHtml(item.rodape) : ''}</div>
         </div>
         <div style="width:60%;height:.32in;margin-left:40%;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
       </div>`;
@@ -441,13 +477,14 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   const numero = document.getElementById('shopee-numero').value.trim();
   const rodape = document.getElementById('shopee-rodape').value.trim();
   const qrText = document.getElementById('shopee-qr').value.trim();
-  const qtd = Math.min(parseInt(document.getElementById('shopee-qtd').value) || 1, 20);
+  if (!shopeeLote.length && !codigo) { alert('Adicione uma placa ao painel ou preencha o nome da placa.'); return; }
 
-  if (!codigo) { alert('Preencha o código da gaiola.'); return; }
-
-  const nomeFormatado = codigo;
-  const qrDataURL = await generateQRDataURL(qrText || `${codigo}-${numero}`, 600);
-  triggerPrint(buildWsPrintPages(codigo, numero, rodape, qrDataURL, qtd), 'landscape');
+  const base = shopeeLote.length ? shopeeLote : [{ codigo, numero, rodape, qrText: qrText || `${codigo}-${numero}` }];
+  const itens = [];
+  for (const item of base) {
+    itens.push({ ...item, qrDataURL: await generateQRDataURL(item.qrText, 600) });
+  }
+  triggerPrint(buildWsPrintPages(itens), 'landscape');
   return;
 
   // Build print HTML - 3 plates per row, coordinates based on table:
