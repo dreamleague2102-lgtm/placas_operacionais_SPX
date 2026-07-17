@@ -25,6 +25,7 @@ document.getElementById('typeGrid').addEventListener('click', (e) => {
 
 function switchType(type) {
   currentType = type;
+  document.querySelector('.main-panel').classList.toggle('gaiola-mode', type === 'gaiola');
 
   // Update card active state
   document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
@@ -40,13 +41,13 @@ function switchType(type) {
     shopee: 'Workstation SPX',
     saida: 'Placas com QR Codes',
     nome: 'Placa de Nome',
-    gaiola: 'QR Gaiola SPX'
+    gaiola: 'Parâmetros de Impressão'
   };
   const subs = {
     shopee: 'Preencha os campos abaixo',
     saida: 'Crie uma lista de placas com identificação e QR Code',
     nome: 'Nome grande em destaque com listras',
-    gaiola: 'Placas em série com instruções SPX'
+    gaiola: 'Defina o intervalo de gaiolas SPX'
   };
 
   document.getElementById('formIcon').textContent = icons[type];
@@ -217,6 +218,8 @@ function updateGaiolaTotal() {
   const fim = parseInt(document.getElementById('gaiola-fim').value) || 0;
   const total = fim >= ini && ini > 0 ? fim - ini + 1 : 0;
   document.getElementById('gaiolaTotal').textContent = total;
+  const intervalo = document.getElementById('gaiolaIntervalo');
+  if (intervalo) intervalo.textContent = total ? `CG${ini} → CG${fim}` : 'Informe os IDs inicial e final';
 }
 
 // ===================== QR CODE GENERATOR =====================

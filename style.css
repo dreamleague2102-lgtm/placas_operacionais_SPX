@@ -1239,6 +1239,75 @@ body {
 .preview-gaiola .gaiola-qr img, .preview-gaiola .gaiola-qr canvas { width:160px !important; height:160px !important; }
 .preview-gaiola .gaiola-rodape { font-size:13px; padding:10px; }
 
+/* Modo dedicado: QR Gaiola SPX (mantém os demais modelos inalterados) */
+.main-panel.gaiola-mode { padding-top: 1.5rem; }
+.gaiola-mode .panel-grid { grid-template-columns: 300px minmax(620px, 1fr); gap: 24px; }
+.gaiola-mode .form-panel { border-radius: 18px; position: sticky; top: 76px; }
+.gaiola-mode .form-header { padding: 1rem 1.15rem; }
+.gaiola-mode .form-header-icon { font-size: .8rem; width:8px; height:8px; overflow:hidden; border-radius:50%; background:var(--spx-red); color:transparent; box-shadow:0 0 7px var(--spx-red); }
+.gaiola-mode .form-header h3 { font-size:.9rem; }
+.gaiola-mode .form-header p { font-size:.67rem; margin-top:3px; }
+.gaiola-mode #form-gaiola { padding:1.1rem; gap:1rem; }
+.gaiola-mode #form-gaiola .form-guide { display:none; }
+.gaiola-mode #form-gaiola .field-label { font-size:.72rem; color:#ccc; }
+.gaiola-mode #form-gaiola .field-input { padding:.72rem .85rem; font:700 1rem monospace; }
+.gaiola-mode #form-gaiola .field-hint { font-size:.63rem; }
+.gaiola-mode .total-display { padding:.72rem .9rem; }
+.gaiola-mode .total-display > span:first-child { display:flex; flex-direction:column; gap:3px; }
+.total-range { display:block; color:var(--spx-muted); font-size:.62rem; font-weight:400; }
+.gaiola-mode .total-count { font-size:2rem; }
+.gaiola-mode .preview-panel { border-radius:18px; background:rgba(255,255,255,.035); }
+.gaiola-mode .preview-area { padding:16px; min-height:920px; align-items:flex-start; }
+.gaiola-mode .preview-gaiola {
+  width:min(100%, 650px);
+  min-height:900px;
+  aspect-ratio:794 / 1123;
+  display:flex;
+  flex-direction:column;
+  border:0;
+  border-radius:5px;
+  box-shadow:0 16px 48px rgba(0,0,0,.65);
+}
+.gaiola-mode .preview-gaiola .gaiola-header-bar {
+  min-height:135px;
+  padding:28px 34px 42px;
+  gap:54px;
+  position:relative;
+  background:#d5d5d5;
+}
+.gaiola-mode .preview-gaiola .gaiola-header-bar::after {
+  content:"";
+  position:absolute;
+  left:-5%; right:-5%; bottom:-1px;
+  height:25px;
+  background:#fff;
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge { font:italic 900 42px/1 Arial,sans-serif; padding:0; }
+.gaiola-mode .preview-gaiola .gaiola-spx-badge::after { content:" EXPRESS"; font-size:8px; font-style:normal; }
+.gaiola-mode .preview-gaiola .gaiola-title { font-size:32px; }
+.gaiola-mode .preview-gaiola .gaiola-warn { font-size:22px; font-weight:500; padding:15px 12px; margin:0 22px; border-top:1px solid #bbb; border-bottom:1px solid #bbb; }
+.gaiola-mode .preview-gaiola .gaiola-body { flex:1; padding:0 16px 0; gap:28px; align-items:stretch; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes { padding-top:0; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes h4 { font-size:15px; padding:9px 10px; margin:0 0 12px; border-radius:4px; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes h4:nth-of-type(2) { margin-top:48px; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes ul { padding-left:18px; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes ul li { font-size:11px; line-height:1.55; margin-bottom:13px; color:#000; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes ul li b { color:#000; }
+.gaiola-mode .preview-gaiola .gaiola-right { width:310px; padding-top:72px; }
+.gaiola-mode .preview-gaiola .gaiola-qr-label { font-size:11px; color:#000; margin-bottom:3px; }
+.gaiola-mode .preview-gaiola .gaiola-qr-box { width:285px; min-height:435px; padding:16px; border:1px solid #777; border-radius:4px; gap:20px; }
+.gaiola-mode .preview-gaiola .gaiola-cg { font-size:45px; margin-top:34px; }
+.gaiola-mode .preview-gaiola .gaiola-qr { width:205px; height:205px; }
+.gaiola-mode .preview-gaiola .gaiola-qr img,
+.gaiola-mode .preview-gaiola .gaiola-qr canvas { width:205px !important; height:205px !important; }
+.gaiola-mode .preview-gaiola .gaiola-rodape { font-size:15px; padding:13px; background:#d3d3d3; }
+
+@media (max-width:1000px) {
+  .gaiola-mode .panel-grid { grid-template-columns:1fr; }
+  .gaiola-mode .form-panel { position:static; }
+}
+
 /* ===========================
    RESPONSIVE
    =========================== */
