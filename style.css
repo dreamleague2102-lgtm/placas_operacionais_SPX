@@ -869,10 +869,12 @@ body {
   overflow: hidden;
 }
 .preview-ws .ws-stripe {
-  width: 100%;
+  width: 58%;
   height: 10px;
   background: repeating-linear-gradient(135deg, #000 0 14px, #fff 14px 28px);
 }
+.preview-ws .ws-stripe-top { align-self:flex-start; }
+.preview-ws .ws-stripe-bottom { align-self:flex-end; }
 .preview-ws .ws-body {
   padding: 6px 8px 8px;
   width: 100%;

@@ -200,7 +200,7 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   const div = document.createElement('div');
   div.className = 'preview-ws';
   div.innerHTML = `
-    <div class="ws-stripe"></div>
+    <div class="ws-stripe ws-stripe-top"></div>
     <div class="ws-body">
       <div class="ws-shopee">
         <span class="shopee-mark">S</span><span>Shopee</span>
@@ -210,9 +210,38 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
       <div class="ws-qr"></div>
       <div class="ws-posto">${preenchida ? escHtml(rodape) : ''}</div>
     </div>
-    <div class="ws-stripe"></div>
+    <div class="ws-stripe ws-stripe-bottom"></div>
   `;
   return div;
+}
+
+function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
+  const paginas = [];
+  for (let inicio = 0; inicio < quantidade; inicio += 3) {
+    const etiquetas = [0, 1, 2].map(coluna => {
+      const preenchida = inicio + coluna < quantidade;
+      return `<div style="height:7.8in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
+        <div style="width:58%;height:.32in;background:repeating-linear-gradient(135deg,#000 0 .18in,#fff .18in .36in);"></div>
+        <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
+          <div style="position:absolute;right:.14in;top:.06in;display:flex;align-items:center;gap:4px;font-size:13pt;">
+            <span style="width:.26in;height:.30in;background:#000;color:#fff;display:grid;place-items:center;font-size:10pt;">S</span>Shopee
+          </div>
+          <div style="font-size:20pt;font-weight:700;padding-top:.15in;">${escHtml(codigo)}</div>
+          <div style="font-size:14pt;font-weight:700;margin-top:.30in;height:.25in;">${preenchida ? escHtml(numero) : ''}</div>
+          <div style="height:2.75in;margin-top:.08in;display:flex;align-items:center;justify-content:center;">
+            ${preenchida && qrDataURL ? `<img src="${qrDataURL}" style="width:2.57in;height:2.57in;display:block;" />` : ''}
+          </div>
+          <div style="font-size:14pt;font-weight:700;margin-top:.15in;">${preenchida ? escHtml(rodape) : ''}</div>
+        </div>
+        <div style="width:58%;height:.32in;margin-left:42%;background:repeating-linear-gradient(135deg,#000 0 .18in,#fff .18in .36in);"></div>
+      </div>`;
+    }).join('');
+
+    paginas.push(`<section style="width:11in;height:8.5in;padding:.35in .45in;display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));gap:.22in;background:#fff;
+      break-after:page;page-break-after:always;overflow:hidden;">${etiquetas}</section>`);
+  }
+  return paginas.join('');
 }
 
 // ---- SAIDA / PLACA GRANDE ----
@@ -351,6 +380,8 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
 
   const nomeFormatado = codigo;
   const qrDataURL = await generateQRDataURL(qrText || `${codigo}-${numero}`, 600);
+  triggerPrint(buildWsPrintPages(codigo, numero, rodape, qrDataURL, qtd), 'landscape');
+  return;
 
   // Build print HTML - 3 plates per row, coordinates based on table:
   // Name X: 0.41, 3.74, 7.07 | Y: 1.62 (from sheet top), H: 0.30, 14pt
