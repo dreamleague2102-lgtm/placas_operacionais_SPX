@@ -899,11 +899,14 @@ body {
   font-weight: 600;
   text-align: center;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .preview-ws .ws-qr {
   width: 80px;
   height: 80px;
-  margin-top: auto;
+  margin: 0 auto;
 }
 .preview-ws .ws-qr canvas { width: 80px !important; height: 80px !important; }
 .preview-ws .ws-posto {
@@ -911,8 +914,11 @@ body {
   font-weight: 700;
   text-align: center;
   width: 100%;
-  margin-top: 10px;
-  margin-bottom: 8px;
+  margin: 2px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
 }
 
 /* GRANDE PREVIEW */

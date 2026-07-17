@@ -225,7 +225,7 @@ function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
           <div style="height:2.35in;margin-top:.06in;display:flex;align-items:center;justify-content:center;">
             ${preenchida && qrDataURL ? `<img src="${qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
-          <div style="position:absolute;left:0;right:0;bottom:.10in;font-size:14pt;font-weight:700;">${preenchida ? escHtml(rodape) : ''}</div>
+          <div style="width:100%;margin-top:.08in;font-size:14pt;font-weight:700;text-align:center;line-height:1;">${preenchida ? escHtml(rodape) : ''}</div>
         </div>
         <div style="width:60%;height:.32in;margin-left:40%;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
       </div>`;
