@@ -131,14 +131,12 @@ function updateGaiolaTotal() {
 async function generateQR(text, size = 256) {
   const key = `${text}__${size}`;
   if (qrCache[key]) return qrCache[key];
-  
   try {
-    const canvas = document.createElement('canvas');
-    await QRCode.toCanvas(canvas, text || ' ', {
-      width: size,
-      margin: 1,
-      color: { dark: '#000000', light: '#ffffff' }
-    });
+    const host = document.createElement('div');
+    new QRCode(host, { text: text || ' ', width: size, height: size,
+      colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+    const canvas = host.querySelector('canvas');
+    if (!canvas) throw new Error('QR Code não foi renderizado');
     qrCache[key] = canvas;
     return canvas;
   } catch (e) {
@@ -149,11 +147,8 @@ async function generateQR(text, size = 256) {
 
 async function generateQRDataURL(text, size = 256) {
   try {
-    return await QRCode.toDataURL(text || ' ', {
-      width: size,
-      margin: 1,
-      color: { dark: '#000000', light: '#ffffff' }
-    });
+    const canvas = await generateQR(text, size);
+    return canvas ? canvas.toDataURL('image/png') : '';
   } catch (e) {
     return '';
   }
@@ -251,7 +246,8 @@ async function renderSaidaPreview(area) {
 
 // ---- NOME / SIMPLES ----
 function renderNomePreview(area) {
-  const nome = document.getElementById('nome-texto').value || 'SEU NOME';
+  const nome = document.getElementById('nome-texto').value || 'ÁREA DE / SCUTTLES / VAZIA';
+  const linhas = nome.split('/').map(v => v.trim()).filter(Boolean).slice(0, 3);
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
 
   area.innerHTML = '';
@@ -264,7 +260,7 @@ function renderNomePreview(area) {
     card.innerHTML = `
       <div class="simples-stripe-tl"></div>
       <div class="simples-stripe-br"></div>
-      <div class="simples-nome">${escHtml(nome.toUpperCase())}</div>
+      <div class="simples-nome">${linhas.map((linha, indice) => `<span class="linha-${indice + 1}">${escHtml(linha.toUpperCase())}</span>`).join('')}</div>
     `;
     wrap.appendChild(card);
   }
@@ -293,7 +289,7 @@ async function renderGaiolaPreview(area) {
   card.innerHTML = `
     <div class="gaiola-header-bar">
       <div class="gaiola-spx-badge">SPX</div>
-      <div class="gaiola-title">QR Code de Gaiolas</div>
+      <div class="gaiola-title">QR Code Shopee</div>
     </div>
     <div class="gaiola-warn">Favor não remover.</div>
     <div class="gaiola-body">
@@ -424,13 +420,13 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   }
 
   const html = `
-    <div style="width:8.5in;min-height:${rows * ROW_HEIGHT}in;position:relative;background:#fff;
+    <div style="width:11in;min-height:${Math.max(8.5, rows * ROW_HEIGHT)}in;position:relative;background:#fff;
       font-family:Inter,sans-serif;color:#000;">
       ${plates}
     </div>
   `;
 
-  triggerPrint(html, 'portrait');
+  triggerPrint(html, 'landscape');
 });
 
 // PRINT SAIDA (Placa Grande — landscape)
@@ -448,7 +444,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   // Nome: X=0.73, Y=2.31, W=4.54, H=0.85, font 48pt
   // QR:   X=5.14, Y=1.01, W=4.05, H=3.60
 
-  const PAGE_H = 5.0; // each plate height (stack vertically)
+  const PAGE_H = 8.5; // uma placa por página paisagem
   let pages = '';
 
   for (let i = 0; i < qtd; i++) {
@@ -456,27 +452,27 @@ document.getElementById('print-saida').addEventListener('click', async () => {
     pages += `
       <!-- Placa Grande ${i+1} -->
       <!-- Stripe top-left -->
-      <div style="position:absolute;left:0;top:${0.3 + offsetY}in;width:1.8in;height:0.22in;
-        background:repeating-linear-gradient(-45deg,#000 0,#000 6px,#fff 6px,#fff 12px);"></div>
+      <div style="position:absolute;left:0.45in;top:${0.45 + offsetY}in;width:4.0in;height:0.30in;
+        background:repeating-linear-gradient(135deg,#000 0,#000 0.28in,#fff 0.28in,#fff 0.56in);"></div>
       <!-- Stripe bottom-right -->
-      <div style="position:absolute;right:0;top:${4.3 + offsetY}in;width:1.8in;height:0.22in;
-        background:repeating-linear-gradient(-45deg,#000 0,#000 6px,#fff 6px,#fff 12px);"></div>
+      <div style="position:absolute;right:0.25in;top:${7.65 + offsetY}in;width:4.0in;height:0.30in;
+        background:repeating-linear-gradient(135deg,#000 0,#000 0.28in,#fff 0.28in,#fff 0.56in);"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:0.73in;top:${2.31 + offsetY}in;width:4.54in;height:0.85in;
+      <div style="position:absolute;left:1.45in;top:${3.55 + offsetY}in;width:3.7in;height:0.85in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
         display:flex;align-items:center;justify-content:flex-start;">
         ${escHtml(nomeFormatado)}
       </div>
       <!-- QR -->
-      <div style="position:absolute;left:5.14in;top:${1.01 + offsetY}in;width:4.05in;height:3.60in;
-        border:1px solid #ddd;display:flex;align-items:center;justify-content:center;">
-        ${qrDataURL ? `<img src="${qrDataURL}" style="width:3.9in;height:3.5in;" />` : ''}
+      <div style="position:absolute;left:6.05in;top:${2.25 + offsetY}in;width:3.5in;height:3.5in;
+        display:flex;align-items:center;justify-content:center;">
+        ${qrDataURL ? `<img src="${qrDataURL}" style="width:3.5in;height:3.5in;" />` : ''}
       </div>
     `;
   }
 
   const html = `
-    <div style="width:10in;min-height:${qtd * PAGE_H}in;position:relative;background:#fff;
+    <div style="width:11in;min-height:${qtd * PAGE_H}in;position:relative;background:#fff;
       font-family:Inter,sans-serif;color:#000;">
       ${pages}
     </div>
@@ -489,12 +485,13 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 document.getElementById('print-nome').addEventListener('click', () => {
   const nome = document.getElementById('nome-texto').value.trim();
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 20);
+  const linhas = nome.split('/').map(v => v.trim()).filter(Boolean).slice(0, 3);
 
   if (!nome) { alert('Preencha o nome.'); return; }
 
   // Measurements: Nome X=1.32, Y=1.83, W=7.30, H=1.57, font 80pt
   // Landscape letter: 11×8.5in
-  const PAGE_H = 4.5; // each plate height
+  const PAGE_H = 8.5;
   let pages = '';
 
   for (let i = 0; i < qtd; i++) {
@@ -502,25 +499,25 @@ document.getElementById('print-nome').addEventListener('click', () => {
     pages += `
       <!-- Placa Simples ${i+1} -->
       <!-- Border -->
-      <div style="position:absolute;left:0.15in;top:${0.15 + offsetY}in;width:9.7in;height:4.2in;
-        border:3px solid #000;box-sizing:border-box;"></div>
+      <div style="position:absolute;left:0.28in;top:${0.22 + offsetY}in;width:10.44in;height:8.06in;
+        border:1.5px solid #555;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div style="position:absolute;left:0.3in;top:${0.3 + offsetY}in;width:1.6in;height:0.25in;
-        background:repeating-linear-gradient(-45deg,#000 0,#000 7px,#fff 7px,#fff 14px);"></div>
+      <div style="position:absolute;left:0.28in;top:${0.22 + offsetY}in;width:4.25in;height:0.72in;
+        background:repeating-linear-gradient(135deg,#000 0,#000 0.34in,#fff 0.34in,#fff 0.68in);"></div>
       <!-- Stripe bottom-right -->
-      <div style="position:absolute;right:0.3in;top:${4.0 + offsetY}in;width:1.6in;height:0.25in;
-        background:repeating-linear-gradient(-45deg,#000 0,#000 7px,#fff 7px,#fff 14px);"></div>
+      <div style="position:absolute;right:0.28in;top:${7.56 + offsetY}in;width:4.25in;height:0.72in;
+        background:repeating-linear-gradient(135deg,#000 0,#000 0.34in,#fff 0.34in,#fff 0.68in);"></div>
       <!-- Nome -->
-      <div style="position:absolute;left:1.32in;top:${1.83 + offsetY}in;width:7.30in;height:1.57in;
-        font-size:80pt;font-weight:900;font-family:Inter,sans-serif;letter-spacing:-0.02em;
-        display:flex;align-items:center;justify-content:center;text-transform:uppercase;">
-        ${escHtml(nome.toUpperCase())}
+      <div style="position:absolute;left:0.9in;top:${1.0 + offsetY}in;width:9.2in;height:6.4in;
+        font-weight:900;font-family:Arial,sans-serif;line-height:1;display:flex;flex-direction:column;
+        gap:0.35in;align-items:center;justify-content:center;text-transform:uppercase;">
+        ${linhas.map((linha, indice) => `<div style="font-size:${indice === 1 ? 74 : 64}pt;${indice === 1 ? 'border:1px solid #999;width:88%;padding:0.35in 0;text-align:center;' : ''}">${escHtml(linha.toUpperCase())}</div>`).join('')}
       </div>
     `;
   }
 
   const html = `
-    <div style="width:10.5in;min-height:${qtd * PAGE_H}in;position:relative;background:#fff;
+    <div style="width:11in;min-height:${qtd * PAGE_H}in;position:relative;background:#fff;
       font-family:Inter,sans-serif;color:#000;">
       ${pages}
     </div>

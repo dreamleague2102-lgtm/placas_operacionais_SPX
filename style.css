@@ -982,10 +982,22 @@ body {
   background: repeating-linear-gradient(-45deg, #000 0, #000 4px, #fff 4px, #fff 8px);
 }
 .preview-simples .simples-nome {
-  font-size: 52px;
+  position: absolute;
+  inset: 28px 35px;
   font-weight: 900;
-  letter-spacing: -0.03em;
+  font-family: Arial, sans-serif;
   text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  line-height: 1;
+}
+.preview-simples .simples-nome span { font-size: 25px; }
+.preview-simples .simples-nome .linha-2 {
+  width: 84%; padding: 8px 0; border: 1px solid #999;
+  text-align: center; font-size: 29px;
 }
 
 /* GAIOLA PREVIEW */
@@ -1001,23 +1013,25 @@ body {
   font-size: 8px;
 }
 .preview-gaiola .gaiola-header-bar {
-  background: #1a1a1a;
-  color: #fff;
+  background: #d7d7d7;
+  color: #000;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
 }
 .preview-gaiola .gaiola-spx-badge {
-  background: #e8001c;
-  font-size: 9px;
+  background: transparent;
+  color: #000;
+  font-style: italic;
+  font-size: 14px;
   font-weight: 900;
   padding: 2px 6px;
   border-radius: 2px;
 }
 .preview-gaiola .gaiola-title {
-  font-size: 9px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 900;
 }
 .preview-gaiola .gaiola-warn {
   text-align: center;
@@ -1025,7 +1039,7 @@ body {
   font-weight: 700;
   padding: 4px;
   border-bottom: 1px solid #eee;
-  font-style: italic;
+  font-style: normal;
 }
 .preview-gaiola .gaiola-body {
   display: flex;
