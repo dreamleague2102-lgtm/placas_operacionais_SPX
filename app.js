@@ -9,6 +9,11 @@ let qrCache = {};  // cache de QR codes gerados
 let saidaLote = [];
 let nomeLote = [];
 
+function formatarSaida(codigo) {
+  const valor = String(codigo || '').trim();
+  return `OUT-${/^\d+$/.test(valor) ? valor.padStart(3, '0') : valor}`;
+}
+
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
   const card = e.target.closest('.type-card');
@@ -106,7 +111,7 @@ document.getElementById('saida-codigo').addEventListener('input', () => {
   const cod = document.getElementById('saida-codigo').value;
   const qrEl = document.getElementById('saida-qr');
   if (!qrEl.dataset.manual) {
-    qrEl.value = cod ? `OUT-${cod.padStart(3,'0')}` : '';
+    qrEl.value = cod ? formatarSaida(cod) : '';
     updatePreview();
   }
 });
@@ -133,7 +138,7 @@ document.getElementById('add-saida').addEventListener('click', () => {
   const qrText = document.getElementById('saida-qr').value.trim();
   const qtd = Math.min(Math.max(parseInt(document.getElementById('saida-qtd').value) || 1, 1), 20);
   if (!codigo) { alert('Preencha o número de saída.'); return; }
-  const nome = `OUT-${codigo.padStart(3, '0')}`;
+  const nome = formatarSaida(codigo);
   saidaLote.push({ nome, qrText: qrText || nome, qtd });
   renderLotes();
   updatePreview();
@@ -229,9 +234,9 @@ async function updatePreview() {
 
 // ---- SHOPEE / WS ----
 async function renderShopeePreview(area) {
-  const codigo = document.getElementById('shopee-codigo').value || 'MG02';
-  const numero = document.getElementById('shopee-numero').value || '444';
-  const rodape = document.getElementById('shopee-rodape').value || '44';
+  const codigo = document.getElementById('shopee-codigo').value || 'ID';
+  const numero = document.getElementById('shopee-numero').value || 'ID';
+  const rodape = document.getElementById('shopee-rodape').value || 'ID';
   const qrText = document.getElementById('shopee-qr').value || `${codigo}-${numero}`;
   const qtd = Math.min(parseInt(document.getElementById('shopee-qtd').value) || 1, 6);
 
@@ -298,10 +303,10 @@ function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
 
 // ---- SAIDA / PLACA GRANDE ----
 async function renderSaidaPreview(area) {
-  const codigo = document.getElementById('saida-codigo').value || '041';
-  const qrText = document.getElementById('saida-qr').value || `OUT-${codigo}`;
+  const codigo = document.getElementById('saida-codigo').value || 'ID';
+  const qrText = document.getElementById('saida-qr').value || formatarSaida(codigo);
   const qtd = Math.min(parseInt(document.getElementById('saida-qtd').value) || 1, 3);
-  const nomeFormatado = `OUT-${codigo.padStart(3, '0')}`;
+  const nomeFormatado = formatarSaida(codigo);
   const itens = saidaLote.length
     ? saidaLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
     : Array.from({ length: qtd }, () => ({ nome: nomeFormatado, qrText }));
@@ -341,7 +346,7 @@ function quebrarTextoPlaca(valor) {
 }
 
 function renderNomePreview(area) {
-  const nome = document.getElementById('nome-texto').value || 'LETICIA';
+  const nome = document.getElementById('nome-texto').value || 'NOME';
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
   const itens = nomeLote.length
     ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item.nome))
@@ -367,19 +372,14 @@ function renderNomePreview(area) {
 
 // ---- GAIOLA SPX ----
 async function renderGaiolaPreview(area) {
-  const ini = parseInt(document.getElementById('gaiola-inicio').value) || 515;
-  const fim = parseInt(document.getElementById('gaiola-fim').value) || 515;
+  const ini = parseInt(document.getElementById('gaiola-inicio').value) || 0;
+  const fim = parseInt(document.getElementById('gaiola-fim').value) || 0;
   const total = fim >= ini && ini > 0 ? fim - ini + 1 : 0;
 
   area.innerHTML = '';
 
-  if (total === 0) {
-    area.innerHTML = '<div style="color:#888;font-size:0.85rem;margin:auto;align-self:center;">Preencha os números inicial e final</div>';
-    return;
-  }
-
   // Show first one as preview
-  const previewCg = `CG${ini}`;
+  const previewCg = total ? `CG${ini}` : 'CG-ID';
   const qrCanvas = await generateQR(previewCg, 160);
 
   const card = document.createElement('div');
@@ -427,7 +427,7 @@ async function renderGaiolaPreview(area) {
 
   const note = document.createElement('div');
   note.style.cssText = 'color:#888;font-size:0.75rem;text-align:center;margin-top:4px;';
-  note.textContent = total > 1 ? `Pré-visualização do CG${ini} · ${total} placas serão impressas (CG${ini}–CG${fim})` : `Placa CG${ini}`;
+  note.textContent = total > 1 ? `Pré-visualização do CG${ini} · ${total} placas serão impressas (CG${ini}–CG${fim})` : total === 1 ? `Placa CG${ini}` : 'Exemplo: preencha o ID inicial e o ID final para gerar as placas.';
 
   area.appendChild(card);
   area.appendChild(note);
@@ -535,7 +535,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   const qtd = Math.min(parseInt(document.getElementById('saida-qtd').value) || 1, 20);
 
   if (!saidaLote.length && !codigo) { alert('Adicione uma placa à lista ou preencha o número de saída.'); return; }
-  const atual = codigo ? { nome: `OUT-${codigo.padStart(3, '0')}`, qrText: qrText || `OUT-${codigo.padStart(3, '0')}`, qtd } : null;
+  const atual = codigo ? { nome: formatarSaida(codigo), qrText: qrText || formatarSaida(codigo), qtd } : null;
   const itens = (saidaLote.length ? saidaLote : [atual])
     .flatMap(item => Array.from({ length: item.qtd }, () => item));
 

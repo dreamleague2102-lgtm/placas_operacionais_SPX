@@ -42,13 +42,15 @@
     <div class="hero-content">
       <div class="hero-tag">🚀 Novo Sistema</div>
       <h1 class="hero-title">Gere suas Placas<br/><span class="accent">Operacionais</span> em Segundos</h1>
-      <p class="hero-sub">Selecione o tipo de placa abaixo, preencha os dados e imprima na hora. <br/>Simples assim — mesmo para quem nunca fez uma placa antes.</p>
+      <p class="hero-sub">Escolha uma placa, preencha somente os campos necessários e confira o resultado ao lado. Para criar placas diferentes, adicione cada uma à lista antes de imprimir.</p>
       <div class="hero-steps">
         <div class="step"><span class="step-num">1</span><span>Escolha o tipo</span></div>
         <div class="step-arrow">→</div>
         <div class="step"><span class="step-num">2</span><span>Preencha os dados</span></div>
         <div class="step-arrow">→</div>
-        <div class="step"><span class="step-num">3</span><span>Imprima!</span></div>
+        <div class="step"><span class="step-num">3</span><span>Confira a prévia</span></div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="step-num">4</span><span>Imprima</span></div>
       </div>
     </div>
   </section>
@@ -64,16 +66,15 @@
           <div class="type-card-icon">🛒</div>
           <div class="type-card-info">
             <h3>Placa Shopee / Gaiola</h3>
-            <p>Código MG, número de identificação, QR code e logo Shopee</p>
+            <p>Etiqueta vertical com ID superior, QR Code e ID inferior</p>
           </div>
           <div class="type-card-badge">Mais usada</div>
           <div class="type-card-preview">
             <div class="mini-plate shopee-mini">
               <div class="mini-stripe"></div>
               <div class="mini-body">
-                <div class="mini-logo">🛍️ Shopee</div>
-                <div class="mini-code">MG02</div>
-                <div class="mini-num">444</div>
+                <div class="mini-code">ID</div>
+                <div class="mini-num">ID</div>
                 <div class="mini-qr">▦</div>
               </div>
               <div class="mini-stripe"></div>
@@ -91,7 +92,7 @@
             <div class="mini-plate saida-mini">
               <div class="mini-corner top-left"></div>
               <div class="mini-body center">
-                <div class="mini-out">OUT-041</div>
+                <div class="mini-out">OUT-ID</div>
                 <div class="mini-qr large">▦</div>
               </div>
               <div class="mini-corner bottom-right"></div>
@@ -103,13 +104,13 @@
           <div class="type-card-icon">👤</div>
           <div class="type-card-info">
             <h3>Placa de Nome</h3>
-            <p>Nome da pessoa em destaque com borda e listras zebra</p>
+            <p>Qualquer nome ou identificação em letras grandes</p>
           </div>
           <div class="type-card-preview">
             <div class="mini-plate nome-mini">
               <div class="mini-corner top-left"></div>
               <div class="mini-body center nome-body">
-                <div class="mini-nome">LETICIA</div>
+                <div class="mini-nome">NOME</div>
               </div>
               <div class="mini-corner bottom-right"></div>
             </div>
@@ -126,7 +127,7 @@
             <div class="mini-plate gaiola-mini">
               <div class="mini-spx-header">SPX ●</div>
               <div class="mini-body">
-                <div class="mini-cg">CG515</div>
+                <div class="mini-cg">CG-ID</div>
                 <div class="mini-qr">▦</div>
                 <div class="mini-inst">⚠ Instruções</div>
               </div>
@@ -155,33 +156,34 @@
 
           <!-- SHOPEE FORM -->
           <div class="plate-form active" id="form-shopee">
+            <div class="form-guide"><strong>Como fazer:</strong> preencha os IDs, informe o conteúdo do QR Code, escolha a quantidade e clique em imprimir.</div>
             <div class="field-group">
               <label class="field-label" for="shopee-codigo">
-                <span class="field-icon">🏷️</span> Código da Gaiola (ex: MG02)
+                <span class="field-icon">🏷️</span> ID principal da placa
               </label>
-              <input class="field-input" type="text" id="shopee-codigo" placeholder="MG02" maxlength="10" />
-              <span class="field-hint">Código de identificação da gaiola</span>
+              <input class="field-input" type="text" id="shopee-codigo" placeholder="ID" maxlength="10" />
+              <span class="field-hint">Aparece centralizado no topo da etiqueta.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="shopee-numero">
                 <span class="field-icon">🔢</span> Número de Identificação
               </label>
-              <input class="field-input" type="text" id="shopee-numero" placeholder="444" maxlength="10" />
-              <span class="field-hint">Número exibido abaixo do código</span>
+              <input class="field-input" type="text" id="shopee-numero" placeholder="ID" maxlength="10" />
+              <span class="field-hint">Aparece centralizado acima do QR Code.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="shopee-rodape">
                 <span class="field-icon">📋</span> Rodapé (número inferior)
               </label>
-              <input class="field-input" type="text" id="shopee-rodape" placeholder="44" maxlength="10" />
-              <span class="field-hint">Número exibido na parte inferior da placa</span>
+              <input class="field-input" type="text" id="shopee-rodape" placeholder="ID" maxlength="10" />
+              <span class="field-hint">Aparece centralizado logo abaixo do QR Code.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="shopee-qr">
                 <span class="field-icon">📱</span> Conteúdo do QR Code
               </label>
-              <input class="field-input" type="text" id="shopee-qr" placeholder="MG02-444" />
-              <span class="field-hint">Texto/link que o QR code vai conter</span>
+              <input class="field-input" type="text" id="shopee-qr" placeholder="ID ou link completo" />
+              <span class="field-hint">Pode ser um ID, texto ou link. Esse conteúdo será lido pelo celular.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="shopee-qtd">
@@ -197,19 +199,20 @@
 
           <!-- SAÍDA FORM -->
           <div class="plate-form" id="form-saida">
+            <div class="form-guide"><strong>Como fazer:</strong> informe o ID e o QR Code, clique em “Adicionar placa à lista” e repita para cada placa. Depois imprima a lista completa.</div>
             <div class="field-group">
               <label class="field-label" for="saida-codigo">
-                <span class="field-icon">🔢</span> Número de Saída (ex: 041)
+                <span class="field-icon">🔢</span> ID da saída
               </label>
-              <input class="field-input" type="text" id="saida-codigo" placeholder="041" maxlength="10" />
-              <span class="field-hint">Será exibido como OUT-041</span>
+              <input class="field-input" type="text" id="saida-codigo" placeholder="ID" maxlength="10" />
+              <span class="field-hint">O sistema acrescenta “OUT-” automaticamente.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="saida-qr">
                 <span class="field-icon">📱</span> Conteúdo do QR Code
               </label>
-              <input class="field-input" type="text" id="saida-qr" placeholder="OUT-041" />
-              <span class="field-hint">Texto/link que o QR code vai conter</span>
+              <input class="field-input" type="text" id="saida-qr" placeholder="OUT-ID ou link completo" />
+              <span class="field-hint">Se ficar vazio, o QR usará o mesmo ID exibido na placa.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="saida-qtd">
@@ -221,18 +224,19 @@
             <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>
             <div class="plate-batch" id="saida-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-saida">
-              🖨️ Imprimir Placa de Saída
+              🖨️ Imprimir lista de placas OUT
             </button>
           </div>
 
           <!-- NOME FORM -->
           <div class="plate-form" id="form-nome">
+            <div class="form-guide"><strong>Como fazer:</strong> digite um nome, escolha as cópias e adicione à lista. Repita se precisar de outros nomes e imprima tudo de uma vez.</div>
             <div class="field-group">
               <label class="field-label" for="nome-texto">
-                <span class="field-icon">👤</span> Nome da Pessoa
+                <span class="field-icon">👤</span> Nome da placa
               </label>
-              <input class="field-input" type="text" id="nome-texto" placeholder="LETICIA" maxlength="20" style="text-transform:uppercase" />
-              <span class="field-hint">O nome será exibido em letras maiúsculas</span>
+              <input class="field-input" type="text" id="nome-texto" placeholder="NOME" maxlength="40" style="text-transform:uppercase" />
+              <span class="field-hint">Pode ser um nome, local ou identificação. Será impresso em maiúsculas.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="nome-qtd">
@@ -244,25 +248,26 @@
             <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome">
-              🖨️ Imprimir Placa de Nome
+              🖨️ Imprimir lista de nomes
             </button>
           </div>
 
           <!-- GAIOLA FORM -->
           <div class="plate-form" id="form-gaiola">
+            <div class="form-guide"><strong>Como fazer:</strong> informe o primeiro e o último ID numérico. O sistema criará todas as placas CG desse intervalo.</div>
             <div class="field-group">
               <label class="field-label" for="gaiola-inicio">
                 <span class="field-icon">🔢</span> Número CG Inicial
               </label>
-              <input class="field-input" type="number" id="gaiola-inicio" placeholder="515" min="1" />
-              <span class="field-hint">Ex: 515 → gera "CG515"</span>
+              <input class="field-input" type="number" id="gaiola-inicio" placeholder="ID inicial" min="1" />
+              <span class="field-hint">Primeiro ID que será gerado no formato CG-ID.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="gaiola-fim">
                 <span class="field-icon">🔢</span> Número CG Final
               </label>
-              <input class="field-input" type="number" id="gaiola-fim" placeholder="520" min="1" />
-              <span class="field-hint">Ex: 520 → gera "CG520"</span>
+              <input class="field-input" type="number" id="gaiola-fim" placeholder="ID final" min="1" />
+              <span class="field-hint">Último ID do intervalo de placas.</span>
             </div>
             <div class="field-group total-display">
               <span class="total-label">Total de placas:</span>

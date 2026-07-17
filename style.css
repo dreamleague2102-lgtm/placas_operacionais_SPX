@@ -400,6 +400,16 @@ body {
 }
 .field-input::placeholder { color: var(--spx-muted); }
 .field-hint { font-size: 0.72rem; color: var(--spx-muted); }
+.form-guide {
+  padding: .85rem .9rem;
+  border-left: 3px solid var(--spx-red);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: rgba(232,0,28,.075);
+  color: #d8d8df;
+  font-size: .76rem;
+  line-height: 1.55;
+}
+.form-guide strong { color:#fff; }
 
 .total-display {
   background: rgba(232,0,28,0.06);
