@@ -237,7 +237,7 @@ function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
       </div>`;
     }).join('');
 
-    paginas.push(`<section style="width:11in;height:8.5in;padding:.35in .45in;display:grid;
+    paginas.push(`<section class="ws-print-page" style="width:11in;height:8.5in;padding:.35in .45in;display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));gap:.22in;background:#fff;
       break-after:page;page-break-after:always;overflow:hidden;">${etiquetas}</section>`);
   }
@@ -277,8 +277,17 @@ async function renderSaidaPreview(area) {
 }
 
 // ---- NOME / SIMPLES ----
+function quebrarTextoPlaca(valor) {
+  const palavras = String(valor || '').trim().toUpperCase().split(/\s+/).filter(Boolean);
+  if (palavras.length <= 2 || palavras.join(' ').length <= 11) return [palavras.join(' ')];
+  if (palavras.length === 3) return [palavras.slice(0, 2).join(' '), palavras[2]];
+  const meio = Math.ceil(palavras.length / 2);
+  return [palavras.slice(0, meio).join(' '), palavras.slice(meio).join(' ')];
+}
+
 function renderNomePreview(area) {
   const nome = document.getElementById('nome-texto').value || 'LETICIA';
+  const linhas = quebrarTextoPlaca(nome);
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
 
   area.innerHTML = '';
@@ -291,7 +300,7 @@ function renderNomePreview(area) {
     card.innerHTML = `
       <div class="simples-stripe-tl"></div>
       <div class="simples-stripe-br"></div>
-      <div class="simples-nome">${escHtml(nome.toUpperCase())}</div>
+      <div class="simples-nome">${linhas.map(linha => `<span>${escHtml(linha)}</span>`).join('')}</div>
     `;
     wrap.appendChild(card);
   }
@@ -526,6 +535,19 @@ document.getElementById('print-nome').addEventListener('click', () => {
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 20);
 
   if (!nome) { alert('Preencha o nome.'); return; }
+  const linhas = quebrarTextoPlaca(nome);
+  const placa = () => `<section class="simple-print-page" style="width:11in;height:8.5in;padding:.22in;page-break-after:always;break-after:page;background:#fff;">
+    <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
+      <div style="position:absolute;left:0;top:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
+      <div style="position:absolute;right:0;bottom:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
+      <div style="position:absolute;inset:1.45in .9in;display:flex;flex-direction:column;align-items:center;justify-content:center;
+        font:900 64pt/1.08 Calibri,Arial,sans-serif;text-align:center;color:#000;">
+        ${linhas.map(linha => `<div>${escHtml(linha)}</div>`).join('')}
+      </div>
+    </div>
+  </section>`;
+  triggerPrint(Array.from({length:qtd}, placa).join(''), 'landscape');
+  return;
 
   // Measurements: Nome X=1.32, Y=1.83, W=7.30, H=1.57, font 80pt
   // Landscape letter: 11×8.5in
@@ -693,6 +715,9 @@ function triggerPrint(contentHtml, orientation = 'portrait') {
       font-family:Inter,sans-serif; margin-right:8px;
     }
     @media print { .no-print { display:none; } }
+    .ws-print-page:last-child, .simple-print-page:last-child {
+      page-break-after:auto !important; break-after:auto !important;
+    }
   </style>
 </head>
 <body>
