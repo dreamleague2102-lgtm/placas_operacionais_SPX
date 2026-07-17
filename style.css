@@ -1101,6 +1101,48 @@ body {
    =========================== */
 .print-only { display: none; }
 
+/* Pré-visualizações ampliadas: não altera as medidas de impressão */
+.preview-area { min-height: 650px; padding: 1.75rem; }
+.preview-ws { width: 210px; min-height: 430px; }
+.preview-ws .ws-stripe { height: 16px; }
+.preview-ws .ws-body { padding: 12px; gap: 9px; }
+.preview-ws .ws-shopee { font-size: 11px; }
+.preview-ws .ws-name { font-size: 19px; }
+.preview-ws .ws-num, .preview-ws .ws-posto { font-size: 14px; }
+.preview-ws .ws-qr { width: 140px; height: 140px; }
+.preview-ws .ws-qr img, .preview-ws .ws-qr canvas { width: 140px !important; height: 140px !important; }
+
+.preview-grande { width: min(100%, 760px); height: 420px; }
+.preview-grande .grande-stripe-tl { top:28px; left:24px; width:280px; height:28px; }
+.preview-grande .grande-stripe-br { bottom:28px; right:16px; width:280px; height:28px; }
+.preview-grande .grande-nome { left:70px; font-size:52px; }
+.preview-grande .grande-qr { right:65px; width:235px; height:235px; border:0; }
+.preview-grande .grande-qr img, .preview-grande .grande-qr canvas { width:235px !important; height:235px !important; }
+
+.preview-simples { width:min(100%, 760px); height:430px; border:1.5px solid #555; }
+.preview-simples .simples-stripe-tl { top:18px; left:18px; width:280px; height:34px; }
+.preview-simples .simples-stripe-br { bottom:18px; right:18px; width:280px; height:34px; }
+.preview-simples .simples-nome { inset:65px 55px; gap:13px; }
+.preview-simples .simples-nome span { font-size:46px; }
+.preview-simples .simples-nome .linha-2 { padding:15px 0; font-size:54px; }
+
+.preview-gaiola { width:min(100%, 600px); font-size:12px; }
+.preview-gaiola .gaiola-header-bar { padding:18px 24px; gap:20px; }
+.preview-gaiola .gaiola-spx-badge { font-size:28px; }
+.preview-gaiola .gaiola-title { font-size:25px; }
+.preview-gaiola .gaiola-warn { font-size:20px; padding:12px; }
+.preview-gaiola .gaiola-body { gap:18px; padding:18px; }
+.preview-gaiola .gaiola-instrucoes h4 { font-size:13px; padding:6px 8px; margin-bottom:7px; background:#ddd; }
+.preview-gaiola .gaiola-instrucoes ul { padding-left:16px; }
+.preview-gaiola .gaiola-instrucoes ul li { font-size:10px; line-height:1.45; margin-bottom:5px; color:#111; }
+.preview-gaiola .gaiola-right { width:235px; }
+.preview-gaiola .gaiola-qr-label { font-size:10px; }
+.preview-gaiola .gaiola-qr-box { width:225px; min-height:345px; padding:10px; }
+.preview-gaiola .gaiola-cg { font-size:40px; margin-top:18px; }
+.preview-gaiola .gaiola-qr { width:160px; height:160px; }
+.preview-gaiola .gaiola-qr img, .preview-gaiola .gaiola-qr canvas { width:160px !important; height:160px !important; }
+.preview-gaiola .gaiola-rodape { font-size:13px; padding:10px; }
+
 /* ===========================
    RESPONSIVE
    =========================== */
