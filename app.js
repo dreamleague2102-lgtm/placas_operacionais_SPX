@@ -203,7 +203,7 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
     <div class="ws-stripe ws-stripe-top"></div>
     <div class="ws-body">
       <div class="ws-shopee">
-        <span class="shopee-mark">S</span><span>Shopee</span>
+        ${shopeeLogoMarkup()}
       </div>
       <div class="ws-name">${escHtml(codigo)}</div>
       <div class="ws-num">${preenchida ? escHtml(numero) : ''}</div>
@@ -215,6 +215,17 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   return div;
 }
 
+function shopeeLogoMarkup() {
+  return `<span class="shopee-logo" aria-label="Shopee">
+    <svg class="shopee-bag" viewBox="0 0 40 46" aria-hidden="true">
+      <path d="M10 14V11C10 5.5 14.5 1 20 1s10 4.5 10 10v3" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M3 13h34v31H3z" fill="currentColor"/>
+      <text x="20" y="36" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="25" font-weight="700">S</text>
+    </svg>
+    <span class="shopee-word">Shopee</span>
+  </span>`;
+}
+
 function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
   const paginas = [];
   for (let inicio = 0; inicio < quantidade; inicio += 3) {
@@ -223,9 +234,7 @@ function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
       return `<div style="height:5.2in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
         <div style="width:60%;height:.32in;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
-          <div style="position:absolute;right:.14in;top:.06in;display:flex;align-items:center;gap:4px;font-size:13pt;">
-            <span style="width:.26in;height:.30in;background:#000;color:#fff;display:grid;place-items:center;font-size:10pt;">S</span>Shopee
-          </div>
+          <div style="position:absolute;right:.12in;top:.04in;">${shopeeLogoMarkup()}</div>
           <div style="font-size:20pt;font-weight:700;padding-top:.15in;">${escHtml(codigo)}</div>
           <div style="font-size:14pt;font-weight:700;margin-top:.30in;height:.25in;">${preenchida ? escHtml(numero) : ''}</div>
           <div style="height:2.35in;margin-top:.06in;display:flex;align-items:center;justify-content:center;">
