@@ -360,12 +360,12 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   const COL_X_QR   = [0.37, 3.70, 7.03];   // in
 
   // Stripe positions (slightly above name, below posto)
-  const STRIPE_TOP_Y = 1.42;   // in
-  const NAME_Y       = 1.62;   // in
-  const QR_Y         = 1.85;   // in
-  const POSTO_Y      = 4.25;   // in
-  const STRIPE_BOT_Y = 4.60;   // in
-  const SHOPEE_Y     = 1.42;   // in (top right of each plate zone)
+  const STRIPE_TOP_Y = 0.35;
+  const NAME_Y       = 0.95;
+  const QR_Y         = 2.00;
+  const POSTO_Y      = 5.55;
+  const STRIPE_BOT_Y = 7.45;
+  const SHOPEE_Y     = 0.75;
 
   const ROW_HEIGHT   = 5.2;    // in — vertical gap between rows
 
@@ -381,9 +381,11 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
 
       plates += `
         <!-- Row ${row}, Col ${col}: plate ${count+1} -->
+        <div style="position:absolute;left:${xq - 0.12}in;top:${0.22 + offsetY}in;width:2.86in;height:7.85in;
+          border:1.5px solid #111;box-sizing:border-box;"></div>
         <!-- Stripe top -->
-        <div style="position:absolute;left:${xq}in;top:${STRIPE_TOP_Y + offsetY}in;width:2.57in;height:0.18in;
-          background:repeating-linear-gradient(-45deg,#000 0,#000 5px,#fff 5px,#fff 10px);"></div>
+        <div style="position:absolute;left:${xq}in;top:${STRIPE_TOP_Y + offsetY}in;width:2.57in;height:0.30in;
+          background:repeating-linear-gradient(135deg,#000 0 0.18in,#fff 0.18in 0.36in);"></div>
         <!-- Shopee logo top-right -->
         <div style="position:absolute;left:${xn + 1.6}in;top:${SHOPEE_Y + offsetY}in;
           font-size:8pt;font-weight:700;font-family:Inter,sans-serif;display:flex;align-items:center;gap:3px;">
@@ -396,7 +398,7 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
           ${escHtml(nomeFormatado)}
         </div>
         <!-- Numero -->
-        <div style="position:absolute;left:${xn}in;top:${NAME_Y + 0.32 + offsetY}in;width:2.42in;height:0.20in;
+        <div style="position:absolute;left:${xn}in;top:${NAME_Y + 0.62 + offsetY}in;width:2.42in;height:0.25in;
           font-size:11pt;font-weight:600;font-family:Inter,sans-serif;
           display:flex;align-items:center;justify-content:center;text-align:center;">
           ${escHtml(numero)}
@@ -413,8 +415,8 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
           ${escHtml(rodape)}
         </div>
         <!-- Stripe bottom -->
-        <div style="position:absolute;left:${xq}in;top:${STRIPE_BOT_Y + offsetY}in;width:2.57in;height:0.18in;
-          background:repeating-linear-gradient(-45deg,#000 0,#000 5px,#fff 5px,#fff 10px);"></div>
+        <div style="position:absolute;left:${xq}in;top:${STRIPE_BOT_Y + offsetY}in;width:2.57in;height:0.30in;
+          background:repeating-linear-gradient(135deg,#000 0 0.18in,#fff 0.18in 0.36in);"></div>
       `;
     }
   }
@@ -451,12 +453,14 @@ document.getElementById('print-saida').addEventListener('click', async () => {
     const offsetY = i * PAGE_H;
     pages += `
       <!-- Placa Grande ${i+1} -->
+      <div style="position:absolute;left:0.22in;top:${0.22 + offsetY}in;width:10.56in;height:8.06in;
+        border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
       <div style="position:absolute;left:0.45in;top:${0.45 + offsetY}in;width:4.0in;height:0.30in;
-        background:repeating-linear-gradient(135deg,#000 0,#000 0.28in,#fff 0.28in,#fff 0.56in);"></div>
+        background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
       <!-- Stripe bottom-right -->
       <div style="position:absolute;right:0.25in;top:${7.65 + offsetY}in;width:4.0in;height:0.30in;
-        background:repeating-linear-gradient(135deg,#000 0,#000 0.28in,#fff 0.28in,#fff 0.56in);"></div>
+        background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
       <!-- Nome OUT -->
       <div style="position:absolute;left:1.45in;top:${3.55 + offsetY}in;width:3.7in;height:0.85in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
