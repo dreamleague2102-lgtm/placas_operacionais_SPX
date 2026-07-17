@@ -36,42 +36,52 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(13,13,13,0.92);
+  background: rgba(9,9,12,.94);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--spx-border);
+  border-bottom: 1px solid rgba(255,255,255,.09);
+  box-shadow: 0 8px 30px rgba(0,0,0,.22);
 }
+.site-header::before { content:""; position:absolute; inset:0 0 auto; height:2px; background:linear-gradient(90deg,transparent 5%,var(--spx-red) 35%,#ff5366 50%,var(--spx-red) 65%,transparent 95%); opacity:.7; }
 .header-inner {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
-  height: 64px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.logo-wrap { display: flex; align-items: center; gap: 1rem; }
+.logo-wrap { display: flex; align-items: center; gap: 1.1rem; }
 .spx-logo {
-  background: var(--spx-red);
-  border-radius: 6px;
-  padding: 6px 10px;
+  width:84px;
+  height:44px;
+  background: linear-gradient(145deg,#f20b2d,#c90020);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius: 10px;
+  padding: 5px 8px;
   display: flex;
   align-items: center;
+  justify-content:center;
+  box-shadow:0 7px 20px rgba(232,0,28,.22),inset 0 1px rgba(255,255,255,.15);
+  flex-shrink:0;
 }
-.spx-logo svg { display: block; }
-.logo-divider { width: 1px; height: 32px; background: var(--spx-border); }
-.logo-title { display: block; font-weight: 700; font-size: 0.95rem; color: #fff; line-height: 1.2; }
-.logo-sub { display: block; font-size: 0.72rem; color: var(--spx-muted); }
+.spx-logo svg { display: block; width:100%; height:100%; }
+.logo-divider { width: 1px; height: 38px; background: linear-gradient(transparent,rgba(255,255,255,.24),transparent); }
+.logo-title { display: block; font-weight: 800; font-size: 1.02rem; color: #fff; line-height: 1.2; letter-spacing:-.015em; }
+.logo-sub { display: block; margin-top:2px; font-size: 0.69rem; color: #8f8f9e; letter-spacing:.02em; }
 .header-badge {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--spx-green);
   background: rgba(0,230,118,0.08);
   border: 1px solid rgba(0,230,118,0.2);
-  padding: 4px 12px;
+  padding: 7px 13px;
   border-radius: 20px;
+  box-shadow:inset 0 0 14px rgba(0,230,118,.04);
 }
+.header-badge strong { font-weight:800; }
 .badge-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
@@ -1312,6 +1322,13 @@ body {
    RESPONSIVE
    =========================== */
 @media (max-width: 600px) {
+  .header-inner { padding:0 1rem; }
+  .logo-wrap { gap:.7rem; }
+  .spx-logo { width:72px; height:40px; }
+  .logo-divider { height:32px; }
+  .logo-title { font-size:.9rem; }
+  .logo-sub { font-size:.6rem; }
+  .header-badge { display:none; }
   .hero { padding: 40px 1rem 30px; }
   .type-grid { grid-template-columns: 1fr 1fr; }
   .type-card-preview { display: none; }
