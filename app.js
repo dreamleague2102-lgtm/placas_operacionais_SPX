@@ -543,45 +543,36 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   // Nome: X=0.73, Y=2.31, W=4.54, H=0.85, font 48pt
   // QR:   X=5.14, Y=1.01, W=4.05, H=3.60
 
-  const PAGE_H = 8.5; // uma placa por página paisagem
   let pages = '';
 
   for (let i = 0; i < itens.length; i++) {
     const item = itens[i];
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
-    const offsetY = i * PAGE_H;
-    pages += `
+    pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
       <!-- Placa Grande ${i+1} -->
-      <div style="position:absolute;left:0.22in;top:${0.22 + offsetY}in;width:10.56in;height:8.06in;
+      <div style="position:absolute;left:0.22in;top:0.22in;width:10.54in;height:8.04in;
         border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div style="position:absolute;left:0.45in;top:${0.45 + offsetY}in;width:4.0in;height:0.30in;
+      <div style="position:absolute;left:0.45in;top:0.45in;width:4.0in;height:0.30in;
         background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
       <!-- Stripe bottom-right -->
-      <div style="position:absolute;right:0.25in;top:${7.65 + offsetY}in;width:4.0in;height:0.30in;
+      <div style="position:absolute;right:0.25in;bottom:0.55in;width:4.0in;height:0.30in;
         background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:0.73in;top:${2.31 + offsetY}in;width:4.54in;height:0.85in;
+      <div style="position:absolute;left:0.73in;top:2.31in;width:4.54in;height:0.85in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
         display:flex;align-items:center;justify-content:center;text-align:center;">
         ${escHtml(item.nome)}
       </div>
       <!-- QR -->
-      <div style="position:absolute;left:5.14in;top:${1.01 + offsetY}in;width:4.05in;height:3.60in;
+      <div style="position:absolute;left:5.14in;top:1.01in;width:4.05in;height:3.60in;
         display:flex;align-items:center;justify-content:center;">
         ${qrDataURL ? `<img src="${qrDataURL}" style="width:4.05in;height:3.60in;object-fit:contain;" />` : ''}
       </div>
-    `;
+    </section>`;
   }
 
-  const html = `
-    <div style="width:11in;min-height:${itens.length * PAGE_H}in;position:relative;background:#fff;
-      font-family:Inter,sans-serif;color:#000;">
-      ${pages}
-    </div>
-  `;
-
-  triggerPrint(html, 'landscape');
+  triggerPrint(pages, 'landscape');
 });
 
 // PRINT NOME (Simples — landscape)
@@ -595,7 +586,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
     : Array.from({ length: qtd }, () => nome);
   const placa = (nomePlaca) => {
     const linhas = quebrarTextoPlaca(nomePlaca);
-    return `<section class="simple-print-page" style="width:11in;height:8.5in;padding:.22in;page-break-after:always;break-after:page;background:#fff;">
+    return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
       <div style="position:absolute;left:0;top:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
       <div style="position:absolute;right:0;bottom:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
@@ -775,9 +766,10 @@ function triggerPrint(contentHtml, orientation = 'portrait') {
       font-family:Inter,sans-serif; margin-right:8px;
     }
     @media print { .no-print { display:none; } }
-    .ws-print-page:last-child, .simple-print-page:last-child {
+    .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child {
       page-break-after:auto !important; break-after:auto !important;
     }
+    .out-print-page, .simple-print-page { break-inside:avoid; page-break-inside:avoid; }
   </style>
 </head>
 <body>
