@@ -178,34 +178,37 @@ async function renderShopeePreview(area) {
   const qtd = Math.min(parseInt(document.getElementById('shopee-qtd').value) || 1, 6);
 
   area.innerHTML = '';
-  for (let i = 0; i < qtd; i++) {
-    const card = buildShopeeCard(codigo, numero, rodape);
-    const qrCanvas = await generateQR(qrText, 200);
-    if (qrCanvas) {
-      const qrWrap = card.querySelector('.ws-qr');
-      const img = new Image();
-      img.src = qrCanvas.toDataURL();
-      img.style.cssText = 'width:80px;height:80px;';
-      qrWrap.appendChild(img);
+  const folha = document.createElement('div');
+  folha.className = 'preview-ws-sheet';
+  for (let i = 0; i < 3; i++) {
+    const preenchida = i < qtd;
+    const card = buildShopeeCard(codigo, numero, rodape, preenchida);
+    if (preenchida) {
+      const qrCanvas = await generateQR(qrText, 200);
+      if (qrCanvas) {
+        const img = new Image();
+        img.src = qrCanvas.toDataURL();
+        card.querySelector('.ws-qr').appendChild(img);
+      }
     }
-    area.appendChild(card);
+    folha.appendChild(card);
   }
+  area.appendChild(folha);
 }
 
-function buildShopeeCard(codigo, numero, rodape) {
+function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   const div = document.createElement('div');
   div.className = 'preview-ws';
   div.innerHTML = `
     <div class="ws-stripe"></div>
     <div class="ws-body">
       <div class="ws-shopee">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#ee4d2d"/><text x="5" y="17" font-size="11" fill="#fff" font-weight="900">S</text></svg>
-        Shopee
+        <span class="shopee-mark">S</span><span>Shopee</span>
       </div>
       <div class="ws-name">${escHtml(codigo)}</div>
-      <div class="ws-num">${escHtml(numero)}</div>
+      <div class="ws-num">${preenchida ? escHtml(numero) : ''}</div>
       <div class="ws-qr"></div>
-      <div class="ws-posto">${escHtml(rodape)}</div>
+      <div class="ws-posto">${preenchida ? escHtml(rodape) : ''}</div>
     </div>
     <div class="ws-stripe"></div>
   `;
@@ -359,12 +362,12 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   const COL_X_QR   = [0.37, 3.70, 7.03];   // in
 
   // Stripe positions (slightly above name, below posto)
-  const STRIPE_TOP_Y = 1.42;
-  const NAME_Y       = 1.62;
-  const QR_Y         = 1.85;
-  const POSTO_Y      = 4.25;
-  const STRIPE_BOT_Y = 4.60;
-  const SHOPEE_Y     = 1.42;
+  const STRIPE_TOP_Y = 0.35;
+  const NAME_Y       = 0.78;
+  const QR_Y         = 1.65;
+  const POSTO_Y      = 4.65;
+  const STRIPE_BOT_Y = 7.45;
+  const SHOPEE_Y     = 0.40;
 
   const ROW_HEIGHT   = 5.2;    // in — vertical gap between rows
 
@@ -374,12 +377,14 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
 
   for (let row = 0; row < rows; row++) {
     const offsetY = row * ROW_HEIGHT;
-    for (let col = 0; col < 3 && count < qtd; col++, count++) {
+    for (let col = 0; col < 3; col++) {
       const xn = COL_X_NAME[col];
       const xq = COL_X_QR[col];
+      const preenchida = count < qtd;
+      if (preenchida) count++;
 
       plates += `
-        <!-- Row ${row}, Col ${col}: plate ${count+1} -->
+        <!-- Row ${row}, Col ${col} -->
         <div style="position:absolute;left:${xq - 0.12}in;top:${0.22 + offsetY}in;width:2.86in;height:7.85in;
           border:1.5px solid #111;box-sizing:border-box;"></div>
         <!-- Stripe top -->
@@ -388,7 +393,7 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
         <!-- Shopee logo top-right -->
         <div style="position:absolute;left:${xn + 1.6}in;top:${SHOPEE_Y + offsetY}in;
           font-size:8pt;font-weight:700;font-family:Inter,sans-serif;display:flex;align-items:center;gap:3px;">
-          <svg width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ee4d2d"/><text x="6" y="16" font-size="12" fill="#fff" font-weight="900" font-family="Arial">S</text></svg> Shopee
+          <span style="width:18px;height:20px;background:#000;color:#fff;display:grid;place-items:center;font-size:10px;">S</span> Shopee
         </div>
         <!-- Name -->
         <div style="position:absolute;left:${xn}in;top:${NAME_Y + offsetY}in;width:2.42in;height:0.30in;
@@ -397,21 +402,21 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
           ${escHtml(nomeFormatado)}
         </div>
         <!-- Numero -->
-        <div style="position:absolute;left:${xn}in;top:${NAME_Y + 0.62 + offsetY}in;width:2.42in;height:0.25in;
+        <div style="position:absolute;left:${xn}in;top:${NAME_Y + 0.50 + offsetY}in;width:2.42in;height:0.25in;
           font-size:11pt;font-weight:600;font-family:Inter,sans-serif;
           display:flex;align-items:center;justify-content:center;text-align:center;">
-          ${escHtml(numero)}
+          ${preenchida ? escHtml(numero) : ''}
         </div>
         <!-- QR -->
         <div style="position:absolute;left:${xq}in;top:${QR_Y + offsetY}in;width:2.57in;height:2.36in;
           display:flex;align-items:center;justify-content:center;">
-          ${qrDataURL ? `<img src="${qrDataURL}" style="width:2.3in;height:2.3in;" />` : ''}
+          ${preenchida && qrDataURL ? `<img src="${qrDataURL}" style="width:2.3in;height:2.3in;" />` : ''}
         </div>
         <!-- Posto -->
         <div style="position:absolute;left:${xn}in;top:${POSTO_Y + offsetY}in;width:2.42in;height:0.30in;
           font-size:12pt;font-weight:700;font-family:Inter,sans-serif;
           display:flex;align-items:center;justify-content:center;text-align:center;">
-          ${escHtml(rodape)}
+          ${preenchida ? escHtml(rodape) : ''}
         </div>
         <!-- Stripe bottom -->
         <div style="position:absolute;left:${xq}in;top:${STRIPE_BOT_Y + offsetY}in;width:2.57in;height:0.30in;

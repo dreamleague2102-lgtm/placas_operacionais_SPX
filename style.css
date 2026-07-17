@@ -1114,11 +1114,37 @@ body {
 .print-only { display: none; }
 
 /* Pré-visualizações ampliadas: não altera as medidas de impressão */
-.preview-area { min-height: 650px; padding: 1.75rem; }
+.preview-area { min-height: 650px; padding: 1.75rem; overflow:auto; }
+.preview-ws-sheet {
+  width: min(100%, 920px);
+  min-width: 720px;
+  aspect-ratio: 11 / 5.45;
+  padding: 18px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  box-shadow: 0 4px 18px rgba(0,0,0,.35);
+}
+.preview-ws-sheet .preview-ws {
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  box-shadow: none;
+}
 .preview-ws { width: 210px; min-height: 430px; }
 .preview-ws .ws-stripe { height: 16px; }
 .preview-ws .ws-body { padding: 12px; gap: 9px; }
 .preview-ws .ws-shopee { font-size: 11px; }
+.preview-ws .shopee-mark {
+  width: 22px; height: 24px; background:#050505; color:#fff;
+  display:inline-grid; place-items:center; font-weight:700; font-size:14px;
+  position:relative;
+}
+.preview-ws .shopee-mark::before {
+  content:""; position:absolute; width:10px; height:7px; left:5px; top:-6px;
+  border:2px solid #050505; border-bottom:0; border-radius:7px 7px 0 0;
+}
 .preview-ws .ws-name { font-size: 19px; }
 .preview-ws .ws-num, .preview-ws .ws-posto { font-size: 14px; }
 .preview-ws .ws-qr { width: 140px; height: 140px; }
