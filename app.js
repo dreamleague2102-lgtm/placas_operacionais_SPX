@@ -246,8 +246,7 @@ async function renderSaidaPreview(area) {
 
 // ---- NOME / SIMPLES ----
 function renderNomePreview(area) {
-  const nome = document.getElementById('nome-texto').value || 'ÁREA DE / SCUTTLES / VAZIA';
-  const linhas = nome.split('/').map(v => v.trim()).filter(Boolean).slice(0, 3);
+  const nome = document.getElementById('nome-texto').value || 'LETICIA';
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
 
   area.innerHTML = '';
@@ -260,7 +259,7 @@ function renderNomePreview(area) {
     card.innerHTML = `
       <div class="simples-stripe-tl"></div>
       <div class="simples-stripe-br"></div>
-      <div class="simples-nome">${linhas.map((linha, indice) => `<span class="linha-${indice + 1}">${escHtml(linha.toUpperCase())}</span>`).join('')}</div>
+      <div class="simples-nome">${escHtml(nome.toUpperCase())}</div>
     `;
     wrap.appendChild(card);
   }
@@ -348,7 +347,7 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   if (!codigo) { alert('Preencha o código da gaiola.'); return; }
 
   const nomeFormatado = codigo;
-  const qrDataURL = await generateQRDataURL(qrText || `${codigo}-${numero}`, 500);
+  const qrDataURL = await generateQRDataURL(qrText || `${codigo}-${numero}`, 600);
 
   // Build print HTML - 3 plates per row, coordinates based on table:
   // Name X: 0.41, 3.74, 7.07 | Y: 1.62 (from sheet top), H: 0.30, 14pt
@@ -360,12 +359,12 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   const COL_X_QR   = [0.37, 3.70, 7.03];   // in
 
   // Stripe positions (slightly above name, below posto)
-  const STRIPE_TOP_Y = 0.35;
-  const NAME_Y       = 0.95;
-  const QR_Y         = 2.00;
-  const POSTO_Y      = 5.55;
-  const STRIPE_BOT_Y = 7.45;
-  const SHOPEE_Y     = 0.75;
+  const STRIPE_TOP_Y = 1.42;
+  const NAME_Y       = 1.62;
+  const QR_Y         = 1.85;
+  const POSTO_Y      = 4.25;
+  const STRIPE_BOT_Y = 4.60;
+  const SHOPEE_Y     = 1.42;
 
   const ROW_HEIGHT   = 5.2;    // in — vertical gap between rows
 
@@ -440,7 +439,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   if (!codigo) { alert('Preencha o número de saída.'); return; }
 
   const nomeFormatado = `OUT-${codigo.padStart(3, '0')}`;
-  const qrDataURL = await generateQRDataURL(qrText || nomeFormatado, 800);
+  const qrDataURL = await generateQRDataURL(qrText || nomeFormatado, 600);
 
   // Measurements from table (landscape letter: 11×8.5in):
   // Nome: X=0.73, Y=2.31, W=4.54, H=0.85, font 48pt
@@ -462,15 +461,15 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div style="position:absolute;right:0.25in;top:${7.65 + offsetY}in;width:4.0in;height:0.30in;
         background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:1.45in;top:${3.55 + offsetY}in;width:3.7in;height:0.85in;
+      <div style="position:absolute;left:0.73in;top:${2.31 + offsetY}in;width:4.54in;height:0.85in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
-        display:flex;align-items:center;justify-content:flex-start;">
+        display:flex;align-items:center;justify-content:center;text-align:center;">
         ${escHtml(nomeFormatado)}
       </div>
       <!-- QR -->
-      <div style="position:absolute;left:6.05in;top:${2.25 + offsetY}in;width:3.5in;height:3.5in;
+      <div style="position:absolute;left:5.14in;top:${1.01 + offsetY}in;width:4.05in;height:3.60in;
         display:flex;align-items:center;justify-content:center;">
-        ${qrDataURL ? `<img src="${qrDataURL}" style="width:3.5in;height:3.5in;" />` : ''}
+        ${qrDataURL ? `<img src="${qrDataURL}" style="width:4.05in;height:3.60in;object-fit:contain;" />` : ''}
       </div>
     `;
   }
@@ -489,7 +488,6 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 document.getElementById('print-nome').addEventListener('click', () => {
   const nome = document.getElementById('nome-texto').value.trim();
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 20);
-  const linhas = nome.split('/').map(v => v.trim()).filter(Boolean).slice(0, 3);
 
   if (!nome) { alert('Preencha o nome.'); return; }
 
@@ -512,10 +510,10 @@ document.getElementById('print-nome').addEventListener('click', () => {
       <div style="position:absolute;right:0.28in;top:${7.56 + offsetY}in;width:4.25in;height:0.72in;
         background:repeating-linear-gradient(135deg,#000 0,#000 0.34in,#fff 0.34in,#fff 0.68in);"></div>
       <!-- Nome -->
-      <div style="position:absolute;left:0.9in;top:${1.0 + offsetY}in;width:9.2in;height:6.4in;
-        font-weight:900;font-family:Arial,sans-serif;line-height:1;display:flex;flex-direction:column;
-        gap:0.35in;align-items:center;justify-content:center;text-transform:uppercase;">
-        ${linhas.map((linha, indice) => `<div style="font-size:${indice === 1 ? 74 : 64}pt;${indice === 1 ? 'border:1px solid #999;width:88%;padding:0.35in 0;text-align:center;' : ''}">${escHtml(linha.toUpperCase())}</div>`).join('')}
+      <div style="position:absolute;left:1.32in;top:${1.83 + offsetY}in;width:7.30in;height:1.57in;
+        font-size:80pt;font-weight:900;font-family:Calibri,Arial,sans-serif;line-height:1;
+        display:flex;align-items:center;justify-content:center;text-align:center;text-transform:uppercase;">
+        ${escHtml(nome.toUpperCase())}
       </div>
     `;
   }

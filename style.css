@@ -1003,6 +1003,7 @@ body {
   justify-content: center;
   gap: 7px;
   line-height: 1;
+  font-size: 58px;
 }
 .preview-simples .simples-nome span { font-size: 25px; }
 .preview-simples .simples-nome .linha-2 {
@@ -1134,8 +1135,7 @@ body {
 .preview-simples .simples-stripe-tl { top:18px; left:18px; width:280px; height:34px; }
 .preview-simples .simples-stripe-br { bottom:18px; right:18px; width:280px; height:34px; }
 .preview-simples .simples-nome { inset:65px 55px; gap:13px; }
-.preview-simples .simples-nome span { font-size:46px; }
-.preview-simples .simples-nome .linha-2 { padding:15px 0; font-size:54px; }
+.preview-simples .simples-nome span { font-size:58px; }
 
 .preview-gaiola { width:min(100%, 600px); font-size:12px; }
 .preview-gaiola .gaiola-header-bar { padding:18px 24px; gap:20px; }
