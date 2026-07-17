@@ -202,9 +202,6 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   div.innerHTML = `
     <div class="ws-stripe ws-stripe-top"></div>
     <div class="ws-body">
-      <div class="ws-shopee">
-        ${shopeeLogoMarkup()}
-      </div>
       <div class="ws-name">${escHtml(codigo)}</div>
       <div class="ws-num">${preenchida ? escHtml(numero) : ''}</div>
       <div class="ws-qr"></div>
@@ -215,17 +212,6 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   return div;
 }
 
-function shopeeLogoMarkup() {
-  return `<span class="shopee-logo" aria-label="Shopee">
-    <svg class="shopee-bag" viewBox="0 0 40 46" aria-hidden="true">
-      <path d="M10 14V11C10 5.5 14.5 1 20 1s10 4.5 10 10v3" fill="none" stroke="currentColor" stroke-width="3"/>
-      <path d="M3 13h34v31H3z" fill="currentColor"/>
-      <text x="20" y="36" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="25" font-weight="700">S</text>
-    </svg>
-    <span class="shopee-word">Shopee</span>
-  </span>`;
-}
-
 function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
   const paginas = [];
   for (let inicio = 0; inicio < quantidade; inicio += 3) {
@@ -234,9 +220,8 @@ function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
       return `<div style="height:5.2in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
         <div style="width:60%;height:.32in;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
-          <div style="position:absolute;right:.12in;top:.04in;">${shopeeLogoMarkup()}</div>
-          <div style="font-size:20pt;font-weight:700;padding-top:.15in;">${escHtml(codigo)}</div>
-          <div style="font-size:14pt;font-weight:700;margin-top:.30in;height:.25in;">${preenchida ? escHtml(numero) : ''}</div>
+          <div style="font-size:20pt;font-weight:700;padding-top:.15in;text-align:center;">${escHtml(codigo)}</div>
+          <div style="font-size:14pt;font-weight:700;margin-top:.22in;height:.25in;text-align:center;">${preenchida ? escHtml(numero) : ''}</div>
           <div style="height:2.35in;margin-top:.06in;display:flex;align-items:center;justify-content:center;">
             ${preenchida && qrDataURL ? `<img src="${qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
@@ -439,11 +424,6 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
         <!-- Stripe top -->
         <div style="position:absolute;left:${xq}in;top:${STRIPE_TOP_Y + offsetY}in;width:2.57in;height:0.30in;
           background:repeating-linear-gradient(135deg,#000 0 0.18in,#fff 0.18in 0.36in);"></div>
-        <!-- Shopee logo top-right -->
-        <div style="position:absolute;left:${xn + 1.6}in;top:${SHOPEE_Y + offsetY}in;
-          font-size:8pt;font-weight:700;font-family:Inter,sans-serif;display:flex;align-items:center;gap:3px;">
-          <span style="width:18px;height:20px;background:#000;color:#fff;display:grid;place-items:center;font-size:10px;">S</span> Shopee
-        </div>
         <!-- Name -->
         <div style="position:absolute;left:${xn}in;top:${NAME_Y + offsetY}in;width:2.42in;height:0.30in;
           font-size:14pt;font-weight:800;font-family:Inter,sans-serif;

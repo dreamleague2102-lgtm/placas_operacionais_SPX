@@ -885,37 +885,20 @@ body {
   position: relative;
   flex: 1;
 }
-.preview-ws .ws-shopee {
-  position: absolute;
-  right: 8px;
-  top: 7px;
-  font-size: 7px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-}
-.shopee-logo {
-  color: #050505;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-  font-family: Arial, sans-serif;
-  line-height: 1;
-}
-.shopee-bag { width: 22px; height: 25px; overflow: visible; flex: none; }
-.shopee-word { font-size: 12px; font-weight: 600; letter-spacing: -.25px; }
 .preview-ws .ws-name {
   font-size: 11px;
   font-weight: 800;
   text-align: center;
   word-break: break-all;
   margin-top: 2px;
+  width: 100%;
+  line-height: 1.15;
 }
 .preview-ws .ws-num {
   font-size: 9px;
   font-weight: 600;
   text-align: center;
+  width: 100%;
 }
 .preview-ws .ws-qr {
   width: 80px;
@@ -927,6 +910,7 @@ body {
   font-size: 9px;
   font-weight: 700;
   text-align: center;
+  width: 100%;
   margin-top: 10px;
   margin-bottom: 8px;
 }
@@ -1150,8 +1134,6 @@ body {
 .preview-ws { width: 210px; min-height: 430px; }
 .preview-ws .ws-stripe { height: 16px; }
 .preview-ws .ws-body { padding: 12px; gap: 9px; }
-.preview-ws .ws-shopee .shopee-bag { width: 23px; height: 27px; }
-.preview-ws .ws-shopee .shopee-word { font-size: 12px; }
 .preview-ws .ws-name { font-size: 19px; }
 .preview-ws .ws-num, .preview-ws .ws-posto { font-size: 14px; }
 .preview-ws .ws-qr { width: 165px; height: 165px; }
