@@ -6,6 +6,8 @@
 // ===================== STATE =====================
 let currentType = 'shopee';
 let qrCache = {};  // cache de QR codes gerados
+let saidaLote = [];
+let nomeLote = [];
 
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
@@ -111,6 +113,62 @@ document.getElementById('saida-codigo').addEventListener('input', () => {
 document.getElementById('saida-qr').addEventListener('input', function() {
   this.dataset.manual = '1';
 });
+
+function renderLotes() {
+  const saidaLista = document.getElementById('saida-lista');
+  saidaLista.innerHTML = saidaLote.length ? saidaLote.map((item, index) => `
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.qtd} ${item.qtd === 1 ? 'cópia' : 'cópias'}</span></div>
+    <button type="button" data-remove-saida="${index}">Remover</button></div>`).join('')
+    : '<div class="batch-empty">A lista ainda está vazia.</div>';
+
+  const nomeLista = document.getElementById('nome-lista');
+  nomeLista.innerHTML = nomeLote.length ? nomeLote.map((item, index) => `
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.qtd} ${item.qtd === 1 ? 'cópia' : 'cópias'}</span></div>
+    <button type="button" data-remove-nome="${index}">Remover</button></div>`).join('')
+    : '<div class="batch-empty">A lista ainda está vazia.</div>';
+}
+
+document.getElementById('add-saida').addEventListener('click', () => {
+  const codigo = document.getElementById('saida-codigo').value.trim();
+  const qrText = document.getElementById('saida-qr').value.trim();
+  const qtd = Math.min(Math.max(parseInt(document.getElementById('saida-qtd').value) || 1, 1), 20);
+  if (!codigo) { alert('Preencha o número de saída.'); return; }
+  const nome = `OUT-${codigo.padStart(3, '0')}`;
+  saidaLote.push({ nome, qrText: qrText || nome, qtd });
+  renderLotes();
+  updatePreview();
+  document.getElementById('saida-codigo').value = '';
+  document.getElementById('saida-qr').value = '';
+  document.getElementById('saida-qr').dataset.manual = '';
+  document.getElementById('saida-qtd').value = '1';
+});
+
+document.getElementById('add-nome').addEventListener('click', () => {
+  const nome = document.getElementById('nome-texto').value.trim().toUpperCase();
+  const qtd = Math.min(Math.max(parseInt(document.getElementById('nome-qtd').value) || 1, 1), 20);
+  if (!nome) { alert('Preencha o nome da placa.'); return; }
+  nomeLote.push({ nome, qtd });
+  renderLotes();
+  updatePreview();
+  document.getElementById('nome-texto').value = '';
+  document.getElementById('nome-qtd').value = '1';
+});
+
+document.getElementById('saida-lista').addEventListener('click', event => {
+  const botao = event.target.closest('[data-remove-saida]');
+  if (!botao) return;
+  saidaLote.splice(Number(botao.dataset.removeSaida), 1);
+  renderLotes(); updatePreview();
+});
+
+document.getElementById('nome-lista').addEventListener('click', event => {
+  const botao = event.target.closest('[data-remove-nome]');
+  if (!botao) return;
+  nomeLote.splice(Number(botao.dataset.removeNome), 1);
+  renderLotes(); updatePreview();
+});
+
+renderLotes();
 
 // Force uppercase for nome
 document.getElementById('nome-texto').addEventListener('input', function() {
@@ -244,21 +302,24 @@ async function renderSaidaPreview(area) {
   const qrText = document.getElementById('saida-qr').value || `OUT-${codigo}`;
   const qtd = Math.min(parseInt(document.getElementById('saida-qtd').value) || 1, 3);
   const nomeFormatado = `OUT-${codigo.padStart(3, '0')}`;
+  const itens = saidaLote.length
+    ? saidaLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
+    : Array.from({ length: qtd }, () => ({ nome: nomeFormatado, qrText }));
 
   area.innerHTML = '';
   const wrap = document.createElement('div');
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
-  for (let i = 0; i < qtd; i++) {
+  for (const item of itens) {
     const card = document.createElement('div');
     card.className = 'preview-grande';
     card.innerHTML = `
       <div class="grande-stripe-tl"></div>
       <div class="grande-stripe-br"></div>
-      <div class="grande-nome">${escHtml(nomeFormatado)}</div>
+      <div class="grande-nome">${escHtml(item.nome)}</div>
       <div class="grande-qr"></div>
     `;
-    const qrCanvas = await generateQR(qrText, 260);
+    const qrCanvas = await generateQR(item.qrText, 260);
     if (qrCanvas) {
       const img = new Image();
       img.src = qrCanvas.toDataURL();
@@ -281,14 +342,17 @@ function quebrarTextoPlaca(valor) {
 
 function renderNomePreview(area) {
   const nome = document.getElementById('nome-texto').value || 'LETICIA';
-  const linhas = quebrarTextoPlaca(nome);
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
+  const itens = nomeLote.length
+    ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item.nome))
+    : Array.from({ length: qtd }, () => nome);
 
   area.innerHTML = '';
   const wrap = document.createElement('div');
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
-  for (let i = 0; i < qtd; i++) {
+  for (const itemNome of itens) {
+    const linhas = quebrarTextoPlaca(itemNome);
     const card = document.createElement('div');
     card.className = 'preview-simples';
     card.innerHTML = `
@@ -470,10 +534,10 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   const qrText = document.getElementById('saida-qr').value.trim();
   const qtd = Math.min(parseInt(document.getElementById('saida-qtd').value) || 1, 20);
 
-  if (!codigo) { alert('Preencha o número de saída.'); return; }
-
-  const nomeFormatado = `OUT-${codigo.padStart(3, '0')}`;
-  const qrDataURL = await generateQRDataURL(qrText || nomeFormatado, 600);
+  if (!saidaLote.length && !codigo) { alert('Adicione uma placa à lista ou preencha o número de saída.'); return; }
+  const atual = codigo ? { nome: `OUT-${codigo.padStart(3, '0')}`, qrText: qrText || `OUT-${codigo.padStart(3, '0')}`, qtd } : null;
+  const itens = (saidaLote.length ? saidaLote : [atual])
+    .flatMap(item => Array.from({ length: item.qtd }, () => item));
 
   // Measurements from table (landscape letter: 11×8.5in):
   // Nome: X=0.73, Y=2.31, W=4.54, H=0.85, font 48pt
@@ -482,7 +546,9 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   const PAGE_H = 8.5; // uma placa por página paisagem
   let pages = '';
 
-  for (let i = 0; i < qtd; i++) {
+  for (let i = 0; i < itens.length; i++) {
+    const item = itens[i];
+    const qrDataURL = await generateQRDataURL(item.qrText, 600);
     const offsetY = i * PAGE_H;
     pages += `
       <!-- Placa Grande ${i+1} -->
@@ -498,7 +564,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div style="position:absolute;left:0.73in;top:${2.31 + offsetY}in;width:4.54in;height:0.85in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
         display:flex;align-items:center;justify-content:center;text-align:center;">
-        ${escHtml(nomeFormatado)}
+        ${escHtml(item.nome)}
       </div>
       <!-- QR -->
       <div style="position:absolute;left:5.14in;top:${1.01 + offsetY}in;width:4.05in;height:3.60in;
@@ -509,7 +575,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   }
 
   const html = `
-    <div style="width:11in;min-height:${qtd * PAGE_H}in;position:relative;background:#fff;
+    <div style="width:11in;min-height:${itens.length * PAGE_H}in;position:relative;background:#fff;
       font-family:Inter,sans-serif;color:#000;">
       ${pages}
     </div>
@@ -523,9 +589,13 @@ document.getElementById('print-nome').addEventListener('click', () => {
   const nome = document.getElementById('nome-texto').value.trim();
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 20);
 
-  if (!nome) { alert('Preencha o nome.'); return; }
-  const linhas = quebrarTextoPlaca(nome);
-  const placa = () => `<section class="simple-print-page" style="width:11in;height:8.5in;padding:.22in;page-break-after:always;break-after:page;background:#fff;">
+  if (!nomeLote.length && !nome) { alert('Adicione um nome à lista ou preencha o nome.'); return; }
+  const itens = nomeLote.length
+    ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item.nome))
+    : Array.from({ length: qtd }, () => nome);
+  const placa = (nomePlaca) => {
+    const linhas = quebrarTextoPlaca(nomePlaca);
+    return `<section class="simple-print-page" style="width:11in;height:8.5in;padding:.22in;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
       <div style="position:absolute;left:0;top:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
       <div style="position:absolute;right:0;bottom:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
@@ -535,7 +605,8 @@ document.getElementById('print-nome').addEventListener('click', () => {
       </div>
     </div>
   </section>`;
-  triggerPrint(Array.from({length:qtd}, placa).join(''), 'landscape');
+  };
+  triggerPrint(itens.map(placa).join(''), 'landscape');
   return;
 
   // Measurements: Nome X=1.32, Y=1.83, W=7.30, H=1.57, font 80pt

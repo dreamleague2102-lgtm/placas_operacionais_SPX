@@ -418,6 +418,53 @@ body {
   line-height: 1;
 }
 
+.btn-add-plate {
+  width: 100%;
+  padding: .82rem 1rem;
+  border: 1px solid var(--spx-red);
+  border-radius: var(--radius-sm);
+  background: rgba(232,0,28,.08);
+  color: #fff;
+  font: 700 .88rem 'Inter', sans-serif;
+  cursor: pointer;
+}
+.btn-add-plate:hover { background: rgba(232,0,28,.18); }
+.plate-batch {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  max-height: 190px;
+  overflow-y: auto;
+}
+.batch-empty {
+  padding: .7rem;
+  border: 1px dashed var(--spx-border);
+  border-radius: var(--radius-sm);
+  color: var(--spx-muted);
+  font-size: .75rem;
+  text-align: center;
+}
+.batch-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .7rem;
+  padding: .62rem .7rem;
+  border: 1px solid var(--spx-border);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,.035);
+}
+.batch-item div { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.batch-item strong { font-size:.82rem; overflow:hidden; text-overflow:ellipsis; }
+.batch-item span { color:var(--spx-muted); font-size:.68rem; }
+.batch-item button {
+  border: 0;
+  background: transparent;
+  color: #ff7180;
+  font-size: .7rem;
+  cursor: pointer;
+}
+
 .btn-print {
   background: linear-gradient(135deg, var(--spx-red), #c0001a);
   color: #fff;

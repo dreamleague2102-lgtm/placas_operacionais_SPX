@@ -218,6 +218,8 @@
               <input class="field-input" type="number" id="saida-qtd" placeholder="1" min="1" max="20" value="1" />
               <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
             </div>
+            <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>
+            <div class="plate-batch" id="saida-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-saida">
               🖨️ Imprimir Placa de Saída
             </button>
@@ -239,6 +241,8 @@
               <input class="field-input" type="number" id="nome-qtd" placeholder="1" min="1" max="20" value="1" />
               <span class="field-hint">Quantas placas iguais imprimir (máx. 20)</span>
             </div>
+            <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
+            <div class="plate-batch" id="nome-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome">
               🖨️ Imprimir Placa de Nome
             </button>
