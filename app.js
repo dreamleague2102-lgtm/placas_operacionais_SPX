@@ -220,25 +220,25 @@ function buildWsPrintPages(codigo, numero, rodape, qrDataURL, quantidade) {
   for (let inicio = 0; inicio < quantidade; inicio += 3) {
     const etiquetas = [0, 1, 2].map(coluna => {
       const preenchida = inicio + coluna < quantidade;
-      return `<div style="height:7.8in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
-        <div style="width:58%;height:.32in;background:repeating-linear-gradient(135deg,#000 0 .18in,#fff .18in .36in);"></div>
+      return `<div style="height:5.2in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
+        <div style="width:60%;height:.32in;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
           <div style="position:absolute;right:.14in;top:.06in;display:flex;align-items:center;gap:4px;font-size:13pt;">
             <span style="width:.26in;height:.30in;background:#000;color:#fff;display:grid;place-items:center;font-size:10pt;">S</span>Shopee
           </div>
           <div style="font-size:20pt;font-weight:700;padding-top:.15in;">${escHtml(codigo)}</div>
           <div style="font-size:14pt;font-weight:700;margin-top:.30in;height:.25in;">${preenchida ? escHtml(numero) : ''}</div>
-          <div style="height:2.75in;margin-top:.08in;display:flex;align-items:center;justify-content:center;">
-            ${preenchida && qrDataURL ? `<img src="${qrDataURL}" style="width:2.57in;height:2.57in;display:block;" />` : ''}
+          <div style="height:2.35in;margin-top:.06in;display:flex;align-items:center;justify-content:center;">
+            ${preenchida && qrDataURL ? `<img src="${qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
-          <div style="font-size:14pt;font-weight:700;margin-top:.15in;">${preenchida ? escHtml(rodape) : ''}</div>
+          <div style="position:absolute;left:0;right:0;bottom:.10in;font-size:14pt;font-weight:700;">${preenchida ? escHtml(rodape) : ''}</div>
         </div>
-        <div style="width:58%;height:.32in;margin-left:42%;background:repeating-linear-gradient(135deg,#000 0 .18in,#fff .18in .36in);"></div>
+        <div style="width:60%;height:.32in;margin-left:40%;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
       </div>`;
     }).join('');
 
     paginas.push(`<section class="ws-print-page" style="width:11in;height:8.5in;padding:.35in .45in;display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));gap:.22in;background:#fff;
+      grid-template-columns:repeat(3,minmax(0,1fr));gap:.22in;background:#fff;align-items:start;
       break-after:page;page-break-after:always;overflow:hidden;">${etiquetas}</section>`);
   }
   return paginas.join('');
