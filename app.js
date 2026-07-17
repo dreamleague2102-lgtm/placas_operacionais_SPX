@@ -36,7 +36,7 @@ function switchType(type) {
   // Update form header
   const icons = { shopee: '🛒', saida: '📤', nome: '👤', gaiola: '📦' };
   const titles = {
-    shopee: 'Placa Shopee / Gaiola',
+    shopee: 'Workstation SPX',
     saida: 'Placas com QR Codes',
     nome: 'Placa de Nome',
     gaiola: 'QR Gaiola SPX'
