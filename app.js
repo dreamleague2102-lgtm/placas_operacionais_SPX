@@ -699,84 +699,52 @@ document.getElementById('print-gaiola').addEventListener('click', async () => {
   }
 
   const pagesHtml = pages.map(({ cg, url }) => `
-    <div style="width:8.5in;min-height:10.5in;position:relative;background:#fff;
-      font-family:Inter,sans-serif;color:#000;padding:0.5in;
-      page-break-after:always;box-sizing:border-box;">
+    <section class="gaiola-print-page" style="width:8.48in;height:10.98in;position:relative;overflow:hidden;background:#fff;
+      font-family:Arial,Inter,sans-serif;color:#000;page-break-after:always;break-after:page;">
+      <div style="height:1.48in;background:#d3d3d3;display:flex;align-items:center;padding:0 .48in;gap:.75in;position:relative;overflow:hidden;">
+        <div style="font:italic 900 39pt/1 Arial,sans-serif;letter-spacing:-3px;position:relative;">SPX
+          <span style="display:block;font:700 6pt Arial;letter-spacing:0;text-align:right;">EXPRESS</span>
+        </div>
+        <div style="font-size:30pt;font-weight:900;">QR Code Shopee</div>
+        <div style="position:absolute;left:-5%;right:-5%;bottom:-.01in;height:.25in;background:#fff;border-radius:50% 50% 0 0/100% 100% 0 0;"></div>
+      </div>
 
-      <!-- Header -->
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;
-        padding-bottom:8px;border-bottom:2px solid #eee;">
-        <div style="background:#000;color:#fff;font-size:20pt;font-weight:900;
-          padding:4px 10px;border-radius:4px;letter-spacing:-1px;">SPX</div>
+      <div style="margin:0 .28in;border-top:1px solid #aaa;border-bottom:1px solid #aaa;height:.90in;
+        display:flex;align-items:center;justify-content:center;font-size:20pt;">Favor não remover.</div>
+
+      <div style="height:7.72in;padding:0 .20in;display:grid;grid-template-columns:3.25in 1fr;gap:.30in;">
         <div>
-          <div style="font-size:18pt;font-weight:900;">QR Code de Gaiolas</div>
-          <div style="font-size:9pt;color:#555;">Gestão de Gaiolas — SPX Express</div>
-        </div>
-      </div>
-
-      <!-- Main body -->
-      <div style="display:flex;gap:0.4in;">
-
-        <!-- Instructions -->
-        <div style="flex:1;">
-          <div style="font-size:11pt;font-weight:700;background:#eee;padding:4px 8px;
-            border-radius:3px;margin-bottom:8px;">O que fazer se:</div>
-          <ul style="padding-left:16px;margin-bottom:16px;">
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Essa gaiola estiver ocupada sistemicamente? <b>Informe o CG ao COP.</b>
-            </li>
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Se você encontrar essa placa no chão? <b>Leve ao COP.</b>
-            </li>
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Se o <b>QR code</b> estiver rasgado, manchado ou rasurado? 
-              <b>Informe o CG ou leve a gaiola ao COP.</b>
-            </li>
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Se o <b>QR code</b> apresentar erro na leitura? <b>Informe o CG ao COP.</b>
-            </li>
+          <div style="background:#d9d9d9;border-radius:4px;padding:.12in .14in;font-size:13pt;font-weight:700;margin-bottom:.16in;">O que fazer se:</div>
+          <ul style="padding-left:.22in;margin:0 0 .55in;">
+            <li style="font-size:10pt;line-height:1.55;margin-bottom:.15in;">Essa gaiola estiver ocupada sistemicamente? Informe o CG ao COP.</li>
+            <li style="font-size:10pt;line-height:1.55;margin-bottom:.15in;">Se você encontrar essa placa no chão? Leve ao COP.</li>
+            <li style="font-size:10pt;line-height:1.55;margin-bottom:.15in;">Se o <b>QR code</b> estiver rasgado, manchado ou rasurado? Informe o CG ou leve a gaiola ao COP.</li>
+            <li style="font-size:10pt;line-height:1.55;">Se o <b>QR code</b> apresentar erro na leitura? Informe o CG ao COP.</li>
           </ul>
-
-          <div style="font-size:11pt;font-weight:700;background:#eee;padding:4px 8px;
-            border-radius:3px;margin-bottom:8px;">Orientações:</div>
-          <ul style="padding-left:16px;">
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Não imprima essa etiqueta por conta própria, essa ação pode gerar duplicidade.
-            </li>
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Não cole nada sobre essa placa.
-            </li>
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Não arranque essa placa em nenhuma hipótese, ela está vinculada exclusivamente a essa gaiola.
-            </li>
-            <li style="font-size:9pt;line-height:1.7;margin-bottom:2px;">
-              Cuidado ao transportar essa gaiola.
-            </li>
+          <div style="background:#d9d9d9;border-radius:4px;padding:.12in .14in;font-size:13pt;font-weight:700;margin-bottom:.16in;">Orientações:</div>
+          <ul style="padding-left:.22in;margin:0;">
+            <li style="font-size:10pt;line-height:1.55;margin-bottom:.15in;">Não imprima essa etiqueta por conta própria, essa ação pode gerar duplicidade.</li>
+            <li style="font-size:10pt;line-height:1.55;margin-bottom:.15in;">Não cole nada sobre essa placa.</li>
+            <li style="font-size:10pt;line-height:1.55;margin-bottom:.15in;">Não arranque essa placa em nenhuma hipótese, ela está vinculada exclusivamente a essa gaiola.</li>
+            <li style="font-size:10pt;line-height:1.55;">Cuidado ao transportar essa gaiola.</li>
           </ul>
         </div>
 
-        <!-- QR Section -->
-        <div style="width:3.8in;display:flex;flex-direction:column;align-items:center;gap:8px;">
-          <div style="font-size:9pt;color:#555;text-align:center;">
-            Não cole nada acima do QR code.
-          </div>
-          <div style="border:2px solid #000;padding:12px;display:flex;flex-direction:column;
-            align-items:center;gap:8px;width:3.5in;">
-            <div style="font-size:28pt;font-weight:900;text-align:center;">${cg}</div>
-            ${url ? `<img src="${url}" style="width:3.0in;height:3.0in;" />` : ''}
+        <div style="padding-top:.82in;display:flex;flex-direction:column;align-items:center;">
+          <div style="font-size:10pt;text-align:center;margin-bottom:.08in;">Não cole nada acima do QR code.</div>
+          <div style="width:3.72in;height:5.05in;border:1.5px solid #777;border-radius:4px;display:flex;
+            flex-direction:column;align-items:center;padding-top:.65in;gap:.38in;">
+            <div style="font-size:36pt;font-weight:900;line-height:1;">${cg}</div>
+            ${url ? `<img src="${url}" style="width:2.85in;height:2.85in;display:block;" />` : ''}
           </div>
         </div>
-
       </div>
 
-      <!-- Footer -->
-      <div style="position:absolute;bottom:0.3in;left:0.5in;right:0.5in;
-        text-align:center;background:#eee;font-size:11pt;font-weight:700;padding:8px;
-        border-radius:3px;">
+      <div style="position:absolute;left:0;right:0;bottom:0;height:.55in;background:#d3d3d3;
+        display:flex;align-items:center;justify-content:center;font-size:14pt;font-weight:700;">
         Lembre-se: Segurança em primeiro lugar.
       </div>
-
-    </div>
+    </section>
   `).join('');
 
   triggerPrint(pagesHtml, 'portrait');
@@ -806,10 +774,10 @@ function triggerPrint(contentHtml, orientation = 'portrait') {
       font-family:Inter,sans-serif; margin-right:8px;
     }
     @media print { .no-print { display:none; } }
-    .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child {
+    .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child, .gaiola-print-page:last-child {
       page-break-after:auto !important; break-after:auto !important;
     }
-    .out-print-page, .simple-print-page { break-inside:avoid; page-break-inside:avoid; }
+    .out-print-page, .simple-print-page, .gaiola-print-page { break-inside:avoid; page-break-inside:avoid; }
   </style>
 </head>
 <body>
