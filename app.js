@@ -192,8 +192,15 @@ function renderLotes() {
 
   const nomeDuploLista = document.getElementById('nome-duplo-lista');
   nomeDuploLista.innerHTML = nomeDuploLote.length ? nomeDuploLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>Fonte: ${item.fonteAuto ? 'automática' : `${item.fonte} pt`}</span></div>
-    <button type="button" data-remove-nome-duplo="${index}">Remover</button></div>`).join('')
+    <div class="batch-item nome-duplo-item">
+      <div><strong>Placa ${index + 1} · ${index % 2 === 0 ? 'superior' : 'inferior'}</strong><span>${escHtml(item.nome)}</span></div>
+      <div class="batch-font-controls">
+        <label><input type="checkbox" data-nome-duplo-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
+        <input type="number" min="6" max="96" value="${item.fonte}" data-nome-duplo-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}">
+        <span>pt</span>
+        <button type="button" data-remove-nome-duplo="${index}">Remover</button>
+      </div>
+    </div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 }
 
@@ -281,6 +288,17 @@ document.getElementById('nome-duplo-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-nome-duplo]');
   if (!botao) return;
   nomeDuploLote.splice(Number(botao.dataset.removeNomeDuplo), 1);
+  renderLotes(); updatePreview();
+});
+
+document.getElementById('nome-duplo-lista').addEventListener('change', event => {
+  const auto = event.target.closest('[data-nome-duplo-auto]');
+  const fonte = event.target.closest('[data-nome-duplo-fonte]');
+  if (auto) {
+    nomeDuploLote[Number(auto.dataset.nomeDuploAuto)].fonteAuto = auto.checked;
+  } else if (fonte) {
+    nomeDuploLote[Number(fonte.dataset.nomeDuploFonte)].fonte = parseInt(fonte.value) || 70;
+  } else return;
   renderLotes(); updatePreview();
 });
 
