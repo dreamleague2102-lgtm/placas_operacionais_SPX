@@ -633,11 +633,11 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div style="position:absolute;left:0.22in;top:0.22in;width:10.54in;height:8.04in;
         border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div style="position:absolute;left:0.45in;top:0.45in;width:4.0in;height:0.30in;
-        background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
+      <div style="position:absolute;left:0.30in;top:0.30in;width:4.0in;height:0.30in;
+        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <!-- Stripe bottom-right -->
-      <div style="position:absolute;right:0.25in;bottom:0.55in;width:4.0in;height:0.30in;
-        background:repeating-linear-gradient(135deg,#000 0 0.34in,#fff 0.34in 0.68in);"></div>
+      <div style="position:absolute;right:0.30in;bottom:0.30in;width:4.0in;height:0.30in;
+        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <!-- Nome OUT -->
       <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:1.05in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
@@ -669,8 +669,8 @@ document.getElementById('print-nome').addEventListener('click', () => {
     const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
     return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
-      <div style="position:absolute;left:0;top:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
-      <div style="position:absolute;right:0;bottom:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
+      <div style="position:absolute;left:.08in;top:.08in;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div style="position:absolute;right:.08in;bottom:.08in;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <div style="position:absolute;inset:1.45in .9in;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font:700 ${fonte}pt/1.08 Calibri,Arial,sans-serif;text-align:center;color:#000;">
         ${linhas.map(linha => `<div>${escHtml(linha)}</div>`).join('')}
@@ -695,10 +695,10 @@ document.getElementById('print-nome').addEventListener('click', () => {
         border:1.5px solid #555;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
       <div style="position:absolute;left:0.28in;top:${0.22 + offsetY}in;width:4.25in;height:0.72in;
-        background:repeating-linear-gradient(135deg,#000 0,#000 0.34in,#fff 0.34in,#fff 0.68in);"></div>
+        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <!-- Stripe bottom-right -->
       <div style="position:absolute;right:0.28in;top:${7.56 + offsetY}in;width:4.25in;height:0.72in;
-        background:repeating-linear-gradient(135deg,#000 0,#000 0.34in,#fff 0.34in,#fff 0.68in);"></div>
+        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <!-- Nome -->
       <div style="position:absolute;left:1.32in;top:${1.83 + offsetY}in;width:7.30in;height:1.57in;
         font-size:80pt;font-weight:900;font-family:Calibri,Arial,sans-serif;line-height:1;
