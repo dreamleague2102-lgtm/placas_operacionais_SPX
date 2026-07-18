@@ -865,17 +865,17 @@ document.getElementById('print-gaiola-qr').addEventListener('click', async () =>
     </section>
   `).join('');
 
-  triggerPrint(pagesHtml, 'portrait');
+  triggerPrint(pagesHtml, 'portrait', 'QR Codes CG');
 });
 
 // ===================== PRINT TRIGGER =====================
-function triggerPrint(contentHtml, orientation = 'portrait') {
+function triggerPrint(contentHtml, orientation = 'portrait', documentTitle = 'Impressão de Placas') {
   const win = window.open('', '_blank', 'width=900,height=700');
   win.document.write(`<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
-  <title>SPX Express — Impressão de Placas</title>
+  <title>SPX Express — ${documentTitle}</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -900,7 +900,8 @@ function triggerPrint(contentHtml, orientation = 'portrait') {
 </head>
 <body>
   <div class="no-print">
-    <button onclick="window.print()">🖨️ Imprimir agora</button>
+    <button onclick="window.print()">📄 Salvar como PDF</button>
+    <span style="margin-left:10px;color:#bbb;font-size:12px;">Na tela de impressão, selecione “Salvar como PDF”.</span>
     <button onclick="window.close()" style="background:#333;">✕ Fechar</button>
   </div>
   ${contentHtml}
