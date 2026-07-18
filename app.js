@@ -89,9 +89,19 @@ addListener('nome-tamanho', () => {
 document.getElementById('nome-tamanho-auto').addEventListener('change', function() {
   const controle = document.getElementById('nome-tamanho');
   controle.disabled = this.checked;
+  document.getElementById('nome-tamanho-menor').disabled = this.checked;
+  document.getElementById('nome-tamanho-maior').disabled = this.checked;
   document.getElementById('nome-tamanho-valor').textContent = this.checked ? 'Automático' : `${controle.value} pt`;
   updatePreview();
 });
+
+function alterarTamanhoNome(delta) {
+  const controle = document.getElementById('nome-tamanho');
+  controle.value = Math.min(96, Math.max(6, (parseInt(controle.value) || 70) + delta));
+  controle.dispatchEvent(new Event('input', { bubbles:true }));
+}
+document.getElementById('nome-tamanho-menor').addEventListener('click', () => alterarTamanhoNome(-1));
+document.getElementById('nome-tamanho-maior').addEventListener('click', () => alterarTamanhoNome(1));
 
 // Gaiola
 addListener('gaiola-inicio', () => { updateGaiolaTotal(); updatePreview(); });
@@ -410,7 +420,7 @@ function tamanhoFonteNomeSelecionado(linhas, configuracao = null) {
   const automatico = configuracao ? configuracao.fonteAuto : (document.getElementById('nome-tamanho-auto')?.checked ?? true);
   if (automatico) return tamanhoFonteNome(linhas);
   const valor = configuracao ? configuracao.fonte : document.getElementById('nome-tamanho').value;
-  return Math.min(70, Math.max(28, parseInt(valor) || 70));
+  return Math.min(96, Math.max(6, parseInt(valor) || 70));
 }
 
 function renderNomePreview(area) {

@@ -465,8 +465,59 @@ body {
   font-size:.68rem;
   font-weight:700;
 }
-#nome-tamanho { width:100%; accent-color:var(--spx-red); cursor:pointer; }
-#nome-tamanho:disabled { opacity:.35; cursor:not-allowed; }
+.font-toolbar {
+  display:flex;
+  align-items:center;
+  align-self:flex-start;
+  height:36px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:6px;
+  background:#151519;
+}
+.font-family-display {
+  min-width:105px;
+  padding:0 .7rem;
+  color:#fff;
+  font:500 .78rem Calibri,Arial,sans-serif;
+  border-right:1px solid rgba(255,255,255,.12);
+}
+.font-toolbar button {
+  width:32px;
+  height:100%;
+  border:0;
+  background:transparent;
+  color:#ddd;
+  font-size:1rem;
+  cursor:pointer;
+}
+.font-toolbar button:hover:not(:disabled) { background:rgba(255,255,255,.08); color:#fff; }
+.font-toolbar button:disabled { opacity:.3; cursor:not-allowed; }
+#nome-tamanho {
+  width:48px;
+  height:28px;
+  border:1px solid #6ea5ff;
+  border-radius:3px;
+  background:#0d0d10;
+  color:#fff;
+  text-align:center;
+  font-size:.78rem;
+  outline:none;
+  appearance:textfield;
+}
+#nome-tamanho::-webkit-inner-spin-button { appearance:none; }
+#nome-tamanho:disabled { opacity:.35; border-color:rgba(255,255,255,.15); }
+.font-bold-display {
+  width:34px;
+  height:28px;
+  margin-right:4px;
+  border-radius:4px;
+  background:#d8e6ff;
+  color:#17498f;
+  display:grid;
+  place-items:center;
+  font:bold .85rem Arial,sans-serif;
+}
 .auto-font-option {
   display:flex;
   align-items:center;
