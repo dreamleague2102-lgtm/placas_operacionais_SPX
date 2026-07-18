@@ -204,7 +204,7 @@ body {
 
 .type-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1.35rem;
 }
 
@@ -364,6 +364,17 @@ body {
 .nome-mini .mini-body { background: #fff; min-height: 60px; }
 .saida-mini { display: flex; flex-direction: column; }
 .gaiola-mini { display: flex; flex-direction: column; }
+.qr-simples-mini {
+  min-height:100px;
+  border:1px solid #888;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+}
+.mini-aviso { font-size:.38rem; font-weight:500; }
 
 /* ===================== MAIN PANEL ===================== */
 .main-panel {
@@ -615,6 +626,7 @@ body {
   box-shadow: 0 6px 24px rgba(232,0,28,0.45);
 }
 .btn-print:active { transform: translateY(0); }
+
 
 /* PREVIEW PANEL */
 .preview-panel {

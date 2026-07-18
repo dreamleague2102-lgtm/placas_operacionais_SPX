@@ -138,6 +138,21 @@
           </div>
         </button>
 
+        <button class="type-card" data-type="qr-simples" id="btn-qr-simples">
+          <div class="type-card-icon">🔲</div>
+          <div class="type-card-info">
+            <h3>QR Code + Número</h3>
+            <p>Etiqueta simples com o número CG e o QR Code, sem instruções</p>
+          </div>
+          <div class="type-card-preview">
+            <div class="mini-plate qr-simples-mini">
+              <div class="mini-aviso">Não cole nada acima do QR code.</div>
+              <div class="mini-cg">CG-ID</div>
+              <div class="mini-qr large">▦</div>
+            </div>
+          </div>
+        </button>
+
       </div>
     </div>
   </section>
@@ -287,6 +302,26 @@
             <button class="btn-print" id="print-gaiola">
               🖨️ Imprimir Placas de Gaiola
             </button>
+          </div>
+
+          <!-- QR SIMPLES FORM -->
+          <div class="plate-form" id="form-qr-simples">
+            <div class="form-guide"><strong>Como fazer:</strong> informe o primeiro e o último ID. O sistema criará uma etiqueta simples para cada CG.</div>
+            <div class="field-group">
+              <label class="field-label" for="qr-simples-inicio"><span class="field-icon">🔢</span> Número CG Inicial</label>
+              <input class="field-input" type="number" id="qr-simples-inicio" placeholder="ID inicial" min="1" />
+              <span class="field-hint">Primeiro ID que será gerado no formato CG-ID.</span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="qr-simples-fim"><span class="field-icon">🔢</span> Número CG Final</label>
+              <input class="field-input" type="number" id="qr-simples-fim" placeholder="ID final" min="1" />
+              <span class="field-hint">Último ID do intervalo de etiquetas.</span>
+            </div>
+            <div class="field-group total-display">
+              <span><span class="total-label">Total de etiquetas</span><small class="total-range" id="qrSimplesIntervalo">Informe os IDs inicial e final</small></span>
+              <span class="total-count" id="qrSimplesTotal">0</span>
+            </div>
+            <button class="btn-print" id="print-gaiola-qr">Imprimir QR Code + número</button>
           </div>
 
         </div>

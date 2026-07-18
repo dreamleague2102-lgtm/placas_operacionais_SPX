@@ -36,18 +36,20 @@ function switchType(type) {
   document.getElementById(`form-${type}`).classList.add('active');
 
   // Update form header
-  const icons = { shopee: '🛒', saida: '📤', nome: '👤', gaiola: '📦' };
+  const icons = { shopee: '🛒', saida: '📤', nome: '👤', gaiola: '📦', 'qr-simples': '🔲' };
   const titles = {
     shopee: 'Workstation SPX',
     saida: 'Placas com QR Codes',
     nome: 'Placa de Nome',
-    gaiola: 'Parâmetros de Impressão'
+    gaiola: 'Parâmetros de Impressão',
+    'qr-simples': 'QR Code + Número'
   };
   const subs = {
     shopee: 'Preencha os campos abaixo',
     saida: 'Crie uma lista de placas com identificação e QR Code',
     nome: 'Nome grande em destaque com listras',
-    gaiola: 'Defina o intervalo de gaiolas SPX'
+    gaiola: 'Defina o intervalo de gaiolas SPX',
+    'qr-simples': 'Gere somente o número CG e o QR Code'
   };
 
   document.getElementById('formIcon').textContent = icons[type];
@@ -106,6 +108,8 @@ document.getElementById('nome-tamanho-maior').addEventListener('click', () => al
 // Gaiola
 addListener('gaiola-inicio', () => { updateGaiolaTotal(); updatePreview(); });
 addListener('gaiola-fim', () => { updateGaiolaTotal(); updatePreview(); });
+addListener('qr-simples-inicio', () => { updateQrSimplesTotal(); updatePreview(); });
+addListener('qr-simples-fim', () => { updateQrSimplesTotal(); updatePreview(); });
 
 // Auto-fill QR content from code
 document.getElementById('shopee-codigo').addEventListener('input', () => {
@@ -248,6 +252,14 @@ function updateGaiolaTotal() {
   if (intervalo) intervalo.textContent = total ? `CG${ini} → CG${fim}` : 'Informe os IDs inicial e final';
 }
 
+function updateQrSimplesTotal() {
+  const ini = parseInt(document.getElementById('qr-simples-inicio').value) || 0;
+  const fim = parseInt(document.getElementById('qr-simples-fim').value) || 0;
+  const total = fim >= ini && ini > 0 ? fim - ini + 1 : 0;
+  document.getElementById('qrSimplesTotal').textContent = total;
+  document.getElementById('qrSimplesIntervalo').textContent = total ? `CG${ini} → CG${fim}` : 'Informe os IDs inicial e final';
+}
+
 // ===================== QR CODE GENERATOR =====================
 async function generateQR(text, size = 256) {
   const key = `${text}__${size}`;
@@ -285,6 +297,7 @@ async function updatePreview() {
     else if (currentType === 'saida') await renderSaidaPreview(area);
     else if (currentType === 'nome') renderNomePreview(area);
     else if (currentType === 'gaiola') await renderGaiolaPreview(area);
+    else if (currentType === 'qr-simples') await renderQrSimplesPreview(area);
   } catch (e) {
     area.innerHTML = `<div style="color:#e8001c;font-size:0.85rem;margin:auto;align-self:center;">⚠ Erro ao gerar preview: ${e.message}</div>`;
   }
@@ -510,6 +523,33 @@ async function renderGaiolaPreview(area) {
 
   area.appendChild(card);
   area.appendChild(note);
+}
+
+// ---- QR CODE + NUMERO ----
+async function renderQrSimplesPreview(area) {
+  const ini = parseInt(document.getElementById('qr-simples-inicio').value) || 0;
+  const fim = parseInt(document.getElementById('qr-simples-fim').value) || 0;
+  const total = fim >= ini && ini > 0 ? fim - ini + 1 : 0;
+  const cg = total ? `CG${ini}` : 'CG-ID';
+  const qrCanvas = await generateQR(cg, 260);
+
+  area.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'width:min(100%,390px);margin:auto;color:#000;font-family:Arial,sans-serif;';
+  wrap.innerHTML = `
+    <div style="font-size:12px;text-align:center;margin-bottom:5px;">Não cole nada acima do QR code.</div>
+    <div style="height:540px;border:1.5px solid #777;border-radius:5px;background:#fff;display:flex;
+      flex-direction:column;align-items:center;padding-top:75px;gap:38px;">
+      <div style="font-size:52px;font-weight:900;line-height:1;">${escHtml(cg)}</div>
+      <div class="qr-simples-preview-code"></div>
+    </div>`;
+  if (qrCanvas) {
+    const img = new Image();
+    img.src = qrCanvas.toDataURL();
+    img.style.cssText = 'width:270px;height:270px;display:block;';
+    wrap.querySelector('.qr-simples-preview-code').appendChild(img);
+  }
+  area.appendChild(wrap);
 }
 
 // ===================== PRINT FUNCTIONS =====================
@@ -784,6 +824,43 @@ document.getElementById('print-gaiola').addEventListener('click', async () => {
       <div style="position:absolute;left:0;right:0;bottom:0;height:.55in;background:#d3d3d3;
         display:flex;align-items:center;justify-content:center;font-size:14pt;font-weight:700;">
         Lembre-se: Segurança em primeiro lugar.
+      </div>
+    </section>
+  `).join('');
+
+  triggerPrint(pagesHtml, 'portrait');
+});
+
+// PRINT SOMENTE NUMERO + QR CODE
+document.getElementById('print-gaiola-qr').addEventListener('click', async () => {
+  const ini = parseInt(document.getElementById('qr-simples-inicio').value);
+  const fim = parseInt(document.getElementById('qr-simples-fim').value);
+
+  if (!ini || !fim || fim < ini) {
+    alert('Preencha corretamente os números inicial e final.');
+    return;
+  }
+
+  const total = fim - ini + 1;
+  if (total > 50 && !confirm(`Você vai imprimir ${total} etiquetas. Continuar?`)) return;
+
+  const etiquetas = [];
+  for (let n = ini; n <= fim; n++) {
+    const cg = `CG${n}`;
+    etiquetas.push({ cg, url: await generateQRDataURL(cg, 600) });
+  }
+
+  const pagesHtml = etiquetas.map(({ cg, url }) => `
+    <section class="gaiola-print-page" style="width:8.48in;height:10.98in;display:flex;align-items:flex-start;
+      justify-content:center;padding-top:.35in;overflow:hidden;background:#fff;font-family:Arial,Inter,sans-serif;
+      color:#000;page-break-after:always;break-after:page;">
+      <div style="width:4.05in;">
+        <div style="font-size:10pt;text-align:center;margin-bottom:.08in;">Não cole nada acima do QR code.</div>
+        <div style="width:4.05in;height:5.65in;border:1.5px solid #777;border-radius:5px;display:flex;
+          flex-direction:column;align-items:center;padding-top:.72in;gap:.38in;">
+          <div style="font-size:38pt;font-weight:900;line-height:1;">${cg}</div>
+          ${url ? `<img src="${url}" alt="QR Code ${cg}" style="width:2.9in;height:2.9in;display:block;" />` : ''}
+        </div>
       </div>
     </section>
   `).join('');
