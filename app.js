@@ -537,7 +537,6 @@ async function renderQrSimplesPreview(area) {
   const wrap = document.createElement('div');
   wrap.style.cssText = 'width:min(100%,390px);margin:auto;color:#000;font-family:Arial,sans-serif;';
   wrap.innerHTML = `
-    <div style="font-size:12px;text-align:center;margin-bottom:5px;">Não cole nada acima do QR code.</div>
     <div style="height:540px;border:1.5px solid #777;border-radius:5px;background:#fff;display:flex;
       flex-direction:column;align-items:center;padding-top:75px;gap:38px;">
       <div style="font-size:52px;font-weight:900;line-height:1;">${escHtml(cg)}</div>
@@ -855,8 +854,7 @@ document.getElementById('print-gaiola-qr').addEventListener('click', async () =>
       justify-content:center;overflow:hidden;background:#fff;font-family:Arial,Inter,sans-serif;
       color:#000;page-break-after:always;break-after:page;">
       <div style="width:7.55in;">
-        <div style="font-size:16pt;font-weight:600;text-align:center;margin-bottom:.14in;">Não cole nada acima do QR code.</div>
-        <div style="width:7.55in;height:9.85in;border:2px solid #555;border-radius:8px;display:flex;
+        <div style="width:7.55in;height:10.25in;border:2px solid #555;border-radius:8px;display:flex;
           flex-direction:column;align-items:center;justify-content:center;gap:.55in;">
           <div style="font-size:64pt;font-weight:900;line-height:1;">${cg}</div>
           ${url ? `<img src="${url}" alt="QR Code ${cg}" style="width:5.75in;height:5.75in;display:block;" />` : ''}
