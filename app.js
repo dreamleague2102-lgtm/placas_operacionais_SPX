@@ -9,6 +9,7 @@ let qrCache = {};  // cache de QR codes gerados
 let shopeeLote = [];
 let saidaLote = [];
 let nomeLote = [];
+let nomeDuploLote = [];
 
 function formatarSaida(codigo) {
   const valor = String(codigo || '').trim();
@@ -36,11 +37,12 @@ function switchType(type) {
   document.getElementById(`form-${type}`).classList.add('active');
 
   // Update form header
-  const icons = { shopee: '🛒', saida: '📤', nome: '👤', gaiola: '📦', 'qr-simples': '🔲' };
+  const icons = { shopee: '🛒', saida: '📤', nome: '👤', 'nome-duplo': '🏷️', gaiola: '📦', 'qr-simples': '🔲' };
   const titles = {
     shopee: 'Workstation SPX',
     saida: 'Placas com QR Codes',
     nome: 'Placa de Nome',
+    'nome-duplo': 'Placa de Nome — 2 por folha',
     gaiola: 'Parâmetros de Impressão',
     'qr-simples': 'QR Code + Número'
   };
@@ -48,6 +50,7 @@ function switchType(type) {
     shopee: 'Preencha os campos abaixo',
     saida: 'Crie uma lista de placas com identificação e QR Code',
     nome: 'Nome grande em destaque com listras',
+    'nome-duplo': 'Crie uma lista e escolha o tamanho de cada nome',
     gaiola: 'Defina o intervalo de gaiolas SPX',
     'qr-simples': 'Gere somente o número CG e o QR Code'
   };
@@ -83,6 +86,8 @@ addListener('saida-qtd', updatePreview);
 // Nome
 addListener('nome-texto', updatePreview);
 addListener('nome-qtd', updatePreview);
+addListener('nome-duplo-texto', updatePreview);
+addListener('nome-duplo-tamanho', updatePreview);
 addListener('nome-tamanho', () => {
   document.getElementById('nome-tamanho-valor').textContent = `${document.getElementById('nome-tamanho').value} pt`;
   updatePreview();
@@ -164,6 +169,12 @@ function renderLotes() {
     <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>Fonte: ${item.fonteAuto ? 'automática' : `${item.fonte} pt`}</span></div>
     <button type="button" data-remove-nome="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
+
+  const nomeDuploLista = document.getElementById('nome-duplo-lista');
+  nomeDuploLista.innerHTML = nomeDuploLote.length ? nomeDuploLote.map((item, index) => `
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>Fonte: ${item.fonte} pt</span></div>
+    <button type="button" data-remove-nome-duplo="${index}">Remover</button></div>`).join('')
+    : '<div class="batch-empty">A lista ainda está vazia.</div>';
 }
 
 document.getElementById('add-shopee').addEventListener('click', () => {
@@ -212,6 +223,15 @@ document.getElementById('add-nome').addEventListener('click', () => {
   document.getElementById('nome-qtd').value = '1';
 });
 
+document.getElementById('add-nome-duplo').addEventListener('click', () => {
+  const campo = document.getElementById('nome-duplo-texto');
+  const nome = campo.value.trim().toUpperCase();
+  if (!nome) { alert('Preencha o nome da placa.'); return; }
+  nomeDuploLote.push({ nome, fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 60 });
+  campo.value = '';
+  renderLotes(); updatePreview(); campo.focus();
+});
+
 document.getElementById('saida-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-saida]');
   if (!botao) return;
@@ -230,6 +250,13 @@ document.getElementById('nome-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-nome]');
   if (!botao) return;
   nomeLote.splice(Number(botao.dataset.removeNome), 1);
+  renderLotes(); updatePreview();
+});
+
+document.getElementById('nome-duplo-lista').addEventListener('click', event => {
+  const botao = event.target.closest('[data-remove-nome-duplo]');
+  if (!botao) return;
+  nomeDuploLote.splice(Number(botao.dataset.removeNomeDuplo), 1);
   renderLotes(); updatePreview();
 });
 
@@ -296,6 +323,7 @@ async function updatePreview() {
     if (currentType === 'shopee') await renderShopeePreview(area);
     else if (currentType === 'saida') await renderSaidaPreview(area);
     else if (currentType === 'nome') renderNomePreview(area);
+    else if (currentType === 'nome-duplo') renderNomeDuploPreview(area);
     else if (currentType === 'gaiola') await renderGaiolaPreview(area);
     else if (currentType === 'qr-simples') await renderQrSimplesPreview(area);
   } catch (e) {
@@ -460,6 +488,23 @@ function renderNomePreview(area) {
     wrap.appendChild(card);
   }
   area.appendChild(wrap);
+}
+
+function renderNomeDuploPreview(area) {
+  const nomeAtual = document.getElementById('nome-duplo-texto').value.trim().toUpperCase() || 'NOME';
+  const fonteAtual = parseInt(document.getElementById('nome-duplo-tamanho').value) || 60;
+  const itens = nomeDuploLote.length ? nomeDuploLote : [{ nome: nomeAtual, fonte: fonteAtual }];
+  const exibidos = itens.slice(0, 2);
+  while (exibidos.length < 2) exibidos.push(null);
+  area.innerHTML = '';
+  const folha = document.createElement('div');
+  folha.style.cssText = 'width:min(100%,760px);aspect-ratio:11/8.5;background:#fff;padding:28px;display:grid;grid-template-rows:1fr 1fr;gap:28px;';
+  folha.innerHTML = exibidos.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
+    <div style="position:absolute;left:0;top:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
+    <div style="position:absolute;right:0;bottom:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
+    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${item ? Math.min(item.fonte, 60) : 60}px Calibri,Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
+  </div>`).join('');
+  area.appendChild(folha);
 }
 
 // ---- GAIOLA SPX ----
@@ -757,6 +802,30 @@ document.getElementById('print-nome').addEventListener('click', () => {
   triggerPrint(html, 'landscape');
 });
 
+// PRINT NOME DUPLO (2 placas por folha)
+document.getElementById('print-nome-duplo').addEventListener('click', () => {
+  const campo = document.getElementById('nome-duplo-texto');
+  const atual = campo.value.trim().toUpperCase();
+  const itens = nomeDuploLote.length
+    ? [...nomeDuploLote]
+    : atual ? [{ nome: atual, fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 60 }] : [];
+  if (!itens.length) { alert('Adicione pelo menos um nome à lista.'); return; }
+
+  const paginas = [];
+  for (let i = 0; i < itens.length; i += 2) {
+    const dupla = [itens[i], itens[i + 1]];
+    const placas = dupla.map(item => `<div style="height:3.65in;position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
+      ${item ? `<div style="position:absolute;left:0;top:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div style="position:absolute;right:0;bottom:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div style="position:absolute;inset:.55in .65in;display:flex;align-items:center;justify-content:center;text-align:center;
+        font:700 ${item.fonte}pt/1.05 Calibri,Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
+    </div>`).join('');
+    paginas.push(`<section class="nome-duplo-print-page" style="width:10.98in;height:8.48in;padding:.38in .62in;display:grid;
+      grid-template-rows:3.65in 3.65in;gap:.42in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
+  }
+  triggerPrint(paginas.join(''), 'landscape', 'Placas de Nome');
+});
+
 // PRINT GAIOLA SPX
 document.getElementById('print-gaiola').addEventListener('click', async () => {
   const ini = parseInt(document.getElementById('gaiola-inicio').value);
@@ -828,6 +897,11 @@ document.getElementById('print-gaiola').addEventListener('click', async () => {
   `).join('');
 
   triggerPrint(pagesHtml, 'portrait');
+});
+document.getElementById('nome-duplo-texto').addEventListener('input', function() {
+  const pos = this.selectionStart;
+  this.value = this.value.toUpperCase();
+  this.setSelectionRange(pos, pos);
 });
 
 // PRINT SOMENTE NUMERO + QR CODE

@@ -120,6 +120,15 @@
           </div>
         </button>
 
+        <button class="type-card" data-type="nome-duplo" id="btn-nome-duplo">
+          <div class="type-card-icon">🏷️</div>
+          <div class="type-card-info"><h3>Placa de Nome — 2 por folha</h3><p>Lista de nomes com duas placas horizontais grandes em cada folha</p></div>
+          <div class="type-card-preview"><div style="width:100%;display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
+            <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
+          </div></div>
+        </button>
+
         <button class="type-card" data-type="gaiola" id="btn-gaiola">
           <div class="type-card-icon">📦</div>
           <div class="type-card-info">
@@ -275,6 +284,26 @@
             <button class="btn-print" id="print-nome">
               🖨️ Imprimir lista de nomes
             </button>
+          </div>
+
+          <!-- NOME DUPLO FORM -->
+          <div class="plate-form" id="form-nome-duplo">
+            <div class="form-guide"><strong>Como fazer:</strong> escolha o tamanho, digite um nome e adicione à lista. O PDF colocará duas placas por folha.</div>
+            <div class="field-group">
+              <label class="field-label" for="nome-duplo-texto"><span class="field-icon">🏷️</span> Nome da placa</label>
+              <input class="field-input" type="text" id="nome-duplo-texto" placeholder="NOME" maxlength="40" style="text-transform:uppercase" />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="nome-duplo-tamanho"><span class="field-icon">🔠</span> Tamanho da fonte</label>
+              <select class="field-input" id="nome-duplo-tamanho">
+                <option value="36">36 pt</option><option value="48">48 pt</option><option value="60" selected>60 pt</option>
+                <option value="70">70 pt</option><option value="80">80 pt</option><option value="90">90 pt</option>
+              </select>
+              <span class="field-hint">O tamanho escolhido fica salvo junto com cada nome.</span>
+            </div>
+            <button class="btn-add-plate" type="button" id="add-nome-duplo">+ Adicionar nome à lista</button>
+            <div class="plate-batch" id="nome-duplo-lista" aria-live="polite"></div>
+            <button class="btn-print" id="print-nome-duplo">📄 Gerar PDF — 2 placas por folha</button>
           </div>
 
           <!-- GAIOLA FORM -->
