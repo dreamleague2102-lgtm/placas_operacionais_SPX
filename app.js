@@ -87,7 +87,27 @@ addListener('saida-qtd', updatePreview);
 addListener('nome-texto', updatePreview);
 addListener('nome-qtd', updatePreview);
 addListener('nome-duplo-texto', updatePreview);
-addListener('nome-duplo-tamanho', updatePreview);
+addListener('nome-duplo-tamanho', () => {
+  document.getElementById('nome-duplo-tamanho-valor').textContent = `${document.getElementById('nome-duplo-tamanho').value} pt`;
+  updatePreview();
+});
+
+document.getElementById('nome-duplo-tamanho-auto').addEventListener('change', function() {
+  const controle = document.getElementById('nome-duplo-tamanho');
+  controle.disabled = this.checked;
+  document.getElementById('nome-duplo-tamanho-menor').disabled = this.checked;
+  document.getElementById('nome-duplo-tamanho-maior').disabled = this.checked;
+  document.getElementById('nome-duplo-tamanho-valor').textContent = this.checked ? 'Automático' : `${controle.value} pt`;
+  updatePreview();
+});
+
+function alterarTamanhoNomeDuplo(delta) {
+  const controle = document.getElementById('nome-duplo-tamanho');
+  controle.value = Math.min(96, Math.max(6, (parseInt(controle.value) || 70) + delta));
+  controle.dispatchEvent(new Event('input', { bubbles:true }));
+}
+document.getElementById('nome-duplo-tamanho-menor').addEventListener('click', () => alterarTamanhoNomeDuplo(-1));
+document.getElementById('nome-duplo-tamanho-maior').addEventListener('click', () => alterarTamanhoNomeDuplo(1));
 addListener('nome-tamanho', () => {
   document.getElementById('nome-tamanho-valor').textContent = `${document.getElementById('nome-tamanho').value} pt`;
   updatePreview();
@@ -172,7 +192,7 @@ function renderLotes() {
 
   const nomeDuploLista = document.getElementById('nome-duplo-lista');
   nomeDuploLista.innerHTML = nomeDuploLote.length ? nomeDuploLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>Fonte: ${item.fonte} pt</span></div>
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>Fonte: ${item.fonteAuto ? 'automática' : `${item.fonte} pt`}</span></div>
     <button type="button" data-remove-nome-duplo="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 }
@@ -227,7 +247,11 @@ document.getElementById('add-nome-duplo').addEventListener('click', () => {
   const campo = document.getElementById('nome-duplo-texto');
   const nome = campo.value.trim().toUpperCase();
   if (!nome) { alert('Preencha o nome da placa.'); return; }
-  nomeDuploLote.push({ nome, fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 60 });
+  nomeDuploLote.push({
+    nome,
+    fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
+    fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70
+  });
   campo.value = '';
   renderLotes(); updatePreview(); campo.focus();
 });
@@ -492,8 +516,11 @@ function renderNomePreview(area) {
 
 function renderNomeDuploPreview(area) {
   const nomeAtual = document.getElementById('nome-duplo-texto').value.trim().toUpperCase() || 'NOME';
-  const fonteAtual = parseInt(document.getElementById('nome-duplo-tamanho').value) || 60;
-  const itens = nomeDuploLote.length ? nomeDuploLote : [{ nome: nomeAtual, fonte: fonteAtual }];
+  const itens = nomeDuploLote.length ? nomeDuploLote : [{
+    nome: nomeAtual,
+    fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
+    fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70
+  }];
   const exibidos = itens.slice(0, 2);
   while (exibidos.length < 2) exibidos.push(null);
   area.innerHTML = '';
@@ -502,7 +529,7 @@ function renderNomeDuploPreview(area) {
   folha.innerHTML = exibidos.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
     <div style="position:absolute;left:0;top:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
     <div style="position:absolute;right:0;bottom:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
-    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${item ? Math.min(item.fonte, 60) : 60}px Calibri,Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
+    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 60) : 60}px Calibri,Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
   </div>`).join('');
   area.appendChild(folha);
 }
@@ -808,7 +835,11 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
   const atual = campo.value.trim().toUpperCase();
   const itens = nomeDuploLote.length
     ? [...nomeDuploLote]
-    : atual ? [{ nome: atual, fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 60 }] : [];
+    : atual ? [{
+        nome: atual,
+        fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
+        fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70
+      }] : [];
   if (!itens.length) { alert('Adicione pelo menos um nome à lista.'); return; }
 
   const paginas = [];
@@ -818,7 +849,7 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
       ${item ? `<div style="position:absolute;left:0;top:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <div style="position:absolute;right:0;bottom:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <div style="position:absolute;inset:.55in .65in;display:flex;align-items:center;justify-content:center;text-align:center;
-        font:700 ${item.fonte}pt/1.05 Calibri,Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
+        font:700 ${item ? tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item) : 70}pt/1.05 Calibri,Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
     </div>`).join('');
     paginas.push(`<section class="nome-duplo-print-page" style="width:10.98in;height:8.48in;padding:.38in .62in;display:grid;
       grid-template-rows:3.65in 3.65in;gap:.42in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
