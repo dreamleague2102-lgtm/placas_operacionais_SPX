@@ -81,6 +81,17 @@ addListener('saida-qtd', updatePreview);
 // Nome
 addListener('nome-texto', updatePreview);
 addListener('nome-qtd', updatePreview);
+addListener('nome-tamanho', () => {
+  document.getElementById('nome-tamanho-valor').textContent = `${document.getElementById('nome-tamanho').value} pt`;
+  updatePreview();
+});
+
+document.getElementById('nome-tamanho-auto').addEventListener('change', function() {
+  const controle = document.getElementById('nome-tamanho');
+  controle.disabled = this.checked;
+  document.getElementById('nome-tamanho-valor').textContent = this.checked ? 'Automático' : `${controle.value} pt`;
+  updatePreview();
+});
 
 // Gaiola
 addListener('gaiola-inicio', () => { updateGaiolaTotal(); updatePreview(); });
@@ -136,7 +147,7 @@ function renderLotes() {
 
   const nomeLista = document.getElementById('nome-lista');
   nomeLista.innerHTML = nomeLote.length ? nomeLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong></div>
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>Fonte: ${item.fonteAuto ? 'automática' : `${item.fonte} pt`}</span></div>
     <button type="button" data-remove-nome="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 }
@@ -175,7 +186,12 @@ document.getElementById('add-nome').addEventListener('click', () => {
   const nome = document.getElementById('nome-texto').value.trim().toUpperCase();
   const qtd = Math.min(Math.max(parseInt(document.getElementById('nome-qtd').value) || 1, 1), 20);
   if (!nome) { alert('Preencha o nome da placa.'); return; }
-  nomeLote.push({ nome, qtd });
+  nomeLote.push({
+    nome,
+    qtd,
+    fonteAuto: document.getElementById('nome-tamanho-auto').checked,
+    fonte: parseInt(document.getElementById('nome-tamanho').value) || 70
+  });
   renderLotes();
   updatePreview();
   document.getElementById('nome-texto').value = '';
@@ -390,20 +406,27 @@ function tamanhoFonteNome(linhas) {
   return Math.max(28, Math.min(70, Math.floor(1050 / maiorLinha)));
 }
 
+function tamanhoFonteNomeSelecionado(linhas, configuracao = null) {
+  const automatico = configuracao ? configuracao.fonteAuto : (document.getElementById('nome-tamanho-auto')?.checked ?? true);
+  if (automatico) return tamanhoFonteNome(linhas);
+  const valor = configuracao ? configuracao.fonte : document.getElementById('nome-tamanho').value;
+  return Math.min(70, Math.max(28, parseInt(valor) || 70));
+}
+
 function renderNomePreview(area) {
   const nome = document.getElementById('nome-texto').value || 'NOME';
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
   const itens = nomeLote.length
-    ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item.nome))
-    : Array.from({ length: qtd }, () => nome);
+    ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
+    : Array.from({ length: qtd }, () => ({ nome }));
 
   area.innerHTML = '';
   const wrap = document.createElement('div');
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
-  for (const itemNome of itens) {
-    const linhas = quebrarTextoPlaca(itemNome);
-    const fontePreview = Math.round(tamanhoFonteNome(linhas) * .83);
+  for (const item of itens) {
+    const linhas = quebrarTextoPlaca(item.nome);
+    const fontePreview = Math.round(tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item) * .83);
     const card = document.createElement('div');
     card.className = 'preview-simples';
     card.innerHTML = `
@@ -629,11 +652,11 @@ document.getElementById('print-nome').addEventListener('click', () => {
 
   if (!nomeLote.length && !nome) { alert('Adicione um nome à lista ou preencha o nome.'); return; }
   const itens = nomeLote.length
-    ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item.nome))
-    : Array.from({ length: qtd }, () => nome);
-  const placa = (nomePlaca) => {
-    const linhas = quebrarTextoPlaca(nomePlaca);
-    const fonte = tamanhoFonteNome(linhas);
+    ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
+    : Array.from({ length: qtd }, () => ({ nome }));
+  const placa = (item) => {
+    const linhas = quebrarTextoPlaca(item.nome);
+    const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
     return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
       <div style="position:absolute;left:0;top:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>

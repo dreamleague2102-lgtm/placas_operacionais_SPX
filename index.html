@@ -231,6 +231,18 @@
               <input class="field-input" type="text" id="nome-texto" placeholder="NOME" maxlength="40" style="text-transform:uppercase" />
               <span class="field-hint">Pode ser um nome, local ou identificação. Será impresso em maiúsculas.</span>
             </div>
+            <div class="font-size-control">
+              <div class="font-size-heading">
+                <label class="field-label" for="nome-tamanho">🔠 Tamanho da fonte</label>
+                <output id="nome-tamanho-valor">Automático</output>
+              </div>
+              <input type="range" id="nome-tamanho" min="28" max="70" value="70" disabled />
+              <label class="auto-font-option">
+                <input type="checkbox" id="nome-tamanho-auto" checked />
+                Ajustar automaticamente para caber
+              </label>
+              <span class="field-hint">Desmarque a opção automática para escolher entre 28 e 70 pt.</span>
+            </div>
             <input type="hidden" id="nome-qtd" value="1" />
             <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-lista" aria-live="polite"></div>

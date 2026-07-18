@@ -446,6 +446,36 @@ body {
   line-height: 1.55;
 }
 .form-guide strong { color:#fff; }
+.font-size-control {
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+  padding:.85rem;
+  border:1px solid var(--spx-border);
+  border-radius:var(--radius-sm);
+  background:rgba(255,255,255,.025);
+}
+.font-size-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.font-size-heading output {
+  color:#fff;
+  background:rgba(232,0,28,.13);
+  border:1px solid rgba(232,0,28,.25);
+  border-radius:20px;
+  padding:.2rem .55rem;
+  font-size:.68rem;
+  font-weight:700;
+}
+#nome-tamanho { width:100%; accent-color:var(--spx-red); cursor:pointer; }
+#nome-tamanho:disabled { opacity:.35; cursor:not-allowed; }
+.auto-font-option {
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  color:#ddd;
+  font-size:.75rem;
+  cursor:pointer;
+}
+.auto-font-option input { accent-color:var(--spx-red); width:15px; height:15px; }
 
 .total-display {
   background: rgba(232,0,28,0.06);
