@@ -384,6 +384,12 @@ function quebrarTextoPlaca(valor) {
   return [palavras.slice(0, meio).join(' '), palavras.slice(meio).join(' ')];
 }
 
+function tamanhoFonteNome(linhas) {
+  const maiorLinha = Math.max(...linhas.map(linha => String(linha).length), 1);
+  // 70 pt é o máximo. Textos longos diminuem até caber com segurança na placa.
+  return Math.max(28, Math.min(70, Math.floor(1050 / maiorLinha)));
+}
+
 function renderNomePreview(area) {
   const nome = document.getElementById('nome-texto').value || 'NOME';
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
@@ -397,12 +403,13 @@ function renderNomePreview(area) {
 
   for (const itemNome of itens) {
     const linhas = quebrarTextoPlaca(itemNome);
+    const fontePreview = Math.round(tamanhoFonteNome(linhas) * .83);
     const card = document.createElement('div');
     card.className = 'preview-simples';
     card.innerHTML = `
       <div class="simples-stripe-tl"></div>
       <div class="simples-stripe-br"></div>
-      <div class="simples-nome">${linhas.map(linha => `<span>${escHtml(linha)}</span>`).join('')}</div>
+      <div class="simples-nome" style="--nome-font-size:${fontePreview}px">${linhas.map(linha => `<span>${escHtml(linha)}</span>`).join('')}</div>
     `;
     wrap.appendChild(card);
   }
@@ -626,12 +633,13 @@ document.getElementById('print-nome').addEventListener('click', () => {
     : Array.from({ length: qtd }, () => nome);
   const placa = (nomePlaca) => {
     const linhas = quebrarTextoPlaca(nomePlaca);
+    const fonte = tamanhoFonteNome(linhas);
     return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
       <div style="position:absolute;left:0;top:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
       <div style="position:absolute;right:0;bottom:0;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .68in);"></div>
       <div style="position:absolute;inset:1.45in .9in;display:flex;flex-direction:column;align-items:center;justify-content:center;
-        font:900 64pt/1.08 Calibri,Arial,sans-serif;text-align:center;color:#000;">
+        font:700 ${fonte}pt/1.08 Calibri,Arial,sans-serif;text-align:center;color:#000;">
         ${linhas.map(linha => `<div>${escHtml(linha)}</div>`).join('')}
       </div>
     </div>
