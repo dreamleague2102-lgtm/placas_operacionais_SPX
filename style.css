@@ -1405,7 +1405,14 @@ body {
 .total-range { display:block; color:var(--spx-muted); font-size:.62rem; font-weight:400; }
 .gaiola-mode .total-count { font-size:2rem; }
 .gaiola-mode .preview-panel { border-radius:18px; background:rgba(255,255,255,.035); }
-.gaiola-mode .preview-area { padding:16px; min-height:920px; align-items:flex-start; }
+.gaiola-mode .preview-area {
+  padding:16px;
+  min-height:920px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  flex-wrap:nowrap;
+}
 .gaiola-mode .preview-gaiola {
   width:min(100%, 650px);
   min-height:900px;
