@@ -350,10 +350,10 @@ function buildWsPrintPages(itens) {
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
           <div style="font-size:20pt;font-weight:700;padding-top:.15in;text-align:center;">${preenchida ? escHtml(item.codigo) : ''}</div>
           <div style="font-size:14pt;font-weight:700;margin-top:.22in;height:.25in;text-align:center;">${preenchida ? escHtml(item.numero) : ''}</div>
-          <div style="height:2.35in;margin-top:.16in;display:flex;align-items:center;justify-content:center;">
+          <div style="height:2.35in;margin-top:.24in;display:flex;align-items:center;justify-content:center;">
             ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
-          <div style="width:100%;margin-top:.18in;font-size:14pt;font-weight:700;text-align:center;line-height:1;">${preenchida ? escHtml(item.rodape) : ''}</div>
+          <div style="width:100%;margin-top:.26in;font-size:14pt;font-weight:700;text-align:center;line-height:1;">${preenchida ? escHtml(item.rodape) : ''}</div>
         </div>
         <div style="width:60%;height:.32in;margin-left:40%;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
       </div>`;
