@@ -10,6 +10,7 @@ let shopeeLote = [];
 let saidaLote = [];
 let nomeLote = [];
 let nomeDuploLote = [];
+let nomeQuatroLote = [];
 
 function formatarSaida(codigo) {
   const valor = String(codigo || '').trim();
@@ -37,12 +38,13 @@ function switchType(type) {
   document.getElementById(`form-${type}`).classList.add('active');
 
   // Update form header
-  const icons = { shopee: '🛒', saida: '📤', nome: '👤', 'nome-duplo': '🏷️', gaiola: '📦', 'qr-simples': '🔲' };
+  const icons = { shopee: '🛒', saida: '📤', nome: '👤', 'nome-duplo': '🏷️', 'nome-quatro': '🞄', gaiola: '📦', 'qr-simples': '🔲' };
   const titles = {
     shopee: 'Workstation SPX',
     saida: 'Placas com QR Codes',
     nome: 'Placa de Nome',
     'nome-duplo': 'Placa de Nome — 2 por folha',
+    'nome-quatro': 'Placa de Nome — 4 por folha',
     gaiola: 'Parâmetros de Impressão',
     'qr-simples': 'QR Code + Número'
   };
@@ -51,6 +53,7 @@ function switchType(type) {
     saida: 'Crie uma lista de placas com identificação e QR Code',
     nome: 'Nome grande em destaque com listras',
     'nome-duplo': 'Crie uma lista e escolha o tamanho de cada nome',
+    'nome-quatro': 'Monte uma grade com quatro placas por folha',
     gaiola: 'Defina o intervalo de gaiolas SPX',
     'qr-simples': 'Gere somente o número CG e o QR Code'
   };
@@ -108,6 +111,27 @@ function alterarTamanhoNomeDuplo(delta) {
 }
 document.getElementById('nome-duplo-tamanho-menor').addEventListener('click', () => alterarTamanhoNomeDuplo(-1));
 document.getElementById('nome-duplo-tamanho-maior').addEventListener('click', () => alterarTamanhoNomeDuplo(1));
+
+addListener('nome-quatro-texto', updatePreview);
+addListener('nome-quatro-tamanho', () => {
+  document.getElementById('nome-quatro-tamanho-valor').textContent = `${document.getElementById('nome-quatro-tamanho').value} pt`;
+  updatePreview();
+});
+document.getElementById('nome-quatro-tamanho-auto').addEventListener('change', function() {
+  const controle = document.getElementById('nome-quatro-tamanho');
+  controle.disabled = this.checked;
+  document.getElementById('nome-quatro-tamanho-menor').disabled = this.checked;
+  document.getElementById('nome-quatro-tamanho-maior').disabled = this.checked;
+  document.getElementById('nome-quatro-tamanho-valor').textContent = this.checked ? 'Automático' : `${controle.value} pt`;
+  updatePreview();
+});
+function alterarTamanhoNomeQuatro(delta) {
+  const controle = document.getElementById('nome-quatro-tamanho');
+  controle.value = Math.min(96, Math.max(6, (parseInt(controle.value) || 60) + delta));
+  controle.dispatchEvent(new Event('input', { bubbles:true }));
+}
+document.getElementById('nome-quatro-tamanho-menor').addEventListener('click', () => alterarTamanhoNomeQuatro(-1));
+document.getElementById('nome-quatro-tamanho-maior').addEventListener('click', () => alterarTamanhoNomeQuatro(1));
 addListener('nome-tamanho', () => {
   document.getElementById('nome-tamanho-valor').textContent = `${document.getElementById('nome-tamanho').value} pt`;
   updatePreview();
@@ -202,6 +226,14 @@ function renderLotes() {
       </div>
     </div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
+
+  const nomeQuatroLista = document.getElementById('nome-quatro-lista');
+  nomeQuatroLista.innerHTML = nomeQuatroLote.length ? nomeQuatroLote.map((item, index) => `
+    <div class="batch-item nome-duplo-item"><div><strong>Placa ${index + 1} · posição ${(index % 4) + 1}</strong><span>${escHtml(item.nome)}</span></div>
+      <div class="batch-font-controls"><label><input type="checkbox" data-nome-quatro-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
+      <input type="number" min="6" max="96" value="${item.fonte}" data-nome-quatro-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''}><span>pt</span>
+      <button type="button" data-remove-nome-quatro="${index}">Remover</button></div></div>`).join('')
+    : '<div class="batch-empty">Adicione até quatro nomes por folha.</div>';
 }
 
 document.getElementById('add-shopee').addEventListener('click', () => {
@@ -263,6 +295,14 @@ document.getElementById('add-nome-duplo').addEventListener('click', () => {
   renderLotes(); updatePreview(); campo.focus();
 });
 
+document.getElementById('add-nome-quatro').addEventListener('click', () => {
+  const campo = document.getElementById('nome-quatro-texto');
+  const nome = campo.value.trim().toUpperCase();
+  if (!nome) { alert('Preencha o nome da placa.'); return; }
+  nomeQuatroLote.push({ nome, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60 });
+  campo.value = ''; renderLotes(); updatePreview(); campo.focus();
+});
+
 document.getElementById('saida-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-saida]');
   if (!botao) return;
@@ -299,6 +339,21 @@ document.getElementById('nome-duplo-lista').addEventListener('change', event => 
   } else if (fonte) {
     nomeDuploLote[Number(fonte.dataset.nomeDuploFonte)].fonte = parseInt(fonte.value) || 70;
   } else return;
+  renderLotes(); updatePreview();
+});
+
+document.getElementById('nome-quatro-lista').addEventListener('click', event => {
+  const botao = event.target.closest('[data-remove-nome-quatro]');
+  if (!botao) return;
+  nomeQuatroLote.splice(Number(botao.dataset.removeNomeQuatro), 1);
+  renderLotes(); updatePreview();
+});
+document.getElementById('nome-quatro-lista').addEventListener('change', event => {
+  const auto = event.target.closest('[data-nome-quatro-auto]');
+  const fonte = event.target.closest('[data-nome-quatro-fonte]');
+  if (auto) nomeQuatroLote[Number(auto.dataset.nomeQuatroAuto)].fonteAuto = auto.checked;
+  else if (fonte) nomeQuatroLote[Number(fonte.dataset.nomeQuatroFonte)].fonte = parseInt(fonte.value) || 60;
+  else return;
   renderLotes(); updatePreview();
 });
 
@@ -366,6 +421,7 @@ async function updatePreview() {
     else if (currentType === 'saida') await renderSaidaPreview(area);
     else if (currentType === 'nome') renderNomePreview(area);
     else if (currentType === 'nome-duplo') renderNomeDuploPreview(area);
+    else if (currentType === 'nome-quatro') renderNomeQuatroPreview(area);
     else if (currentType === 'gaiola') await renderGaiolaPreview(area);
     else if (currentType === 'qr-simples') await renderQrSimplesPreview(area);
   } catch (e) {
@@ -548,6 +604,21 @@ function renderNomeDuploPreview(area) {
     <div style="position:absolute;left:0;top:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
     <div style="position:absolute;right:0;bottom:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
     <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 60) : 60}px Calibri,Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
+  </div>`).join('');
+  area.appendChild(folha);
+}
+
+function renderNomeQuatroPreview(area) {
+  const atual = document.getElementById('nome-quatro-texto').value.trim().toUpperCase() || 'NOME';
+  const itens = nomeQuatroLote.length ? nomeQuatroLote.slice(0, 4) : [{ nome: atual, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60 }];
+  while (itens.length < 4) itens.push(null);
+  area.innerHTML = '';
+  const folha = document.createElement('div');
+  folha.style.cssText = 'width:min(100%,900px);aspect-ratio:11/8.5;background:#fff;padding:34px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:34px;';
+  folha.innerHTML = itens.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
+    <div style="position:absolute;left:0;top:0;width:42%;height:22px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
+    <div style="position:absolute;right:0;bottom:0;width:42%;height:22px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
+    <div style="position:absolute;inset:30px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 48) : 48}px Calibri,Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
   </div>`).join('');
   area.appendChild(folha);
 }
@@ -847,6 +918,24 @@ document.getElementById('print-nome').addEventListener('click', () => {
   triggerPrint(html, 'landscape');
 });
 
+// PRINT NOME QUATRO (4 placas por folha)
+document.getElementById('print-nome-quatro').addEventListener('click', () => {
+  const atual = document.getElementById('nome-quatro-texto').value.trim().toUpperCase();
+  const itens = nomeQuatroLote.length ? [...nomeQuatroLote] : atual ? [{ nome: atual, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60 }] : [];
+  if (!itens.length) { alert('Adicione pelo menos um nome à lista.'); return; }
+  const paginas = [];
+  for (let i = 0; i < itens.length; i += 4) {
+    const grupo = itens.slice(i, i + 4); while (grupo.length < 4) grupo.push(null);
+    const placas = grupo.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
+      ${item ? `<div style="position:absolute;left:0;top:0;width:42%;height:.25in;background:repeating-linear-gradient(135deg,#000 0 .30in,#fff .30in .47in);"></div>
+      <div style="position:absolute;right:0;bottom:0;width:42%;height:.25in;background:repeating-linear-gradient(135deg,#000 0 .30in,#fff .30in .47in);"></div>
+      <div style="position:absolute;inset:.45in;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item)}pt/1.05 Calibri,Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
+    </div>`).join('');
+    paginas.push(`<section style="width:10.98in;height:8.48in;padding:.5in;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
+  }
+  triggerPrint(paginas.join(''), 'landscape', 'Placas de Nome — 4 por folha');
+});
+
 // PRINT NOME DUPLO (2 placas por folha)
 document.getElementById('print-nome-duplo').addEventListener('click', () => {
   const campo = document.getElementById('nome-duplo-texto');
@@ -951,6 +1040,9 @@ document.getElementById('nome-duplo-texto').addEventListener('input', function()
   const pos = this.selectionStart;
   this.value = this.value.toUpperCase();
   this.setSelectionRange(pos, pos);
+});
+document.getElementById('nome-quatro-texto').addEventListener('input', function() {
+  const pos = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(pos, pos);
 });
 
 // PRINT SOMENTE NUMERO + QR CODE

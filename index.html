@@ -129,6 +129,17 @@
           </div></div>
         </button>
 
+        <button class="type-card" data-type="nome-quatro" id="btn-nome-quatro">
+          <div class="type-card-icon">🞄</div>
+          <div class="type-card-info"><h3>Placa de Nome — 4 por folha</h3><p>Quatro placas de nome organizadas em grade 2 × 2</p></div>
+          <div class="type-card-preview"><div class="mini-four-grid">
+            <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
+            <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
+            <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
+            <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
+          </div></div>
+        </button>
+
         <button class="type-card" data-type="gaiola" id="btn-gaiola">
           <div class="type-card-icon">📦</div>
           <div class="type-card-info">
@@ -314,6 +325,24 @@
             <button class="btn-add-plate" type="button" id="add-nome-duplo">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-duplo-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome-duplo">📄 Gerar PDF — 2 placas por folha</button>
+          </div>
+
+          <!-- NOME QUATRO FORM -->
+          <div class="plate-form" id="form-nome-quatro">
+            <div class="form-guide"><strong>Como fazer:</strong> adicione até quatro nomes por folha. Cada placa pode ter seu próprio tamanho de fonte.</div>
+            <div class="field-group">
+              <label class="field-label" for="nome-quatro-texto"><span class="field-icon">🏷️</span> Nome da placa</label>
+              <input class="field-input" type="text" id="nome-quatro-texto" placeholder="NOME" maxlength="40" style="text-transform:uppercase" />
+            </div>
+            <div class="font-size-control">
+              <div class="font-size-heading"><label class="field-label" for="nome-quatro-tamanho">🔠 Tamanho da fonte</label><output id="nome-quatro-tamanho-valor">Automático</output></div>
+              <div class="font-toolbar"><span class="font-family-display">Calibri</span><button type="button" id="nome-quatro-tamanho-menor" disabled>−</button><input type="number" id="nome-quatro-tamanho" min="6" max="96" value="60" disabled /><button type="button" id="nome-quatro-tamanho-maior" disabled>+</button><span class="font-bold-display">B</span></div>
+              <label class="auto-font-option"><input type="checkbox" id="nome-quatro-tamanho-auto" checked /> Ajustar automaticamente para caber</label>
+              <span class="field-hint">Desmarque para escolher o tamanho manualmente.</span>
+            </div>
+            <button class="btn-add-plate" type="button" id="add-nome-quatro">+ Adicionar nome à lista</button>
+            <div class="plate-batch" id="nome-quatro-lista" aria-live="polite"></div>
+            <button class="btn-print" id="print-nome-quatro">📄 Gerar PDF — 4 placas por folha</button>
           </div>
 
           <!-- GAIOLA FORM -->

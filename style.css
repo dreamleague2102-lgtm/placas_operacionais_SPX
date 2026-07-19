@@ -364,6 +364,9 @@ body {
 .nome-mini .mini-body { background: #fff; min-height: 60px; }
 .saida-mini { display: flex; flex-direction: column; }
 .gaiola-mini { display: flex; flex-direction: column; }
+.mini-four-grid { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.mini-four-grid .mini-plate { min-width:0; }
+.mini-four-grid .mini-body.center { min-height:48px; padding:8px 4px; }
 .qr-simples-mini {
   min-height:100px;
   border:1px solid #888;
