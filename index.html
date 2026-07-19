@@ -68,7 +68,7 @@
         <button class="type-card active" data-type="shopee" id="btn-shopee">
           <div class="type-card-icon">🛒</div>
           <div class="type-card-info">
-            <h3>Workstation SPX</h3>
+            <h3>Etiqueta Workstation SPX</h3>
             <p>Etiqueta vertical com ID superior, QR Code e ID inferior</p>
           </div>
           <div class="type-card-badge">Mais usada</div>
@@ -88,7 +88,7 @@
         <button class="type-card" data-type="saida" id="btn-saida">
           <div class="type-card-icon">📤</div>
           <div class="type-card-info">
-            <h3>Placas com QR Codes</h3>
+            <h3>Placa de Identificação com QR Code</h3>
             <p>Placa horizontal com identificação, QR Code e listras</p>
           </div>
           <div class="type-card-preview">
@@ -106,7 +106,7 @@
         <button class="type-card" data-type="nome" id="btn-nome">
           <div class="type-card-icon">👤</div>
           <div class="type-card-info">
-            <h3>Placa de Nome</h3>
+            <h3>Placa de Nome — Folha Inteira</h3>
             <p>Qualquer nome ou identificação em letras grandes</p>
           </div>
           <div class="type-card-preview">
@@ -122,7 +122,7 @@
 
         <button class="type-card" data-type="nome-duplo" id="btn-nome-duplo">
           <div class="type-card-icon">🏷️</div>
-          <div class="type-card-info"><h3>Placa de Nome — 2 por folha</h3><p>Lista de nomes com duas placas horizontais grandes em cada folha</p></div>
+          <div class="type-card-info"><h3>Placas de Nome — 2 por Folha</h3><p>Duas placas horizontais grandes com configuração individual</p></div>
           <div class="type-card-preview"><div style="width:100%;display:flex;flex-direction:column;gap:8px;align-items:center;">
             <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
             <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
@@ -131,7 +131,7 @@
 
         <button class="type-card" data-type="nome-quatro" id="btn-nome-quatro">
           <div class="type-card-icon">🞄</div>
-          <div class="type-card-info"><h3>Placa de Nome — 4 por folha</h3><p>Quatro placas de nome organizadas em grade 2 × 2</p></div>
+          <div class="type-card-info"><h3>Placas de Nome — 4 por Folha</h3><p>Quatro placas compactas organizadas em grade 2 × 2</p></div>
           <div class="type-card-preview"><div class="mini-four-grid">
             <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
             <div class="mini-plate nome-mini"><div class="mini-corner top-left"></div><div class="mini-body center nome-body"><div class="mini-nome">NOME</div></div><div class="mini-corner bottom-right"></div></div>
@@ -143,7 +143,7 @@
         <button class="type-card" data-type="gaiola" id="btn-gaiola">
           <div class="type-card-icon">📦</div>
           <div class="type-card-info">
-            <h3>QR Gaiola SPX</h3>
+            <h3>Placa Completa de Gaiola</h3>
             <p>Placa completa com logo SPX, QR code de gaiola e instruções operacionais</p>
           </div>
           <div class="type-card-preview">
@@ -161,7 +161,7 @@
         <button class="type-card" data-type="qr-simples" id="btn-qr-simples">
           <div class="type-card-icon">🔲</div>
           <div class="type-card-info">
-            <h3>QR Code + Número</h3>
+            <h3>Etiqueta CG com QR Code</h3>
             <p>Etiqueta simples com o número CG e o QR Code, sem instruções</p>
           </div>
           <div class="type-card-preview">
@@ -226,7 +226,7 @@
             <button class="btn-add-plate" type="button" id="add-shopee">+ Adicionar placa ao painel</button>
             <div class="plate-batch" id="shopee-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-shopee">
-              🖨️ Imprimir painel Workstation SPX
+              📄 Gerar PDF — Etiquetas Workstation
             </button>
           </div>
 
@@ -251,7 +251,7 @@
             <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>
             <div class="plate-batch" id="saida-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-saida">
-              🖨️ Imprimir lista de placas com QR Codes
+              📄 Gerar PDF — Placas com QR Code
             </button>
           </div>
 
@@ -293,7 +293,7 @@
             <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome">
-              🖨️ Imprimir lista de nomes
+              📄 Gerar PDF — Placas de Nome
             </button>
           </div>
 
@@ -324,7 +324,7 @@
             </div>
             <button class="btn-add-plate" type="button" id="add-nome-duplo">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-duplo-lista" aria-live="polite"></div>
-            <button class="btn-print" id="print-nome-duplo">📄 Gerar PDF — 2 placas por folha</button>
+            <button class="btn-print" id="print-nome-duplo">📄 Gerar PDF — Nomes (2 por Folha)</button>
           </div>
 
           <!-- NOME QUATRO FORM -->
@@ -342,7 +342,7 @@
             </div>
             <button class="btn-add-plate" type="button" id="add-nome-quatro">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-quatro-lista" aria-live="polite"></div>
-            <button class="btn-print" id="print-nome-quatro">📄 Gerar PDF — 4 placas por folha</button>
+            <button class="btn-print" id="print-nome-quatro">📄 Gerar PDF — Nomes (4 por Folha)</button>
           </div>
 
           <!-- GAIOLA FORM -->
@@ -367,7 +367,7 @@
               <span class="total-count" id="gaiolaTotal">0</span>
             </div>
             <button class="btn-print" id="print-gaiola">
-              🖨️ Imprimir Placas de Gaiola
+              📄 Gerar PDF — Placas Completas de Gaiola
             </button>
           </div>
 
@@ -388,7 +388,7 @@
               <span><span class="total-label">Total de etiquetas</span><small class="total-range" id="qrSimplesIntervalo">Informe os IDs inicial e final</small></span>
               <span class="total-count" id="qrSimplesTotal">0</span>
             </div>
-            <button class="btn-print" id="print-gaiola-qr">📄 Gerar PDF — QR Code + número</button>
+            <button class="btn-print" id="print-gaiola-qr">📄 Gerar PDF — Etiquetas CG com QR Code</button>
           </div>
 
         </div>

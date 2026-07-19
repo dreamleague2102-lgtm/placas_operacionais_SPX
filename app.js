@@ -40,13 +40,13 @@ function switchType(type) {
   // Update form header
   const icons = { shopee: '🛒', saida: '📤', nome: '👤', 'nome-duplo': '🏷️', 'nome-quatro': '🞄', gaiola: '📦', 'qr-simples': '🔲' };
   const titles = {
-    shopee: 'Workstation SPX',
-    saida: 'Placas com QR Codes',
-    nome: 'Placa de Nome',
-    'nome-duplo': 'Placa de Nome — 2 por folha',
-    'nome-quatro': 'Placa de Nome — 4 por folha',
-    gaiola: 'Parâmetros de Impressão',
-    'qr-simples': 'QR Code + Número'
+    shopee: 'Etiqueta Workstation SPX',
+    saida: 'Placa de Identificação com QR Code',
+    nome: 'Placa de Nome — Folha Inteira',
+    'nome-duplo': 'Placas de Nome — 2 por Folha',
+    'nome-quatro': 'Placas de Nome — 4 por Folha',
+    gaiola: 'Placa Completa de Gaiola',
+    'qr-simples': 'Etiqueta CG com QR Code'
   };
   const subs = {
     shopee: 'Preencha os campos abaixo',
