@@ -1031,8 +1031,8 @@ document.getElementById('print-nome').addEventListener('click', () => {
     const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
     return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
-      <div style="position:absolute;left:.08in;top:.08in;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
-      <div style="position:absolute;right:.08in;bottom:.08in;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div style="position:absolute;left:.12in;top:.82in;width:45%;height:.82in;background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
+      <div style="position:absolute;right:.12in;bottom:.82in;width:45%;height:.82in;background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
       <div style="position:absolute;inset:1.45in .9in;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
         ${linhas.map(linha => `<div>${escHtml(linha)}</div>`).join('')}

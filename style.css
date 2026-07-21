@@ -1476,8 +1476,8 @@ body {
 .preview-grande .grande-qr img, .preview-grande .grande-qr canvas { width:235px !important; height:235px !important; }
 
 .preview-simples { width:min(100%, 760px); height:430px; border:1.5px solid #555; }
-.preview-simples .simples-stripe-tl { top:9px; left:9px; width:280px; height:34px; }
-.preview-simples .simples-stripe-br { bottom:9px; right:9px; width:280px; height:34px; }
+.preview-simples .simples-stripe-tl { top:46px; left:12px; width:325px; height:44px; }
+.preview-simples .simples-stripe-br { bottom:46px; right:12px; width:325px; height:44px; }
 .preview-simples .simples-nome { inset:65px 55px; gap:13px; }
 .preview-simples .simples-nome span { font-size:var(--nome-font-size, 58px); }
 
