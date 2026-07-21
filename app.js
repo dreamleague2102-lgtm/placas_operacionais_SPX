@@ -406,7 +406,8 @@ document.querySelectorAll('[data-bulk-model]').forEach(botao => {
       prepararLoteInline(painel, modelo);
     }
     painel.hidden = !painel.hidden;
-    botao.textContent = painel.hidden ? '📋 Importar lista em lote' : '✕ Fechar importação em lote';
+    botao.hidden = !painel.hidden;
+    botao.textContent = '📋 Importar lista em lote';
   });
 });
 

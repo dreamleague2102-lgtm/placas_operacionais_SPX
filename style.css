@@ -384,17 +384,24 @@ body {
 .inline-bulk-panel {
   display:flex;
   flex-direction:column;
-  gap:.7rem;
-  padding:.85rem;
+  gap:.85rem;
+  padding:1rem;
   border:1px solid rgba(79,124,255,.35);
   border-radius:10px;
-  background:rgba(8,13,28,.72);
+  background:linear-gradient(160deg,rgba(22,27,42,.96),rgba(12,14,22,.96));
+  box-shadow:inset 0 1px rgba(255,255,255,.04),0 8px 24px rgba(0,0,0,.22);
 }
 .inline-bulk-panel[hidden] { display:none; }
-.inline-bulk-title { display:flex; align-items:center; justify-content:space-between; }
-.inline-bulk-title strong { font-size:.8rem; color:#dce6ff; }
-.inline-bulk-title button { border:0; background:transparent; color:#aaa; font-size:1.25rem; cursor:pointer; }
-.inline-bulk-panel > p { margin:0; color:var(--spx-muted); font-size:.68rem; line-height:1.45; }
+.inline-bulk-title { width:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-bottom:.7rem; border-bottom:1px solid rgba(255,255,255,.1); }
+.inline-bulk-title strong { font-size:.82rem; color:#fff; letter-spacing:-.01em; }
+.inline-bulk-title button { flex:0 0 28px; width:28px; height:28px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.12); border-radius:50%; background:rgba(255,255,255,.05); color:#bbb; font-size:1rem; line-height:1; cursor:pointer; }
+.inline-bulk-title button:hover { color:#fff; border-color:#ff7180; background:rgba(232,0,28,.12); }
+.inline-bulk-panel > p { margin:0; padding:.65rem .75rem; border-left:3px solid #4f7cff; border-radius:0 7px 7px 0; background:rgba(79,124,255,.07); color:#aeb6ca; font-size:.68rem; line-height:1.55; }
+.inline-bulk-panel code { color:#fff; font-weight:700; }
+.inline-bulk-panel .bulk-textarea { width:100%; min-height:130px; border-color:rgba(255,255,255,.16); background:#0b0c10; }
+.inline-bulk-panel .bulk-actions { background:rgba(255,255,255,.025); }
+.inline-bulk-panel .bulk-list { max-height:210px; }
+.inline-bulk-panel .btn-print { width:100%; }
 .bulk-back-button { align-self:flex-start; border:0; background:transparent; color:#9db7ff; font:600 .72rem 'Inter',sans-serif; cursor:pointer; padding:0; }
 .bulk-back-button:hover { color:#fff; }
 .bulk-actions { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.65rem .75rem; border:1px solid var(--spx-border); border-radius:8px; font-size:.73rem; }
