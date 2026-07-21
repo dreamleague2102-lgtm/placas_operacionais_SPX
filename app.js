@@ -15,6 +15,17 @@ let loteImportado = [];
 const lotesPorModelo = {};
 let pendingPrintWindow = null;
 
+function preparePrintWindow() {
+  if (pendingPrintWindow && !pendingPrintWindow.closed) return pendingPrintWindow;
+  pendingPrintWindow = window.open('', '_blank', 'width=900,height=700');
+  if (pendingPrintWindow) {
+    pendingPrintWindow.document.open();
+    pendingPrintWindow.document.write('<!doctype html><html><head><meta charset="UTF-8"><title>Preparando PDF...</title></head><body style="margin:0;background:#111;color:#fff;font-family:Arial,sans-serif;display:grid;place-items:center;height:100vh"><div style="text-align:center"><h2>Preparando suas placas...</h2><p>Aguarde enquanto os QR Codes são gerados.</p></div></body></html>');
+    pendingPrintWindow.document.close();
+  }
+  return pendingPrintWindow;
+}
+
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
   const card = e.target.closest('.type-card');
@@ -451,10 +462,7 @@ function prepararLoteInline(painel, modelo) {
   painel.querySelector('[data-inline-gerar]').addEventListener('click', () => {
     loteImportado = lotesPorModelo[modelo].filter(item => item.selecionada);
     document.getElementById('lote-modelo').value = modelo;
-    pendingPrintWindow = window.open('', '_blank', 'width=900,height=700');
-    if (pendingPrintWindow) {
-      pendingPrintWindow.document.write('<!doctype html><html><head><title>Preparando PDF...</title></head><body style="margin:0;background:#111;color:#fff;font-family:Arial,sans-serif;display:grid;place-items:center;height:100vh"><div style="text-align:center"><h2>Preparando suas placas...</h2><p>Aguarde enquanto os QR Codes são gerados.</p></div></body></html>');
-    }
+    preparePrintWindow();
     const gerador = document.getElementById('gerar-lote');
     gerador.disabled = false;
     gerador.click();
@@ -957,6 +965,7 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   if (!shopeeLote.length && !codigo) { alert('Adicione uma placa ao painel ou preencha o nome da placa.'); return; }
 
   const base = shopeeLote.length ? shopeeLote : [{ codigo, numero, rodape, qrText: qrText || `${codigo}-${numero}` }];
+  preparePrintWindow();
   const itens = [];
   for (const item of base) {
     itens.push({ ...item, qrDataURL: await generateQRDataURL(item.qrText, 600) });
@@ -1053,6 +1062,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   const atual = codigo && qrText ? { nome: codigo, qrText, qtd } : null;
   const itens = (saidaLote.length ? saidaLote : [atual])
     .flatMap(item => Array.from({ length: item.qtd }, () => item));
+  preparePrintWindow();
 
   // Measurements from table (landscape letter: 11×8.5in):
   // Nome: X=0.73, Y=2.31, W=4.54, H=0.85, font 48pt
@@ -1213,6 +1223,7 @@ document.getElementById('print-gaiola').addEventListener('click', async () => {
   if (fim - ini + 1 > 50) {
     if (!confirm(`Você vai imprimir ${fim - ini + 1} placas. Continuar?`)) return;
   }
+  preparePrintWindow();
 
   // Generate all QR codes first
   const pages = [];
@@ -1294,6 +1305,7 @@ document.getElementById('print-gaiola-qr').addEventListener('click', async () =>
 
   const total = fim - ini + 1;
   if (total > 50 && !confirm(`Você vai imprimir ${total} etiquetas. Continuar?`)) return;
+  preparePrintWindow();
 
   const etiquetas = [];
   for (let n = ini; n <= fim; n++) {
