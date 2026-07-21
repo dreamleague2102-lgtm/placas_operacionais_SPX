@@ -399,9 +399,14 @@ body {
 .inline-bulk-panel > p { margin:0; padding:.65rem .75rem; border-left:3px solid #4f7cff; border-radius:0 7px 7px 0; background:rgba(79,124,255,.07); color:#aeb6ca; font-size:.68rem; line-height:1.55; }
 .inline-bulk-panel code { color:#fff; font-weight:700; }
 .inline-bulk-panel .bulk-textarea { width:100%; min-height:130px; border-color:rgba(255,255,255,.16); background:#0b0c10; }
+.inline-bulk-columns { display:grid; grid-template-columns:1fr 1fr; gap:.65rem; }
+.inline-bulk-columns label { display:flex; flex-direction:column; gap:.4rem; min-width:0; }
+.inline-bulk-columns label > span { color:#dce6ff; font-size:.68rem; font-weight:700; }
+.inline-bulk-columns .bulk-textarea { min-height:155px; padding:.7rem; font-size:.72rem; white-space:pre; }
 .inline-bulk-panel .bulk-actions { background:rgba(255,255,255,.025); }
 .inline-bulk-panel .bulk-list { max-height:210px; }
 .inline-bulk-panel .btn-print { width:100%; }
+@media (max-width:520px) { .inline-bulk-columns { grid-template-columns:1fr; } }
 .plate-form.bulk-mode > .btn-add-plate,
 .plate-form.bulk-mode > .plate-batch,
 .plate-form.bulk-mode > .btn-print { display:none; }
