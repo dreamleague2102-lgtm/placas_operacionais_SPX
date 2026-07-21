@@ -435,7 +435,9 @@ function prepararLoteInline(painel, modelo) {
     if (pendingPrintWindow) {
       pendingPrintWindow.document.write('<!doctype html><html><head><title>Preparando PDF...</title></head><body style="margin:0;background:#111;color:#fff;font-family:Arial,sans-serif;display:grid;place-items:center;height:100vh"><div style="text-align:center"><h2>Preparando suas placas...</h2><p>Aguarde enquanto os QR Codes são gerados.</p></div></body></html>');
     }
-    document.getElementById('gerar-lote').click();
+    const gerador = document.getElementById('gerar-lote');
+    gerador.disabled = false;
+    gerador.click();
   });
   render();
 }
