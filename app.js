@@ -11,6 +11,7 @@ let saidaLote = [];
 let nomeLote = [];
 let nomeDuploLote = [];
 let nomeQuatroLote = [];
+let loteImportado = [];
 
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
@@ -33,13 +34,14 @@ function switchType(type) {
   document.getElementById(`form-${type}`).classList.add('active');
 
   // Update form header
-  const icons = { shopee: '🛒', saida: '📤', nome: '👤', 'nome-duplo': '🏷️', 'nome-quatro': '🞄', gaiola: '📦', 'qr-simples': '🔲' };
+  const icons = { shopee: '🛒', saida: '📤', nome: '👤', 'nome-duplo': '🏷️', 'nome-quatro': '🞄', lote: '📋', gaiola: '📦', 'qr-simples': '🔲' };
   const titles = {
     shopee: 'Etiqueta Workstation SPX',
     saida: 'Placa de Identificação com QR Code',
     nome: 'Placa de Nome — Folha Inteira',
     'nome-duplo': 'Placas de Nome — 2 por Folha',
     'nome-quatro': 'Placas de Nome — 4 por Folha',
+    lote: 'Gerador de Placas em Lote',
     gaiola: 'Placa Completa de Gaiola',
     'qr-simples': 'Etiqueta CG com QR Code'
   };
@@ -49,6 +51,7 @@ function switchType(type) {
     nome: 'Nome grande em destaque com listras',
     'nome-duplo': 'Crie uma lista e escolha o tamanho de cada nome',
     'nome-quatro': 'Monte uma grade com quatro placas por folha',
+    lote: 'Cole IDs e nomes para gerar todas de uma vez',
     gaiola: 'Defina o intervalo de gaiolas SPX',
     'qr-simples': 'Gere somente o número CG e o QR Code'
   };
@@ -171,6 +174,7 @@ addListener('gaiola-inicio', () => { updateGaiolaTotal(); updatePreview(); });
 addListener('gaiola-fim', () => { updateGaiolaTotal(); updatePreview(); });
 addListener('qr-simples-inicio', () => { updateQrSimplesTotal(); updatePreview(); });
 addListener('qr-simples-fim', () => { updateQrSimplesTotal(); updatePreview(); });
+addListener('lote-modelo', updatePreview);
 
 // Auto-fill QR content from code
 document.getElementById('shopee-codigo').addEventListener('input', () => {
@@ -379,6 +383,69 @@ document.getElementById('nome-quatro-lista').addEventListener('change', event =>
 
 renderLotes();
 
+// ===================== GERADOR EM LOTE =====================
+function interpretarLote(texto) {
+  return String(texto || '').split(/\r?\n/).map(linha => linha.trim()).filter(Boolean).map((linha, index) => {
+    const partes = linha.includes('\t') ? linha.split('\t') : linha.includes(';') ? linha.split(';') : linha.split(',');
+    const id = String(partes.shift() || '').trim();
+    const nome = partes.join(' ').trim();
+    return { id, nome, selecionada:true, linha:index + 1 };
+  }).filter(item => item.id && item.nome);
+}
+
+function renderListaLote() {
+  const lista = document.getElementById('lote-lista');
+  const acoes = document.getElementById('lote-acoes');
+  const selecionadas = loteImportado.filter(item => item.selecionada).length;
+  acoes.hidden = !loteImportado.length;
+  document.getElementById('lote-contagem').textContent = `${selecionadas} de ${loteImportado.length} placas`;
+  document.getElementById('lote-selecionar-todos').checked = Boolean(loteImportado.length) && selecionadas === loteImportado.length;
+  document.getElementById('gerar-lote').disabled = selecionadas === 0;
+  lista.innerHTML = loteImportado.length ? loteImportado.map((item, index) => `
+    <label class="batch-item"><input type="checkbox" data-lote-item="${index}" ${item.selecionada ? 'checked' : ''} />
+      <div><strong>${escHtml(item.id)}</strong><span>${escHtml(item.nome)}</span></div></label>`).join('')
+    : '<div class="batch-empty">Nenhuma linha válida. Use o formato ID; NOME.</div>';
+  if (currentType === 'lote') updatePreview();
+}
+
+document.getElementById('processar-lote').addEventListener('click', () => {
+  loteImportado = interpretarLote(document.getElementById('lote-dados').value);
+  renderListaLote();
+  if (!loteImportado.length) alert('Nenhuma linha válida foi encontrada. Use uma linha por placa no formato ID; NOME.');
+});
+
+document.getElementById('lote-lista').addEventListener('change', event => {
+  const controle = event.target.closest('[data-lote-item]');
+  if (!controle) return;
+  loteImportado[Number(controle.dataset.loteItem)].selecionada = controle.checked;
+  renderListaLote();
+});
+
+document.getElementById('lote-selecionar-todos').addEventListener('change', function() {
+  loteImportado.forEach(item => { item.selecionada = this.checked; });
+  renderListaLote();
+});
+
+document.getElementById('gerar-lote').addEventListener('click', () => {
+  const registros = loteImportado.filter(item => item.selecionada);
+  const modelo = document.getElementById('lote-modelo').value;
+  if (!registros.length) { alert('Selecione pelo menos uma placa.'); return; }
+  const estiloNome = { qtd:1, fonteAuto:true, fonte:70, familia:'Calibri', negrito:true };
+  if (modelo === 'shopee') {
+    shopeeLote = registros.map(item => ({ codigo:item.nome, numero:item.id, rodape:item.nome, qrText:item.id }));
+  } else if (modelo === 'saida') {
+    saidaLote = registros.map(item => ({ nome:item.nome, qrText:item.id, qtd:1 }));
+  } else if (modelo === 'nome') {
+    nomeLote = registros.map(item => ({ nome:item.nome, ...estiloNome }));
+  } else if (modelo === 'nome-duplo') {
+    nomeDuploLote = registros.map(item => ({ nome:item.nome, ...estiloNome }));
+  } else if (modelo === 'nome-quatro') {
+    nomeQuatroLote = registros.map(item => ({ nome:item.nome, ...estiloNome }));
+  }
+  renderLotes();
+  document.getElementById(`print-${modelo}`).click();
+});
+
 // Force uppercase for nome
 document.getElementById('nome-texto').addEventListener('input', function() {
   const pos = this.selectionStart;
@@ -442,6 +509,7 @@ async function updatePreview() {
     else if (currentType === 'nome') renderNomePreview(area);
     else if (currentType === 'nome-duplo') renderNomeDuploPreview(area);
     else if (currentType === 'nome-quatro') renderNomeQuatroPreview(area);
+    else if (currentType === 'lote') renderLotePreview(area);
     else if (currentType === 'gaiola') await renderGaiolaPreview(area);
     else if (currentType === 'qr-simples') await renderQrSimplesPreview(area);
   } catch (e) {
@@ -642,6 +710,18 @@ function renderNomeQuatroPreview(area) {
     <div style="position:absolute;inset:30px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 70) : 48}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
   </div>`).join('');
   area.appendChild(folha);
+}
+
+function renderLotePreview(area) {
+  const selecionados = loteImportado.filter(item => item.selecionada);
+  const modelo = document.getElementById('lote-modelo');
+  area.innerHTML = `<div class="bulk-preview-panel">
+    <div class="bulk-preview-icon">📋</div>
+    <h3>${selecionados.length ? `${selecionados.length} placas prontas` : 'Gerador em lote'}</h3>
+    <p>Modelo: <strong>${escHtml(modelo.options[modelo.selectedIndex].text)}</strong></p>
+    <div class="bulk-preview-rows">${selecionados.slice(0, 6).map(item => `<div><span>${escHtml(item.id)}</span><strong>${escHtml(item.nome)}</strong></div>`).join('') || '<small>Cole a lista e clique em “Importar lista”.</small>'}</div>
+    ${selecionados.length > 6 ? `<small>+ ${selecionados.length - 6} outras placas</small>` : ''}
+  </div>`;
 }
 
 // ---- GAIOLA SPX ----

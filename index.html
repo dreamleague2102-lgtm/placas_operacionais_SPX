@@ -140,6 +140,14 @@
           </div></div>
         </button>
 
+        <button class="type-card" data-type="lote" id="btn-lote">
+          <div class="type-card-icon">📋</div>
+          <div class="type-card-info"><h3>Gerador de Placas em Lote</h3><p>Cole uma lista de IDs e nomes para gerar todas as placas de uma vez</p></div>
+          <div class="type-card-preview">
+            <div class="bulk-mini-preview"><span>☑ ID-001 · NOME</span><span>☑ ID-002 · NOME</span><span>☑ ID-003 · NOME</span><strong>GERAR PDF</strong></div>
+          </div>
+        </button>
+
         <button class="type-card" data-type="gaiola" id="btn-gaiola">
           <div class="type-card-icon">📦</div>
           <div class="type-card-info">
@@ -360,6 +368,33 @@
             <button class="btn-add-plate" type="button" id="add-nome-quatro">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-quatro-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome-quatro">📄 Gerar PDF — Nomes (4 por Folha)</button>
+          </div>
+
+          <!-- GERADOR EM LOTE -->
+          <div class="plate-form" id="form-lote">
+            <div class="form-guide"><strong>Como fazer:</strong> escolha o modelo e cole uma linha por placa no formato <code>ID; NOME</code>. Também aceita colunas copiadas do Excel ou Google Sheets.</div>
+            <div class="field-group">
+              <label class="field-label" for="lote-modelo"><span class="field-icon">🗂️</span> Modelo das placas</label>
+              <select class="field-input" id="lote-modelo">
+                <option value="shopee">Etiqueta Workstation SPX</option>
+                <option value="saida">Placa de Identificação com QR Code</option>
+                <option value="nome">Placa de Nome — Folha Inteira</option>
+                <option value="nome-duplo">Placas de Nome — 2 por Folha</option>
+                <option value="nome-quatro">Placas de Nome — 4 por Folha</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="lote-dados"><span class="field-icon">📋</span> Lista de ID e nome</label>
+              <textarea class="field-input bulk-textarea" id="lote-dados" rows="8" placeholder="ID-001; NOME DA PLACA&#10;ID-002; OUTRO NOME&#10;ID-003; TERCEIRO NOME"></textarea>
+              <span class="field-hint">O ID será gravado no QR Code e o nome aparecerá na placa.</span>
+            </div>
+            <button class="btn-add-plate" type="button" id="processar-lote">Importar lista</button>
+            <div class="bulk-actions" id="lote-acoes" hidden>
+              <label><input type="checkbox" id="lote-selecionar-todos" checked /> Selecionar todas</label>
+              <strong id="lote-contagem">0 placas</strong>
+            </div>
+            <div class="plate-batch bulk-list" id="lote-lista" aria-live="polite"><div class="batch-empty">Cole a lista acima para começar.</div></div>
+            <button class="btn-print" id="gerar-lote" disabled>📄 Gerar PDF com placas selecionadas</button>
           </div>
 
           <!-- GAIOLA FORM -->
