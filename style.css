@@ -349,6 +349,17 @@ body {
 .mini-num { font-size: 0.55rem; font-weight: 600; }
 .mini-qr { font-size: 1.6rem; line-height: 1; }
 .mini-qr.large { font-size: 2rem; }
+.mini-qr-mark {
+  width:22px;
+  height:22px;
+  border:3px solid #000;
+  background:
+    linear-gradient(90deg,#000 25%,transparent 25% 50%,#000 50% 75%,transparent 75%),
+    linear-gradient(#000 25%,transparent 25% 50%,#000 50% 75%,transparent 75%);
+  background-size:8px 8px;
+  box-shadow:inset 0 0 0 2px #fff;
+}
+.mini-qr-mark.large { width:34px; height:34px; border-width:4px; }
 .mini-out { font-size: 0.65rem; font-weight: 800; }
 .mini-nome { font-size: 0.9rem; font-weight: 900; letter-spacing: -0.02em; }
 .mini-spx-header {
@@ -360,10 +371,41 @@ body {
 }
 .mini-cg { font-size: 0.75rem; font-weight: 800; }
 .mini-inst { font-size: 0.45rem; color: #666; }
+.mini-footer { font-size:.46rem; font-weight:700; }
 
-.nome-mini .mini-body { background: #fff; min-height: 60px; }
-.saida-mini { display: flex; flex-direction: column; }
-.gaiola-mini { display: flex; flex-direction: column; }
+.nome-mini { border:1px solid #777; }
+.nome-mini .mini-corner { width:42%; height:10px; }
+.nome-mini .mini-body { background:#fff; min-height:60px; }
+.nome-full-mini { height:105px; }
+.nome-full-mini .mini-corner.top-left { top:13px; width:46%; height:13px; }
+.nome-full-mini .mini-corner.bottom-right { bottom:13px; width:46%; height:13px; }
+.nome-full-mini .mini-body { min-height:103px; }
+.shopee-mini { width:92px; height:116px; border:1px solid #444; display:flex; flex-direction:column; }
+.shopee-mini .mini-stripe { width:64%; height:9px; flex:0 0 9px; }
+.shopee-mini .mini-stripe:last-child { align-self:flex-end; }
+.shopee-mini .mini-body { flex:1; justify-content:center; gap:4px; padding:3px; }
+.shopee-mini .mini-code { font-size:.54rem; }
+.shopee-mini .mini-num,.shopee-mini .mini-footer { font-size:.43rem; }
+.shopee-mini .mini-qr-mark { width:25px; height:25px; }
+.saida-mini { width:200px; height:105px; display:flex; flex-direction:column; border:1px solid #555; }
+.saida-mini .mini-body.center { min-height:103px; flex-direction:row; justify-content:space-around; padding:20px 15px; }
+.saida-mini .mini-corner { width:43%; height:12px; }
+.saida-mini .mini-corner.top-left { top:12px; }
+.saida-mini .mini-corner.bottom-right { bottom:12px; }
+.saida-mini .mini-out { font-size:.72rem; }
+.saida-mini .mini-qr-mark { width:44px; height:44px; border-width:5px; }
+.gaiola-mini { width:125px; height:112px; display:flex; flex-direction:column; border:1px solid #aaa; border-radius:2px; }
+.gaiola-mini .mini-spx-header { height:22px; display:flex; align-items:center; justify-content:space-between; padding:3px 5px; background:#d5d5d5; color:#000; }
+.gaiola-mini .mini-spx-header b { font-style:italic; font-size:.62rem; }
+.gaiola-mini .mini-spx-header span { font-size:.38rem; font-weight:800; }
+.mini-gaiola-warn { padding:3px; text-align:center; font-size:.34rem; border-bottom:1px solid #ddd; }
+.mini-gaiola-content { flex:1; display:grid; grid-template-columns:1fr 48px; gap:4px; padding:5px; }
+.mini-instructions { display:flex; flex-direction:column; gap:4px; padding-top:4px; }
+.mini-instructions i { display:block; height:3px; background:#ccc; border-radius:2px; }
+.mini-gaiola-qrbox { border:1px solid #aaa; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+.mini-gaiola-qrbox .mini-cg { font-size:.42rem; }
+.mini-gaiola-qrbox .mini-qr-mark { width:25px; height:25px; }
+.mini-gaiola-footer { background:#d5d5d5; padding:3px; text-align:center; font-size:.3rem; }
 .mini-four-grid { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:7px; }
 .mini-four-grid .mini-plate { min-width:0; }
 .mini-four-grid .mini-body.center { min-height:48px; padding:8px 4px; }
@@ -434,15 +476,18 @@ body {
 .bulk-preview-rows span { color:#ff7180; font:700 .75rem monospace; }
 .bulk-preview-rows strong { font-size:.76rem; }
 .qr-simples-mini {
-  min-height:100px;
+  width:92px;
+  min-height:112px;
   border:1px solid #888;
   padding:8px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:5px;
+  gap:12px;
 }
+.qr-simples-mini .mini-cg { font-size:.7rem; }
+.qr-simples-mini .mini-qr-mark { width:48px; height:48px; border-width:5px; }
 .mini-aviso { font-size:.38rem; font-weight:500; }
 
 /* ===================== MAIN PANEL ===================== */
