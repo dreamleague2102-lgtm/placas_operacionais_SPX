@@ -381,6 +381,20 @@ body {
   cursor:pointer;
 }
 .btn-bulk-open:hover { background:rgba(79,124,255,.18); }
+.inline-bulk-panel {
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+  padding:.85rem;
+  border:1px solid rgba(79,124,255,.35);
+  border-radius:10px;
+  background:rgba(8,13,28,.72);
+}
+.inline-bulk-panel[hidden] { display:none; }
+.inline-bulk-title { display:flex; align-items:center; justify-content:space-between; }
+.inline-bulk-title strong { font-size:.8rem; color:#dce6ff; }
+.inline-bulk-title button { border:0; background:transparent; color:#aaa; font-size:1.25rem; cursor:pointer; }
+.inline-bulk-panel > p { margin:0; color:var(--spx-muted); font-size:.68rem; line-height:1.45; }
 .bulk-back-button { align-self:flex-start; border:0; background:transparent; color:#9db7ff; font:600 .72rem 'Inter',sans-serif; cursor:pointer; padding:0; }
 .bulk-back-button:hover { color:#fff; }
 .bulk-actions { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.65rem .75rem; border:1px solid var(--spx-border); border-radius:8px; font-size:.73rem; }

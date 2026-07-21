@@ -12,7 +12,7 @@ let nomeLote = [];
 let nomeDuploLote = [];
 let nomeQuatroLote = [];
 let loteImportado = [];
-let bulkReturnType = 'shopee';
+const lotesPorModelo = {};
 
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
@@ -387,13 +387,53 @@ renderLotes();
 // ===================== GERADOR EM LOTE =====================
 document.querySelectorAll('[data-bulk-model]').forEach(botao => {
   botao.addEventListener('click', () => {
-    bulkReturnType = botao.dataset.bulkModel;
-    document.getElementById('lote-modelo').value = bulkReturnType;
-    switchType('lote');
+    const modelo = botao.dataset.bulkModel;
+    let painel = botao.parentElement.querySelector(`.inline-bulk-panel[data-modelo="${modelo}"]`);
+    if (!painel) {
+      painel = document.createElement('div');
+      painel.className = 'inline-bulk-panel';
+      painel.dataset.modelo = modelo;
+      painel.hidden = true;
+      painel.innerHTML = `
+        <div class="inline-bulk-title"><strong>📋 Importação em lote</strong><button type="button" data-fechar-lote>×</button></div>
+        <p>Cole uma linha por placa no formato <code>ID; NOME</code> ou duas colunas do Excel/Sheets.</p>
+        <textarea class="field-input bulk-textarea" data-inline-dados rows="6" placeholder="ID-001; NOME DA PLACA\nID-002; OUTRO NOME"></textarea>
+        <button class="btn-add-plate" type="button" data-inline-importar>Importar lista</button>
+        <div class="bulk-actions" data-inline-acoes hidden><label><input type="checkbox" data-inline-todos checked> Selecionar todas</label><strong data-inline-contagem>0 placas</strong></div>
+        <div class="plate-batch bulk-list" data-inline-lista><div class="batch-empty">Cole a lista acima para começar.</div></div>
+        <button class="btn-print" type="button" data-inline-gerar disabled>📄 Gerar PDF do lote</button>`;
+      botao.insertAdjacentElement('afterend', painel);
+      prepararLoteInline(painel, modelo);
+    }
+    painel.hidden = !painel.hidden;
+    botao.textContent = painel.hidden ? '📋 Importar lista em lote' : '✕ Fechar importação em lote';
   });
 });
 
-document.getElementById('voltar-do-lote').addEventListener('click', () => switchType(bulkReturnType));
+function prepararLoteInline(painel, modelo) {
+  lotesPorModelo[modelo] ||= [];
+  const render = () => {
+    const itens = lotesPorModelo[modelo];
+    const selecionadas = itens.filter(item => item.selecionada).length;
+    painel.querySelector('[data-inline-acoes]').hidden = !itens.length;
+    painel.querySelector('[data-inline-contagem]').textContent = `${selecionadas} de ${itens.length} placas`;
+    painel.querySelector('[data-inline-todos]').checked = Boolean(itens.length) && selecionadas === itens.length;
+    painel.querySelector('[data-inline-gerar]').disabled = !selecionadas;
+    painel.querySelector('[data-inline-lista]').innerHTML = itens.length ? itens.map((item, index) => `<label class="batch-item"><input type="checkbox" data-inline-item="${index}" ${item.selecionada ? 'checked' : ''}><div><strong>${escHtml(item.id)}</strong><span>${escHtml(item.nome)}</span></div></label>`).join('') : '<div class="batch-empty">Nenhuma linha importada.</div>';
+  };
+  painel.querySelector('[data-fechar-lote]').addEventListener('click', () => painel.previousElementSibling.click());
+  painel.querySelector('[data-inline-importar]').addEventListener('click', () => { lotesPorModelo[modelo] = interpretarLote(painel.querySelector('[data-inline-dados]').value); render(); });
+  painel.querySelector('[data-inline-lista]').addEventListener('change', event => { const item = event.target.closest('[data-inline-item]'); if (!item) return; lotesPorModelo[modelo][Number(item.dataset.inlineItem)].selecionada = item.checked; render(); });
+  painel.querySelector('[data-inline-todos]').addEventListener('change', event => { lotesPorModelo[modelo].forEach(item => { item.selecionada = event.target.checked; }); render(); });
+  painel.querySelector('[data-inline-gerar]').addEventListener('click', () => {
+    loteImportado = lotesPorModelo[modelo].filter(item => item.selecionada);
+    document.getElementById('lote-modelo').value = modelo;
+    document.getElementById('gerar-lote').click();
+  });
+  render();
+}
+
+document.getElementById('voltar-do-lote').addEventListener('click', () => switchType('shopee'));
 
 function interpretarLote(texto) {
   return String(texto || '').split(/\r?\n/).map(linha => linha.trim()).filter(Boolean).map((linha, index) => {
