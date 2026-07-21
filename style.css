@@ -496,6 +496,18 @@ body {
   font:500 .78rem Calibri,Arial,sans-serif;
   border-right:1px solid rgba(255,255,255,.12);
 }
+.font-family-select {
+  width:120px;
+  height:100%;
+  padding:0 .55rem;
+  border:0;
+  border-right:1px solid rgba(255,255,255,.12);
+  background:#151519;
+  color:#fff;
+  font-size:.75rem;
+  outline:none;
+}
+.font-family-select option { background:#151519; color:#fff; }
 .font-toolbar button {
   width:32px;
   height:100%;
@@ -507,7 +519,7 @@ body {
 }
 .font-toolbar button:hover:not(:disabled) { background:rgba(255,255,255,.08); color:#fff; }
 .font-toolbar button:disabled { opacity:.3; cursor:not-allowed; }
-#nome-tamanho {
+.font-toolbar input[type="number"] {
   width:48px;
   height:28px;
   border:1px solid #6ea5ff;
@@ -519,8 +531,8 @@ body {
   outline:none;
   appearance:textfield;
 }
-#nome-tamanho::-webkit-inner-spin-button { appearance:none; }
-#nome-tamanho:disabled { opacity:.35; border-color:rgba(255,255,255,.15); }
+.font-toolbar input[type="number"]::-webkit-inner-spin-button { appearance:none; }
+.font-toolbar input[type="number"]:disabled { opacity:.35; border-color:rgba(255,255,255,.15); }
 .font-bold-display {
   width:34px;
   height:28px;
@@ -531,6 +543,18 @@ body {
   display:grid;
   place-items:center;
   font:bold .85rem Arial,sans-serif;
+}
+.font-toolbar .font-bold-button {
+  width:34px;
+  height:28px;
+  margin-right:4px;
+  border-radius:4px;
+  color:#aaa;
+  font:bold .85rem Arial,sans-serif;
+}
+.font-toolbar .font-bold-button.active {
+  background:#d8e6ff;
+  color:#17498f;
 }
 .auto-font-option {
   display:flex;
@@ -621,6 +645,27 @@ body {
   border-radius:6px;
   background:#111;
   color:#fff;
+}
+.batch-font-controls select {
+  max-width:112px;
+  padding:.35rem;
+  border:1px solid var(--spx-border);
+  border-radius:6px;
+  background:#111;
+  color:#fff;
+  font-size:.68rem;
+}
+.batch-font-controls .batch-bold-button {
+  width:30px;
+  height:28px;
+  border:1px solid var(--spx-border);
+  border-radius:5px;
+  color:#aaa;
+  font-weight:800;
+}
+.batch-font-controls .batch-bold-button.active {
+  background:#d8e6ff;
+  color:#17498f;
 }
 .batch-font-controls button { margin-left:auto; }
 

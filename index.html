@@ -271,17 +271,20 @@
                 <output id="nome-tamanho-valor">Automático</output>
               </div>
               <div class="font-toolbar" aria-label="Formatação do nome">
-                <span class="font-family-display">Calibri</span>
+                <select class="font-family-select" id="nome-fonte" aria-label="Família da fonte">
+                  <option>Calibri</option><option>Arial</option><option>Verdana</option><option>Tahoma</option><option>Trebuchet MS</option><option>Georgia</option><option>Times New Roman</option><option>Arial Black</option><option>Impact</option>
+                </select>
                 <button type="button" id="nome-tamanho-menor" title="Diminuir fonte" disabled>−</button>
-                <input type="number" id="nome-tamanho" min="6" max="96" value="70" list="nome-tamanhos" disabled />
+                <input type="number" id="nome-tamanho" min="6" max="160" value="70" list="nome-tamanhos" disabled />
                 <button type="button" id="nome-tamanho-maior" title="Aumentar fonte" disabled>+</button>
-                <span class="font-bold-display" title="Negrito">B</span>
+                <button type="button" class="font-bold-button active" id="nome-negrito" title="Ativar ou remover negrito" aria-pressed="true">B</button>
               </div>
               <datalist id="nome-tamanhos">
                 <option value="6"><option value="8"><option value="10"><option value="12">
                 <option value="14"><option value="18"><option value="24"><option value="30">
                 <option value="36"><option value="48"><option value="60"><option value="70">
-                <option value="72"><option value="96">
+                <option value="72"><option value="96"><option value="110"><option value="120">
+                <option value="140"><option value="160">
               </datalist>
               <label class="auto-font-option">
                 <input type="checkbox" id="nome-tamanho-auto" checked />
@@ -310,11 +313,21 @@
                 <output id="nome-duplo-tamanho-valor">Automático</output>
               </div>
               <div class="font-toolbar" aria-label="Formatação do nome">
-                <span class="font-family-display">Calibri</span>
+                <select class="font-family-select" id="nome-duplo-fonte" aria-label="Família da fonte">
+                  <option value="Calibri" selected>Calibri</option>
+                  <option value="Arial">Arial</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Tahoma">Tahoma</option>
+                  <option value="Trebuchet MS">Trebuchet MS</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Arial Black">Arial Black</option>
+                  <option value="Impact">Impact</option>
+                </select>
                 <button type="button" id="nome-duplo-tamanho-menor" title="Diminuir fonte" disabled>−</button>
-                <input type="number" id="nome-duplo-tamanho" min="6" max="96" value="70" list="nome-tamanhos" disabled />
+                <input type="number" id="nome-duplo-tamanho" min="6" max="160" value="70" list="nome-tamanhos" disabled />
                 <button type="button" id="nome-duplo-tamanho-maior" title="Aumentar fonte" disabled>+</button>
-                <span class="font-bold-display" title="Negrito">B</span>
+                <button type="button" class="font-bold-button active" id="nome-duplo-negrito" title="Ativar ou remover negrito" aria-pressed="true">B</button>
               </div>
               <label class="auto-font-option">
                 <input type="checkbox" id="nome-duplo-tamanho-auto" checked />
@@ -336,7 +349,11 @@
             </div>
             <div class="font-size-control">
               <div class="font-size-heading"><label class="field-label" for="nome-quatro-tamanho">🔠 Tamanho da fonte</label><output id="nome-quatro-tamanho-valor">Automático</output></div>
-              <div class="font-toolbar"><span class="font-family-display">Calibri</span><button type="button" id="nome-quatro-tamanho-menor" disabled>−</button><input type="number" id="nome-quatro-tamanho" min="6" max="96" value="60" disabled /><button type="button" id="nome-quatro-tamanho-maior" disabled>+</button><span class="font-bold-display">B</span></div>
+              <div class="font-toolbar">
+                <select class="font-family-select" id="nome-quatro-fonte" aria-label="Família da fonte"><option>Calibri</option><option>Arial</option><option>Verdana</option><option>Tahoma</option><option>Trebuchet MS</option><option>Georgia</option><option>Times New Roman</option><option>Arial Black</option><option>Impact</option></select>
+                <button type="button" id="nome-quatro-tamanho-menor" disabled>−</button><input type="number" id="nome-quatro-tamanho" min="6" max="160" value="60" disabled /><button type="button" id="nome-quatro-tamanho-maior" disabled>+</button>
+                <button type="button" class="font-bold-button active" id="nome-quatro-negrito" title="Ativar ou remover negrito" aria-pressed="true">B</button>
+              </div>
               <label class="auto-font-option"><input type="checkbox" id="nome-quatro-tamanho-auto" checked /> Ajustar automaticamente para caber</label>
               <span class="field-hint">Desmarque para escolher o tamanho manualmente.</span>
             </div>

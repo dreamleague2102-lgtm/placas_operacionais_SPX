@@ -89,6 +89,11 @@ addListener('saida-qtd', updatePreview);
 // Nome
 addListener('nome-texto', updatePreview);
 addListener('nome-qtd', updatePreview);
+addListener('nome-fonte', updatePreview);
+document.getElementById('nome-negrito').addEventListener('click', function() {
+  const ativo = this.getAttribute('aria-pressed') !== 'true';
+  this.setAttribute('aria-pressed', String(ativo)); this.classList.toggle('active', ativo); updatePreview();
+});
 addListener('nome-duplo-texto', updatePreview);
 addListener('nome-duplo-tamanho', () => {
   document.getElementById('nome-duplo-tamanho-valor').textContent = `${document.getElementById('nome-duplo-tamanho').value} pt`;
@@ -106,11 +111,18 @@ document.getElementById('nome-duplo-tamanho-auto').addEventListener('change', fu
 
 function alterarTamanhoNomeDuplo(delta) {
   const controle = document.getElementById('nome-duplo-tamanho');
-  controle.value = Math.min(96, Math.max(6, (parseInt(controle.value) || 70) + delta));
+  controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 70) + delta));
   controle.dispatchEvent(new Event('input', { bubbles:true }));
 }
 document.getElementById('nome-duplo-tamanho-menor').addEventListener('click', () => alterarTamanhoNomeDuplo(-1));
 document.getElementById('nome-duplo-tamanho-maior').addEventListener('click', () => alterarTamanhoNomeDuplo(1));
+addListener('nome-duplo-fonte', updatePreview);
+document.getElementById('nome-duplo-negrito').addEventListener('click', function() {
+  const ativo = this.getAttribute('aria-pressed') !== 'true';
+  this.setAttribute('aria-pressed', String(ativo));
+  this.classList.toggle('active', ativo);
+  updatePreview();
+});
 
 addListener('nome-quatro-texto', updatePreview);
 addListener('nome-quatro-tamanho', () => {
@@ -127,11 +139,16 @@ document.getElementById('nome-quatro-tamanho-auto').addEventListener('change', f
 });
 function alterarTamanhoNomeQuatro(delta) {
   const controle = document.getElementById('nome-quatro-tamanho');
-  controle.value = Math.min(96, Math.max(6, (parseInt(controle.value) || 60) + delta));
+  controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 60) + delta));
   controle.dispatchEvent(new Event('input', { bubbles:true }));
 }
 document.getElementById('nome-quatro-tamanho-menor').addEventListener('click', () => alterarTamanhoNomeQuatro(-1));
 document.getElementById('nome-quatro-tamanho-maior').addEventListener('click', () => alterarTamanhoNomeQuatro(1));
+addListener('nome-quatro-fonte', updatePreview);
+document.getElementById('nome-quatro-negrito').addEventListener('click', function() {
+  const ativo = this.getAttribute('aria-pressed') !== 'true';
+  this.setAttribute('aria-pressed', String(ativo)); this.classList.toggle('active', ativo); updatePreview();
+});
 addListener('nome-tamanho', () => {
   document.getElementById('nome-tamanho-valor').textContent = `${document.getElementById('nome-tamanho').value} pt`;
   updatePreview();
@@ -148,7 +165,7 @@ document.getElementById('nome-tamanho-auto').addEventListener('change', function
 
 function alterarTamanhoNome(delta) {
   const controle = document.getElementById('nome-tamanho');
-  controle.value = Math.min(96, Math.max(6, (parseInt(controle.value) || 70) + delta));
+  controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 70) + delta));
   controle.dispatchEvent(new Event('input', { bubbles:true }));
 }
 document.getElementById('nome-tamanho-menor').addEventListener('click', () => alterarTamanhoNome(-1));
@@ -210,7 +227,7 @@ function renderLotes() {
 
   const nomeLista = document.getElementById('nome-lista');
   nomeLista.innerHTML = nomeLote.length ? nomeLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>Fonte: ${item.fonteAuto ? 'automática' : `${item.fonte} pt`}</span></div>
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.familia || 'Calibri'} · ${item.fonteAuto ? 'automática' : `${item.fonte} pt`} · ${item.negrito === false ? 'normal' : 'negrito'}</span></div>
     <button type="button" data-remove-nome="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 
@@ -220,8 +237,10 @@ function renderLotes() {
       <div><strong>Placa ${index + 1} · ${index % 2 === 0 ? 'superior' : 'inferior'}</strong><span>${escHtml(item.nome)}</span></div>
       <div class="batch-font-controls">
         <label><input type="checkbox" data-nome-duplo-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
-        <input type="number" min="6" max="96" value="${item.fonte}" data-nome-duplo-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}">
+        <select data-nome-duplo-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri','Arial','Verdana','Tahoma','Trebuchet MS','Georgia','Times New Roman','Arial Black','Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
+        <input type="number" min="6" max="160" value="${item.fonte}" data-nome-duplo-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}">
         <span>pt</span>
+        <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-duplo-negrito="${index}" title="Ativar ou remover negrito">B</button>
         <button type="button" data-remove-nome-duplo="${index}">Remover</button>
       </div>
     </div>`).join('')
@@ -231,7 +250,9 @@ function renderLotes() {
   nomeQuatroLista.innerHTML = nomeQuatroLote.length ? nomeQuatroLote.map((item, index) => `
     <div class="batch-item nome-duplo-item"><div><strong>Placa ${index + 1} · posição ${(index % 4) + 1}</strong><span>${escHtml(item.nome)}</span></div>
       <div class="batch-font-controls"><label><input type="checkbox" data-nome-quatro-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
-      <input type="number" min="6" max="96" value="${item.fonte}" data-nome-quatro-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''}><span>pt</span>
+      <select data-nome-quatro-familia="${index}">${['Calibri','Arial','Verdana','Tahoma','Trebuchet MS','Georgia','Times New Roman','Arial Black','Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
+      <input type="number" min="6" max="160" value="${item.fonte}" data-nome-quatro-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''}><span>pt</span>
+      <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-quatro-negrito="${index}">B</button>
       <button type="button" data-remove-nome-quatro="${index}">Remover</button></div></div>`).join('')
     : '<div class="batch-empty">Adicione até quatro nomes por folha.</div>';
 }
@@ -274,7 +295,9 @@ document.getElementById('add-nome').addEventListener('click', () => {
     nome,
     qtd,
     fonteAuto: document.getElementById('nome-tamanho-auto').checked,
-    fonte: parseInt(document.getElementById('nome-tamanho').value) || 70
+    fonte: parseInt(document.getElementById('nome-tamanho').value) || 70,
+    familia: document.getElementById('nome-fonte').value,
+    negrito: document.getElementById('nome-negrito').getAttribute('aria-pressed') === 'true'
   });
   renderLotes();
   updatePreview();
@@ -289,7 +312,9 @@ document.getElementById('add-nome-duplo').addEventListener('click', () => {
   nomeDuploLote.push({
     nome,
     fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
-    fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70
+    fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70,
+    familia: document.getElementById('nome-duplo-fonte').value,
+    negrito: document.getElementById('nome-duplo-negrito').getAttribute('aria-pressed') === 'true'
   });
   campo.value = '';
   renderLotes(); updatePreview(); campo.focus();
@@ -299,7 +324,7 @@ document.getElementById('add-nome-quatro').addEventListener('click', () => {
   const campo = document.getElementById('nome-quatro-texto');
   const nome = campo.value.trim().toUpperCase();
   if (!nome) { alert('Preencha o nome da placa.'); return; }
-  nomeQuatroLote.push({ nome, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60 });
+  nomeQuatroLote.push({ nome, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60, familia: document.getElementById('nome-quatro-fonte').value, negrito: document.getElementById('nome-quatro-negrito').getAttribute('aria-pressed') === 'true' });
   campo.value = ''; renderLotes(); updatePreview(); campo.focus();
 });
 
@@ -326,33 +351,46 @@ document.getElementById('nome-lista').addEventListener('click', event => {
 
 document.getElementById('nome-duplo-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-nome-duplo]');
-  if (!botao) return;
-  nomeDuploLote.splice(Number(botao.dataset.removeNomeDuplo), 1);
+  const negrito = event.target.closest('[data-nome-duplo-negrito]');
+  if (botao) nomeDuploLote.splice(Number(botao.dataset.removeNomeDuplo), 1);
+  else if (negrito) {
+    const item = nomeDuploLote[Number(negrito.dataset.nomeDuploNegrito)];
+    item.negrito = item.negrito === false;
+  }
+  else return;
   renderLotes(); updatePreview();
 });
 
 document.getElementById('nome-duplo-lista').addEventListener('change', event => {
   const auto = event.target.closest('[data-nome-duplo-auto]');
   const fonte = event.target.closest('[data-nome-duplo-fonte]');
+  const familia = event.target.closest('[data-nome-duplo-familia]');
   if (auto) {
     nomeDuploLote[Number(auto.dataset.nomeDuploAuto)].fonteAuto = auto.checked;
   } else if (fonte) {
     nomeDuploLote[Number(fonte.dataset.nomeDuploFonte)].fonte = parseInt(fonte.value) || 70;
+  } else if (familia) {
+    nomeDuploLote[Number(familia.dataset.nomeDuploFamilia)].familia = familia.value;
   } else return;
   renderLotes(); updatePreview();
 });
 
 document.getElementById('nome-quatro-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-nome-quatro]');
-  if (!botao) return;
-  nomeQuatroLote.splice(Number(botao.dataset.removeNomeQuatro), 1);
+  const negrito = event.target.closest('[data-nome-quatro-negrito]');
+  if (botao) nomeQuatroLote.splice(Number(botao.dataset.removeNomeQuatro), 1);
+  else if (negrito) {
+    const item = nomeQuatroLote[Number(negrito.dataset.nomeQuatroNegrito)]; item.negrito = item.negrito === false;
+  } else return;
   renderLotes(); updatePreview();
 });
 document.getElementById('nome-quatro-lista').addEventListener('change', event => {
   const auto = event.target.closest('[data-nome-quatro-auto]');
   const fonte = event.target.closest('[data-nome-quatro-fonte]');
+  const familia = event.target.closest('[data-nome-quatro-familia]');
   if (auto) nomeQuatroLote[Number(auto.dataset.nomeQuatroAuto)].fonteAuto = auto.checked;
   else if (fonte) nomeQuatroLote[Number(fonte.dataset.nomeQuatroFonte)].fonte = parseInt(fonte.value) || 60;
+  else if (familia) nomeQuatroLote[Number(familia.dataset.nomeQuatroFamilia)].familia = familia.value;
   else return;
   renderLotes(); updatePreview();
 });
@@ -559,7 +597,7 @@ function tamanhoFonteNomeSelecionado(linhas, configuracao = null) {
   const automatico = configuracao ? configuracao.fonteAuto : (document.getElementById('nome-tamanho-auto')?.checked ?? true);
   if (automatico) return tamanhoFonteNome(linhas);
   const valor = configuracao ? configuracao.fonte : document.getElementById('nome-tamanho').value;
-  return Math.min(96, Math.max(6, parseInt(valor) || 70));
+  return Math.min(160, Math.max(6, parseInt(valor) || 70));
 }
 
 function renderNomePreview(area) {
@@ -567,7 +605,7 @@ function renderNomePreview(area) {
   const qtd = Math.min(parseInt(document.getElementById('nome-qtd').value) || 1, 3);
   const itens = nomeLote.length
     ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
-    : Array.from({ length: qtd }, () => ({ nome }));
+    : Array.from({ length: qtd }, () => ({ nome, fonteAuto: document.getElementById('nome-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-tamanho').value) || 70, familia: document.getElementById('nome-fonte').value, negrito: document.getElementById('nome-negrito').getAttribute('aria-pressed') === 'true' }));
 
   area.innerHTML = '';
   const wrap = document.createElement('div');
@@ -581,7 +619,7 @@ function renderNomePreview(area) {
     card.innerHTML = `
       <div class="simples-stripe-tl"></div>
       <div class="simples-stripe-br"></div>
-      <div class="simples-nome" style="--nome-font-size:${fontePreview}px">${linhas.map(linha => `<span>${escHtml(linha)}</span>`).join('')}</div>
+      <div class="simples-nome" style="--nome-font-size:${fontePreview}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 700}">${linhas.map(linha => `<span>${escHtml(linha)}</span>`).join('')}</div>
     `;
     wrap.appendChild(card);
   }
@@ -593,7 +631,9 @@ function renderNomeDuploPreview(area) {
   const itens = nomeDuploLote.length ? nomeDuploLote : [{
     nome: nomeAtual,
     fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
-    fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70
+    fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70,
+    familia: document.getElementById('nome-duplo-fonte').value,
+    negrito: document.getElementById('nome-duplo-negrito').getAttribute('aria-pressed') === 'true'
   }];
   const exibidos = itens.slice(0, 2);
   while (exibidos.length < 2) exibidos.push(null);
@@ -603,14 +643,14 @@ function renderNomeDuploPreview(area) {
   folha.innerHTML = exibidos.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
     <div style="position:absolute;left:0;top:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
     <div style="position:absolute;right:0;bottom:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
-    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 60) : 60}px Calibri,Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
+    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 90) : 60}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
   </div>`).join('');
   area.appendChild(folha);
 }
 
 function renderNomeQuatroPreview(area) {
   const atual = document.getElementById('nome-quatro-texto').value.trim().toUpperCase() || 'NOME';
-  const itens = nomeQuatroLote.length ? nomeQuatroLote.slice(0, 4) : [{ nome: atual, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60 }];
+  const itens = nomeQuatroLote.length ? nomeQuatroLote.slice(0, 4) : [{ nome: atual, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60, familia: document.getElementById('nome-quatro-fonte').value, negrito: document.getElementById('nome-quatro-negrito').getAttribute('aria-pressed') === 'true' }];
   while (itens.length < 4) itens.push(null);
   area.innerHTML = '';
   const folha = document.createElement('div');
@@ -618,7 +658,7 @@ function renderNomeQuatroPreview(area) {
   folha.innerHTML = itens.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
     <div style="position:absolute;left:0;top:0;width:42%;height:22px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
     <div style="position:absolute;right:0;bottom:0;width:42%;height:22px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
-    <div style="position:absolute;inset:30px;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 48) : 48}px Calibri,Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
+    <div style="position:absolute;inset:30px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 70) : 48}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
   </div>`).join('');
   area.appendChild(folha);
 }
@@ -863,7 +903,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
   if (!nomeLote.length && !nome) { alert('Adicione um nome à lista ou preencha o nome.'); return; }
   const itens = nomeLote.length
     ? nomeLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
-    : Array.from({ length: qtd }, () => ({ nome }));
+    : Array.from({ length: qtd }, () => ({ nome, fonteAuto: document.getElementById('nome-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-tamanho').value) || 70, familia: document.getElementById('nome-fonte').value, negrito: document.getElementById('nome-negrito').getAttribute('aria-pressed') === 'true' }));
   const placa = (item) => {
     const linhas = quebrarTextoPlaca(item.nome);
     const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
@@ -872,7 +912,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
       <div style="position:absolute;left:.08in;top:.08in;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <div style="position:absolute;right:.08in;bottom:.08in;width:43%;height:.72in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <div style="position:absolute;inset:1.45in .9in;display:flex;flex-direction:column;align-items:center;justify-content:center;
-        font:700 ${fonte}pt/1.08 Calibri,Arial,sans-serif;text-align:center;color:#000;">
+        font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
         ${linhas.map(linha => `<div>${escHtml(linha)}</div>`).join('')}
       </div>
     </div>
@@ -921,7 +961,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
 // PRINT NOME QUATRO (4 placas por folha)
 document.getElementById('print-nome-quatro').addEventListener('click', () => {
   const atual = document.getElementById('nome-quatro-texto').value.trim().toUpperCase();
-  const itens = nomeQuatroLote.length ? [...nomeQuatroLote] : atual ? [{ nome: atual, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60 }] : [];
+  const itens = nomeQuatroLote.length ? [...nomeQuatroLote] : atual ? [{ nome: atual, fonteAuto: document.getElementById('nome-quatro-tamanho-auto').checked, fonte: parseInt(document.getElementById('nome-quatro-tamanho').value) || 60, familia: document.getElementById('nome-quatro-fonte').value, negrito: document.getElementById('nome-quatro-negrito').getAttribute('aria-pressed') === 'true' }] : [];
   if (!itens.length) { alert('Adicione pelo menos um nome à lista.'); return; }
   const paginas = [];
   for (let i = 0; i < itens.length; i += 4) {
@@ -929,7 +969,7 @@ document.getElementById('print-nome-quatro').addEventListener('click', () => {
     const placas = grupo.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
       ${item ? `<div style="position:absolute;left:0;top:0;width:42%;height:.25in;background:repeating-linear-gradient(135deg,#000 0 .30in,#fff .30in .47in);"></div>
       <div style="position:absolute;right:0;bottom:0;width:42%;height:.25in;background:repeating-linear-gradient(135deg,#000 0 .30in,#fff .30in .47in);"></div>
-      <div style="position:absolute;inset:.45in;display:flex;align-items:center;justify-content:center;text-align:center;font:700 ${tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item)}pt/1.05 Calibri,Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
+      <div style="position:absolute;inset:.45in;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:${item.negrito === false ? 400 : 700};font-size:${tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item)}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
     </div>`).join('');
     paginas.push(`<section style="width:10.98in;height:8.48in;padding:.5in;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
   }
@@ -945,7 +985,9 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
     : atual ? [{
         nome: atual,
         fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
-        fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70
+        fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70,
+        familia: document.getElementById('nome-duplo-fonte').value,
+        negrito: document.getElementById('nome-duplo-negrito').getAttribute('aria-pressed') === 'true'
       }] : [];
   if (!itens.length) { alert('Adicione pelo menos um nome à lista.'); return; }
 
@@ -956,7 +998,7 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
       ${item ? `<div style="position:absolute;left:0;top:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <div style="position:absolute;right:0;bottom:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
       <div style="position:absolute;inset:.55in .65in;display:flex;align-items:center;justify-content:center;text-align:center;
-        font:700 ${item ? tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item) : 70}pt/1.05 Calibri,Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
+        font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item) : 70}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
     </div>`).join('');
     paginas.push(`<section class="nome-duplo-print-page" style="width:10.98in;height:8.48in;padding:.38in .62in;display:grid;
       grid-template-rows:3.65in 3.65in;gap:.42in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
