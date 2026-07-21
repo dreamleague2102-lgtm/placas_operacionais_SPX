@@ -400,7 +400,11 @@ document.querySelectorAll('[data-bulk-model]').forEach(botao => {
         <p>${descricaoLoteInline(modelo)}</p>
         ${camposLoteInline(modelo)}
         <button class="btn-add-plate" type="button" data-inline-importar>Importar lista</button>
-        <div class="bulk-actions" data-inline-acoes hidden><label><input type="checkbox" data-inline-todos checked> Selecionar todas</label><strong data-inline-contagem>0 placas</strong></div>
+        <div class="bulk-actions" data-inline-acoes hidden>
+          <label><input type="checkbox" data-inline-todos checked> Selecionar todas</label>
+          <strong data-inline-contagem>0 placas</strong>
+          <button type="button" class="bulk-clear-button" data-inline-limpar>Remover todas</button>
+        </div>
         <div class="plate-batch bulk-list" data-inline-lista><div class="batch-empty">Cole a lista acima para começar.</div></div>
         <button class="btn-print" type="button" data-inline-gerar disabled>📄 Gerar PDF das placas selecionadas</button>`;
       botao.insertAdjacentElement('afterend', painel);
@@ -439,6 +443,11 @@ function prepararLoteInline(painel, modelo) {
   });
   painel.querySelector('[data-inline-lista]').addEventListener('change', event => { const item = event.target.closest('[data-inline-item]'); if (!item) return; lotesPorModelo[modelo][Number(item.dataset.inlineItem)].selecionada = item.checked; render(); });
   painel.querySelector('[data-inline-todos]').addEventListener('change', event => { lotesPorModelo[modelo].forEach(item => { item.selecionada = event.target.checked; }); render(); });
+  painel.querySelector('[data-inline-limpar]').addEventListener('click', () => {
+    lotesPorModelo[modelo] = [];
+    painel.querySelectorAll('textarea').forEach(campo => { campo.value = ''; });
+    render();
+  });
   painel.querySelector('[data-inline-gerar]').addEventListener('click', () => {
     loteImportado = lotesPorModelo[modelo].filter(item => item.selecionada);
     document.getElementById('lote-modelo').value = modelo;

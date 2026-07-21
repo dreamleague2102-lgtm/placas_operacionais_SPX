@@ -417,9 +417,11 @@ body {
 .plate-form.bulk-mode > .inline-bulk-panel .btn-print { display:flex; }
 .bulk-back-button { align-self:flex-start; border:0; background:transparent; color:#9db7ff; font:600 .72rem 'Inter',sans-serif; cursor:pointer; padding:0; }
 .bulk-back-button:hover { color:#fff; }
-.bulk-actions { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.65rem .75rem; border:1px solid var(--spx-border); border-radius:8px; font-size:.73rem; }
+.bulk-actions { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:.5rem .8rem; padding:.65rem .75rem; border:1px solid var(--spx-border); border-radius:8px; font-size:.73rem; }
 .bulk-actions label { display:flex; align-items:center; gap:.45rem; }
 .bulk-actions input { accent-color:var(--spx-red); }
+.bulk-clear-button { border:0; background:transparent; color:#ff7180; font:700 .66rem 'Inter',sans-serif; cursor:pointer; padding:.25rem; }
+.bulk-clear-button:hover { color:#fff; text-decoration:underline; }
 .bulk-list { max-height:260px; }
 .bulk-list .batch-item { flex-direction:row; }
 .bulk-list .batch-item > input { accent-color:var(--spx-red); flex:0 0 auto; }
