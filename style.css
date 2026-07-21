@@ -593,7 +593,7 @@ body {
 .font-toolbar {
   display:flex;
   align-items:center;
-  align-self:flex-start;
+  align-self:center;
   height:36px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.15);
