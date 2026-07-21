@@ -400,6 +400,8 @@ body {
 .inline-bulk-panel code { color:#fff; font-weight:700; }
 .inline-bulk-panel .bulk-textarea { width:100%; min-height:130px; border-color:rgba(255,255,255,.16); background:#0b0c10; }
 .inline-bulk-columns { display:grid; grid-template-columns:1fr 1fr; gap:.65rem; }
+.inline-bulk-columns.single-column { grid-template-columns:1fr; }
+.inline-bulk-columns.ws-columns { grid-template-columns:1fr 1fr; }
 .inline-bulk-columns label { display:flex; flex-direction:column; gap:.4rem; min-width:0; }
 .inline-bulk-columns label > span { color:#dce6ff; font-size:.68rem; font-weight:700; }
 .inline-bulk-columns .bulk-textarea { min-height:155px; padding:.7rem; font-size:.72rem; white-space:pre; }

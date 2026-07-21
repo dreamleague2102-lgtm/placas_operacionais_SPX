@@ -397,11 +397,8 @@ document.querySelectorAll('[data-bulk-model]').forEach(botao => {
       painel.hidden = true;
       painel.innerHTML = `
         <div class="inline-bulk-title"><strong>📋 Importação em lote</strong><button type="button" data-fechar-lote>×</button></div>
-        <p>Cole os IDs na primeira coluna e os nomes na segunda. As linhas serão combinadas automaticamente.</p>
-        <div class="inline-bulk-columns">
-          <label><span>IDs / QR Codes</span><textarea class="field-input bulk-textarea" data-inline-ids rows="7" placeholder="ID-001\nID-002\nID-003"></textarea></label>
-          <label><span>Nomes das placas</span><textarea class="field-input bulk-textarea" data-inline-nomes rows="7" placeholder="NOME DA PLACA\nOUTRO NOME\nTERCEIRO NOME"></textarea></label>
-        </div>
+        <p>${descricaoLoteInline(modelo)}</p>
+        ${camposLoteInline(modelo)}
         <button class="btn-add-plate" type="button" data-inline-importar>Importar lista</button>
         <div class="bulk-actions" data-inline-acoes hidden><label><input type="checkbox" data-inline-todos checked> Selecionar todas</label><strong data-inline-contagem>0 placas</strong></div>
         <div class="plate-batch bulk-list" data-inline-lista><div class="batch-empty">Cole a lista acima para começar.</div></div>
@@ -429,9 +426,15 @@ function prepararLoteInline(painel, modelo) {
   };
   painel.querySelector('[data-fechar-lote]').addEventListener('click', () => painel.previousElementSibling.click());
   painel.querySelector('[data-inline-importar]').addEventListener('click', () => {
-    const ids = painel.querySelector('[data-inline-ids]').value;
-    const nomes = painel.querySelector('[data-inline-nomes]').value;
-    lotesPorModelo[modelo] = interpretarColunasLote(ids, nomes);
+    if (modelo === 'shopee') {
+      lotesPorModelo[modelo] = interpretarLoteWorkstation(painel);
+    } else if (modelo === 'nome' || modelo === 'nome-duplo' || modelo === 'nome-quatro') {
+      lotesPorModelo[modelo] = interpretarLoteNomes(painel.querySelector('[data-inline-nomes]').value);
+    } else {
+      const ids = painel.querySelector('[data-inline-ids]').value;
+      const nomes = painel.querySelector('[data-inline-nomes]').value;
+      lotesPorModelo[modelo] = interpretarColunasLote(ids, nomes);
+    }
     render();
   });
   painel.querySelector('[data-inline-lista]').addEventListener('change', event => { const item = event.target.closest('[data-inline-item]'); if (!item) return; lotesPorModelo[modelo][Number(item.dataset.inlineItem)].selecionada = item.checked; render(); });
@@ -448,6 +451,28 @@ function prepararLoteInline(painel, modelo) {
     gerador.click();
   });
   render();
+}
+
+function descricaoLoteInline(modelo) {
+  if (modelo === 'shopee') return 'Cole cada informação da Workstation em sua coluna. As linhas serão combinadas automaticamente.';
+  if (modelo === 'nome' || modelo === 'nome-duplo' || modelo === 'nome-quatro') return 'Cole somente os nomes, um por linha.';
+  return 'Cole os IDs/QR Codes na primeira coluna e os nomes na segunda.';
+}
+
+function camposLoteInline(modelo) {
+  if (modelo === 'shopee') return `<div class="inline-bulk-columns ws-columns">
+    <label><span>Nome da placa</span><textarea class="field-input bulk-textarea" data-ws-codigo rows="6" placeholder="HUB A\nHUB B"></textarea></label>
+    <label><span>Nome acima do QR</span><textarea class="field-input bulk-textarea" data-ws-numero rows="6" placeholder="ID-001\nID-002"></textarea></label>
+    <label><span>Nome do rodapé</span><textarea class="field-input bulk-textarea" data-ws-rodape rows="6" placeholder="POSTO 1\nPOSTO 2"></textarea></label>
+    <label><span>Conteúdo do QR Code</span><textarea class="field-input bulk-textarea" data-ws-qr rows="6" placeholder="ID-001\nID-002"></textarea></label>
+  </div>`;
+  if (modelo === 'nome' || modelo === 'nome-duplo' || modelo === 'nome-quatro') return `<div class="inline-bulk-columns single-column">
+    <label><span>Nomes das placas</span><textarea class="field-input bulk-textarea" data-inline-nomes rows="9" placeholder="NOME DA PLACA\nOUTRO NOME\nTERCEIRO NOME"></textarea></label>
+  </div>`;
+  return `<div class="inline-bulk-columns">
+    <label><span>IDs / QR Codes</span><textarea class="field-input bulk-textarea" data-inline-ids rows="7" placeholder="ID-001\nID-002\nID-003"></textarea></label>
+    <label><span>Nomes das placas</span><textarea class="field-input bulk-textarea" data-inline-nomes rows="7" placeholder="NOME DA PLACA\nOUTRO NOME\nTERCEIRO NOME"></textarea></label>
+  </div>`;
 }
 
 document.getElementById('voltar-do-lote').addEventListener('click', () => switchType('shopee'));
@@ -468,6 +493,28 @@ function interpretarColunasLote(textoIds, textoNomes) {
   const total = Math.max(ids.length, nomes.length);
   return Array.from({ length:total }, (_, index) => ({ id:ids[index] || '', nome:nomes[index] || '', selecionada:true, linha:index + 1 }))
     .filter(item => item.id && item.nome);
+}
+
+function linhasLote(texto) {
+  return String(texto || '').split(/\r?\n/).map(valor => valor.trim());
+}
+
+function interpretarLoteNomes(texto) {
+  return linhasLote(texto).filter(Boolean).map((nome, index) => ({ id:`Placa ${index + 1}`, nome, selecionada:true, linha:index + 1 }));
+}
+
+function interpretarLoteWorkstation(painel) {
+  const codigos = linhasLote(painel.querySelector('[data-ws-codigo]').value);
+  const numeros = linhasLote(painel.querySelector('[data-ws-numero]').value);
+  const rodapes = linhasLote(painel.querySelector('[data-ws-rodape]').value);
+  const qrs = linhasLote(painel.querySelector('[data-ws-qr]').value);
+  const total = Math.max(codigos.length, numeros.length, rodapes.length, qrs.length);
+  return Array.from({ length:total }, (_, index) => ({
+    id:qrs[index] || numeros[index] || '',
+    nome:codigos[index] || '',
+    codigo:codigos[index] || '', numero:numeros[index] || '', rodape:rodapes[index] || '', qrText:qrs[index] || '',
+    selecionada:true, linha:index + 1
+  })).filter(item => item.codigo && item.qrText);
 }
 
 function renderListaLote() {
@@ -509,7 +556,7 @@ document.getElementById('gerar-lote').addEventListener('click', () => {
   if (!registros.length) { alert('Selecione pelo menos uma placa.'); return; }
   const estiloNome = { qtd:1, fonteAuto:true, fonte:70, familia:'Calibri', negrito:true };
   if (modelo === 'shopee') {
-    shopeeLote = registros.map(item => ({ codigo:item.nome, numero:item.id, rodape:item.nome, qrText:item.id }));
+    shopeeLote = registros.map(item => ({ codigo:item.codigo || item.nome, numero:item.numero || item.id, rodape:item.rodape || '', qrText:item.qrText || item.id }));
   } else if (modelo === 'saida') {
     saidaLote = registros.map(item => ({ nome:item.nome, qrText:item.id, qtd:1 }));
   } else if (modelo === 'nome') {
