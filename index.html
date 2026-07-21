@@ -95,7 +95,7 @@
             <div class="mini-plate saida-mini">
               <div class="mini-corner top-left"></div>
               <div class="mini-body center">
-                <div class="mini-out">OUT-ID</div>
+                <div class="mini-out">NOME</div>
                 <div class="mini-qr large">▦</div>
               </div>
               <div class="mini-corner bottom-right"></div>
@@ -232,20 +232,20 @@
 
           <!-- SAÍDA FORM -->
           <div class="plate-form" id="form-saida">
-            <div class="form-guide"><strong>Como fazer:</strong> informe o ID e o QR Code, clique em “Adicionar placa à lista” e repita para cada nova placa. Depois imprima a lista completa.</div>
+            <div class="form-guide"><strong>Como fazer:</strong> informe o nome da placa e o conteúdo do QR Code separadamente. Depois adicione a placa à lista.</div>
             <div class="field-group">
               <label class="field-label" for="saida-codigo">
-                <span class="field-icon">🔢</span> ID da saída
+                <span class="field-icon">🏷️</span> Nome da placa
               </label>
-              <input class="field-input" type="text" id="saida-codigo" placeholder="ID" maxlength="10" />
-              <span class="field-hint">O sistema acrescenta “OUT-” automaticamente.</span>
+              <input class="field-input" type="text" id="saida-codigo" placeholder="Digite o nome" maxlength="40" />
+              <span class="field-hint">O nome será exibido exatamente como foi digitado.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="saida-qr">
                 <span class="field-icon">📱</span> Conteúdo do QR Code
               </label>
-              <input class="field-input" type="text" id="saida-qr" placeholder="OUT-ID ou link completo" />
-              <span class="field-hint">Se ficar vazio, o QR usará o mesmo ID exibido na placa.</span>
+              <input class="field-input" type="text" id="saida-qr" placeholder="Texto, código ou link" />
+              <span class="field-hint">Este campo é independente e não será alterado pelo nome da placa.</span>
             </div>
             <input type="hidden" id="saida-qtd" value="1" />
             <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>

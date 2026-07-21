@@ -12,11 +12,6 @@ let nomeLote = [];
 let nomeDuploLote = [];
 let nomeQuatroLote = [];
 
-function formatarSaida(codigo) {
-  const valor = String(codigo || '').trim();
-  return `OUT-${/^\d+$/.test(valor) ? valor.padStart(3, '0') : valor}`;
-}
-
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
   const card = e.target.closest('.type-card');
@@ -200,18 +195,6 @@ document.getElementById('shopee-qr').addEventListener('input', function() {
   this.dataset.manual = '1';
 });
 
-document.getElementById('saida-codigo').addEventListener('input', () => {
-  const cod = document.getElementById('saida-codigo').value;
-  const qrEl = document.getElementById('saida-qr');
-  if (!qrEl.dataset.manual) {
-    qrEl.value = cod ? formatarSaida(cod) : '';
-    updatePreview();
-  }
-});
-document.getElementById('saida-qr').addEventListener('input', function() {
-  this.dataset.manual = '1';
-});
-
 function renderLotes() {
   const shopeeLista = document.getElementById('shopee-lista');
   shopeeLista.innerHTML = shopeeLote.length ? shopeeLote.map((item, index) => `
@@ -276,14 +259,13 @@ document.getElementById('add-saida').addEventListener('click', () => {
   const codigo = document.getElementById('saida-codigo').value.trim();
   const qrText = document.getElementById('saida-qr').value.trim();
   const qtd = Math.min(Math.max(parseInt(document.getElementById('saida-qtd').value) || 1, 1), 20);
-  if (!codigo) { alert('Preencha o número de saída.'); return; }
-  const nome = formatarSaida(codigo);
-  saidaLote.push({ nome, qrText: qrText || nome, qtd });
+  if (!codigo) { alert('Preencha o nome da placa.'); return; }
+  if (!qrText) { alert('Preencha o conteúdo do QR Code.'); return; }
+  saidaLote.push({ nome: codigo, qrText, qtd });
   renderLotes();
   updatePreview();
   document.getElementById('saida-codigo').value = '';
   document.getElementById('saida-qr').value = '';
-  document.getElementById('saida-qr').dataset.manual = '';
   document.getElementById('saida-qtd').value = '1';
 });
 
@@ -545,13 +527,12 @@ function buildWsPrintPages(itens) {
 
 // ---- SAIDA / PLACA GRANDE ----
 async function renderSaidaPreview(area) {
-  const codigo = document.getElementById('saida-codigo').value || 'ID';
-  const qrText = document.getElementById('saida-qr').value || formatarSaida(codigo);
+  const codigo = document.getElementById('saida-codigo').value || 'NOME';
+  const qrText = document.getElementById('saida-qr').value || 'QR-CODE';
   const qtd = Math.min(parseInt(document.getElementById('saida-qtd').value) || 1, 3);
-  const nomeFormatado = formatarSaida(codigo);
   const itens = saidaLote.length
     ? saidaLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
-    : Array.from({ length: qtd }, () => ({ nome: nomeFormatado, qrText }));
+    : Array.from({ length: qtd }, () => ({ nome: codigo, qrText }));
 
   area.innerHTML = '';
   const wrap = document.createElement('div');
@@ -854,8 +835,9 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   const qrText = document.getElementById('saida-qr').value.trim();
   const qtd = Math.min(parseInt(document.getElementById('saida-qtd').value) || 1, 20);
 
-  if (!saidaLote.length && !codigo) { alert('Adicione uma placa à lista ou preencha o número de saída.'); return; }
-  const atual = codigo ? { nome: formatarSaida(codigo), qrText: qrText || formatarSaida(codigo), qtd } : null;
+  if (!saidaLote.length && !codigo) { alert('Adicione uma placa à lista ou preencha o nome da placa.'); return; }
+  if (!saidaLote.length && !qrText) { alert('Preencha o conteúdo do QR Code.'); return; }
+  const atual = codigo && qrText ? { nome: codigo, qrText, qtd } : null;
   const itens = (saidaLote.length ? saidaLote : [atual])
     .flatMap(item => Array.from({ length: item.qtd }, () => item));
 
