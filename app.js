@@ -855,11 +855,11 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div style="position:absolute;left:0.22in;top:0.22in;width:10.54in;height:8.04in;
         border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div style="position:absolute;left:0.30in;top:0.85in;width:4.40in;height:0.30in;
-        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div style="position:absolute;left:0.30in;top:0.82in;width:4.45in;height:0.40in;
+        background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
       <!-- Stripe bottom-right -->
-      <div style="position:absolute;right:0.30in;bottom:0.85in;width:4.40in;height:0.30in;
-        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div style="position:absolute;right:0.30in;bottom:0.82in;width:4.45in;height:0.40in;
+        background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
       <!-- Nome OUT -->
       <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:1.05in;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;

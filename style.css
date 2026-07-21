@@ -1405,11 +1405,17 @@ body {
 .preview-ws .ws-qr { width: 165px; height: 165px; }
 .preview-ws .ws-qr img, .preview-ws .ws-qr canvas { width: 165px !important; height: 165px !important; }
 
-.preview-grande { width: min(100%, 760px); height: 420px; }
-.preview-grande .grande-stripe-tl { top:46px; left:8px; width:315px; height:28px; }
-.preview-grande .grande-stripe-br { bottom:46px; right:8px; width:315px; height:28px; }
-.preview-grande .grande-nome { left:5%; width:44%; font-size:52px; text-align:center; }
-.preview-grande .grande-qr { right:65px; width:235px; height:235px; border:0; }
+.preview-grande {
+  width:min(100%,760px);
+  height:420px;
+  border:2px solid #555;
+  border-radius:4px;
+  box-shadow:0 18px 42px rgba(0,0,0,.48), inset 0 0 0 5px #fff, inset 0 0 0 6px #d6d6d6;
+}
+.preview-grande .grande-stripe-tl { top:44px; left:12px; width:325px; height:38px; }
+.preview-grande .grande-stripe-br { bottom:44px; right:12px; width:325px; height:38px; }
+.preview-grande .grande-nome { left:6%; width:42%; font-size:52px; text-align:center; }
+.preview-grande .grande-qr { right:62px; width:235px; height:235px; border:0; }
 .preview-grande .grande-qr img, .preview-grande .grande-qr canvas { width:235px !important; height:235px !important; }
 
 .preview-simples { width:min(100%, 760px); height:430px; border:1.5px solid #555; }
