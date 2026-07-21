@@ -1406,8 +1406,8 @@ body {
 .preview-ws .ws-qr img, .preview-ws .ws-qr canvas { width: 165px !important; height: 165px !important; }
 
 .preview-grande { width: min(100%, 760px); height: 420px; }
-.preview-grande .grande-stripe-tl { top:12px; left:8px; width:280px; height:28px; }
-.preview-grande .grande-stripe-br { bottom:12px; right:8px; width:280px; height:28px; }
+.preview-grande .grande-stripe-tl { top:46px; left:8px; width:315px; height:28px; }
+.preview-grande .grande-stripe-br { bottom:46px; right:8px; width:315px; height:28px; }
 .preview-grande .grande-nome { left:5%; width:44%; font-size:52px; text-align:center; }
 .preview-grande .grande-qr { right:65px; width:235px; height:235px; border:0; }
 .preview-grande .grande-qr img, .preview-grande .grande-qr canvas { width:235px !important; height:235px !important; }
