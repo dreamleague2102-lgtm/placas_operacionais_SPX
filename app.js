@@ -36,7 +36,9 @@ document.getElementById('typeGrid').addEventListener('click', (e) => {
 
 function switchType(type) {
   currentType = type;
-  document.querySelector('.main-panel').classList.toggle('gaiola-mode', type === 'gaiola');
+  const mainPanel = document.querySelector('.main-panel');
+  mainPanel.classList.toggle('gaiola-mode', type === 'gaiola');
+  mainPanel.classList.toggle('nome-quatro-mode', type === 'nome-quatro');
 
   // Update card active state
   document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));

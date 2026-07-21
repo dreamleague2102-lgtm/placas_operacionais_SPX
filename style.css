@@ -780,6 +780,42 @@ body {
 }
 .batch-font-controls button { margin-left:auto; }
 
+/* A grade de quatro placas possui ajustes individuais mais completos. */
+.nome-quatro-mode .panel-grid {
+  grid-template-columns: 460px minmax(0, 1fr);
+}
+.nome-quatro-mode .batch-item .batch-font-controls {
+  display:grid;
+  grid-template-columns:minmax(90px, auto) minmax(100px, 1fr) 58px 24px 30px;
+  gap:.55rem;
+}
+.nome-quatro-mode .batch-font-controls select {
+  width:100%;
+  max-width:none;
+}
+.nome-quatro-mode .batch-font-controls button {
+  margin-left:0;
+}
+.nome-quatro-mode .batch-font-controls button:last-child {
+  grid-column:1 / -1;
+  justify-self:end;
+}
+
+@media (max-width:1100px) {
+  .nome-quatro-mode .panel-grid { grid-template-columns:1fr; }
+  .nome-quatro-mode .batch-item .batch-font-controls {
+    grid-template-columns:minmax(90px, auto) minmax(100px, 1fr) 58px 24px 30px;
+  }
+}
+
+@media (max-width:520px) {
+  .nome-quatro-mode .batch-item .batch-font-controls {
+    grid-template-columns:1fr 1fr;
+  }
+  .nome-quatro-mode .batch-font-controls input[type="number"] { width:100%; }
+  .nome-quatro-mode .batch-font-controls button:last-child { justify-self:end; }
+}
+
 .btn-print {
   background: linear-gradient(135deg, var(--spx-red), #c0001a);
   color: #fff;
