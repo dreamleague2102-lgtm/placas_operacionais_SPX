@@ -140,14 +140,6 @@
           </div></div>
         </button>
 
-        <button class="type-card" data-type="lote" id="btn-lote">
-          <div class="type-card-icon">📋</div>
-          <div class="type-card-info"><h3>Gerador de Placas em Lote</h3><p>Cole uma lista de IDs e nomes para gerar todas as placas de uma vez</p></div>
-          <div class="type-card-preview">
-            <div class="bulk-mini-preview"><span>☑ ID-001 · NOME</span><span>☑ ID-002 · NOME</span><span>☑ ID-003 · NOME</span><strong>GERAR PDF</strong></div>
-          </div>
-        </button>
-
         <button class="type-card" data-type="gaiola" id="btn-gaiola">
           <div class="type-card-icon">📦</div>
           <div class="type-card-info">
@@ -231,6 +223,7 @@
               <span class="field-hint">Pode ser um ID, texto ou link. Esse conteúdo será lido pelo celular.</span>
             </div>
             <input type="hidden" id="shopee-qtd" value="1" />
+            <button class="btn-bulk-open" type="button" data-bulk-model="shopee">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-shopee">+ Adicionar placa ao painel</button>
             <div class="plate-batch" id="shopee-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-shopee">
@@ -256,6 +249,7 @@
               <span class="field-hint">Este campo é independente e não será alterado pelo nome da placa.</span>
             </div>
             <input type="hidden" id="saida-qtd" value="1" />
+            <button class="btn-bulk-open" type="button" data-bulk-model="saida">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>
             <div class="plate-batch" id="saida-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-saida">
@@ -301,6 +295,7 @@
               <span class="field-hint">Desmarque a opção automática para escolher um tamanho como no Google Slides.</span>
             </div>
             <input type="hidden" id="nome-qtd" value="1" />
+            <button class="btn-bulk-open" type="button" data-bulk-model="nome">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome">
@@ -343,6 +338,7 @@
               </label>
               <span class="field-hint">Desmarque a opção automática para escolher um tamanho como no Google Slides.</span>
             </div>
+            <button class="btn-bulk-open" type="button" data-bulk-model="nome-duplo">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome-duplo">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-duplo-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome-duplo">📄 Gerar PDF — Nomes (2 por Folha)</button>
@@ -365,6 +361,7 @@
               <label class="auto-font-option"><input type="checkbox" id="nome-quatro-tamanho-auto" checked /> Ajustar automaticamente para caber</label>
               <span class="field-hint">Desmarque para escolher o tamanho manualmente.</span>
             </div>
+            <button class="btn-bulk-open" type="button" data-bulk-model="nome-quatro">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome-quatro">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-quatro-lista" aria-live="polite"></div>
             <button class="btn-print" id="print-nome-quatro">📄 Gerar PDF — Nomes (4 por Folha)</button>
@@ -372,6 +369,7 @@
 
           <!-- GERADOR EM LOTE -->
           <div class="plate-form" id="form-lote">
+            <button class="bulk-back-button" type="button" id="voltar-do-lote">← Voltar ao preenchimento manual</button>
             <div class="form-guide"><strong>Como fazer:</strong> escolha o modelo e cole uma linha por placa no formato <code>ID; NOME</code>. Também aceita colunas copiadas do Excel ou Google Sheets.</div>
             <div class="field-group">
               <label class="field-label" for="lote-modelo"><span class="field-icon">🗂️</span> Modelo das placas</label>

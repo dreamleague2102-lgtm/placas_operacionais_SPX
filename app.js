@@ -12,6 +12,7 @@ let nomeLote = [];
 let nomeDuploLote = [];
 let nomeQuatroLote = [];
 let loteImportado = [];
+let bulkReturnType = 'shopee';
 
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
@@ -27,7 +28,7 @@ function switchType(type) {
 
   // Update card active state
   document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
-  document.querySelector(`[data-type="${type}"]`).classList.add('active');
+  document.querySelector(`[data-type="${type}"]`)?.classList.add('active');
 
   // Update forms
   document.querySelectorAll('.plate-form').forEach(f => f.classList.remove('active'));
@@ -384,6 +385,16 @@ document.getElementById('nome-quatro-lista').addEventListener('change', event =>
 renderLotes();
 
 // ===================== GERADOR EM LOTE =====================
+document.querySelectorAll('[data-bulk-model]').forEach(botao => {
+  botao.addEventListener('click', () => {
+    bulkReturnType = botao.dataset.bulkModel;
+    document.getElementById('lote-modelo').value = bulkReturnType;
+    switchType('lote');
+  });
+});
+
+document.getElementById('voltar-do-lote').addEventListener('click', () => switchType(bulkReturnType));
+
 function interpretarLote(texto) {
   return String(texto || '').split(/\r?\n/).map(linha => linha.trim()).filter(Boolean).map((linha, index) => {
     const partes = linha.includes('\t') ? linha.split('\t') : linha.includes(';') ? linha.split(';') : linha.split(',');

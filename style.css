@@ -370,6 +370,19 @@ body {
 .bulk-mini-preview { width:88%; display:flex; flex-direction:column; gap:7px; color:#111; background:#fff; padding:13px; border-radius:5px; font-size:.62rem; }
 .bulk-mini-preview strong { margin-top:4px; padding:5px; color:#fff; background:var(--spx-red); text-align:center; border-radius:4px; }
 .bulk-textarea { min-height:145px; resize:vertical; line-height:1.5; font-family:Consolas,monospace; }
+.btn-bulk-open {
+  width:100%;
+  padding:.78rem 1rem;
+  border:1px solid #4f7cff;
+  border-radius:var(--radius-sm);
+  background:rgba(79,124,255,.09);
+  color:#dce6ff;
+  font:700 .82rem 'Inter',sans-serif;
+  cursor:pointer;
+}
+.btn-bulk-open:hover { background:rgba(79,124,255,.18); }
+.bulk-back-button { align-self:flex-start; border:0; background:transparent; color:#9db7ff; font:600 .72rem 'Inter',sans-serif; cursor:pointer; padding:0; }
+.bulk-back-button:hover { color:#fff; }
 .bulk-actions { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.65rem .75rem; border:1px solid var(--spx-border); border-radius:8px; font-size:.73rem; }
 .bulk-actions label { display:flex; align-items:center; gap:.45rem; }
 .bulk-actions input { accent-color:var(--spx-red); }
