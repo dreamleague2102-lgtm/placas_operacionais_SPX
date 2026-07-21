@@ -497,7 +497,7 @@ body {
 }
 .panel-grid {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 460px minmax(0, 1fr);
   gap: 2rem;
   align-items: start;
 }
@@ -1590,7 +1590,7 @@ body {
 
 /* Modo dedicado: QR Gaiola SPX (mantém os demais modelos inalterados) */
 .main-panel.gaiola-mode { padding-top: 1.5rem; }
-.gaiola-mode .panel-grid { grid-template-columns: 300px minmax(620px, 1fr); gap: 24px; }
+.gaiola-mode .panel-grid { grid-template-columns: 420px minmax(620px, 1fr); gap: 24px; }
 .gaiola-mode .form-panel { border-radius: 18px; position: sticky; top: 76px; }
 .gaiola-mode .form-header { padding: 1rem 1.15rem; }
 .gaiola-mode .form-header-icon { font-size: .8rem; width:8px; height:8px; overflow:hidden; border-radius:50%; background:var(--spx-red); color:transparent; box-shadow:0 0 7px var(--spx-red); }
@@ -1659,7 +1659,7 @@ body {
 .gaiola-mode .preview-gaiola .gaiola-qr canvas { width:205px !important; height:205px !important; }
 .gaiola-mode .preview-gaiola .gaiola-rodape { font-size:15px; padding:13px; background:#d3d3d3; }
 
-@media (max-width:1000px) {
+@media (max-width:1200px) {
   .gaiola-mode .panel-grid { grid-template-columns:1fr; }
   .gaiola-mode .form-panel { position:static; }
 }
