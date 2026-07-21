@@ -13,6 +13,7 @@ let nomeDuploLote = [];
 let nomeQuatroLote = [];
 let loteImportado = [];
 const lotesPorModelo = {};
+let pendingPrintWindow = null;
 
 // ===================== TYPE SELECTOR =====================
 document.getElementById('typeGrid').addEventListener('click', (e) => {
@@ -401,13 +402,14 @@ document.querySelectorAll('[data-bulk-model]').forEach(botao => {
         <button class="btn-add-plate" type="button" data-inline-importar>Importar lista</button>
         <div class="bulk-actions" data-inline-acoes hidden><label><input type="checkbox" data-inline-todos checked> Selecionar todas</label><strong data-inline-contagem>0 placas</strong></div>
         <div class="plate-batch bulk-list" data-inline-lista><div class="batch-empty">Cole a lista acima para começar.</div></div>
-        <button class="btn-print" type="button" data-inline-gerar disabled>📄 Gerar PDF do lote</button>`;
+        <button class="btn-print" type="button" data-inline-gerar disabled>📄 Gerar PDF das placas selecionadas</button>`;
       botao.insertAdjacentElement('afterend', painel);
       prepararLoteInline(painel, modelo);
     }
     painel.hidden = !painel.hidden;
     botao.hidden = !painel.hidden;
     botao.textContent = '📋 Importar lista em lote';
+    botao.closest('.plate-form').classList.toggle('bulk-mode', !painel.hidden);
   });
 });
 
@@ -429,6 +431,10 @@ function prepararLoteInline(painel, modelo) {
   painel.querySelector('[data-inline-gerar]').addEventListener('click', () => {
     loteImportado = lotesPorModelo[modelo].filter(item => item.selecionada);
     document.getElementById('lote-modelo').value = modelo;
+    pendingPrintWindow = window.open('', '_blank', 'width=900,height=700');
+    if (pendingPrintWindow) {
+      pendingPrintWindow.document.write('<!doctype html><html><head><title>Preparando PDF...</title></head><body style="margin:0;background:#111;color:#fff;font-family:Arial,sans-serif;display:grid;place-items:center;height:100vh"><div style="text-align:center"><h2>Preparando suas placas...</h2><p>Aguarde enquanto os QR Codes são gerados.</p></div></body></html>');
+    }
     document.getElementById('gerar-lote').click();
   });
   render();
@@ -1239,7 +1245,15 @@ document.getElementById('print-gaiola-qr').addEventListener('click', async () =>
 
 // ===================== PRINT TRIGGER =====================
 function triggerPrint(contentHtml, orientation = 'portrait', documentTitle = 'Impressão de Placas') {
-  const win = window.open('', '_blank', 'width=900,height=700');
+  const win = pendingPrintWindow && !pendingPrintWindow.closed
+    ? pendingPrintWindow
+    : window.open('', '_blank', 'width=900,height=700');
+  pendingPrintWindow = null;
+  if (!win) {
+    alert('O navegador bloqueou a janela do PDF. Permita pop-ups para este site e tente novamente.');
+    return;
+  }
+  win.document.open();
   win.document.write(`<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
