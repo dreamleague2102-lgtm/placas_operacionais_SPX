@@ -1173,9 +1173,9 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div style="position:absolute;left:0.58in;top:0.28in;width:9.82in;height:7.92in;
         border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div class="stripe-five" style="position:absolute;left:0.58in;top:0.28in;width:4.20in;height:0.42in;"></div>
+      <div class="stripe-five" style="position:absolute;left:0.58in;top:0.28in;width:4.20in;height:0.28in;"></div>
       <!-- Stripe bottom-right -->
-      <div class="stripe-five" style="position:absolute;right:0.58in;bottom:0.28in;width:4.20in;height:0.42in;"></div>
+      <div class="stripe-five" style="position:absolute;right:0.58in;bottom:0.28in;width:4.20in;height:0.28in;"></div>
       <!-- Nome OUT -->
       <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, fonteNome, 520)});width:44%;height:1.20in;white-space:nowrap;
         font-size:${fonteNome}pt;font-weight:${item.negrito === false ? 400 : 900};font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;
@@ -1207,8 +1207,8 @@ document.getElementById('print-nome').addEventListener('click', () => {
     const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
     return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.28in .58in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
-      <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.46in;"></div>
-      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.46in;"></div>
+      <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.28in;"></div>
+      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.28in;"></div>
       <div style="position:absolute;inset:1.05in .72in;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
         ${linhas.map(linha => `<div style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte)});">${escHtml(linha)}</div>`).join('')}
@@ -1455,7 +1455,7 @@ function triggerPrint(contentHtml, orientation = 'portrait', documentTitle = 'Im
     @media print { .no-print { display:none; } }
     .stripe-five {
       background-color:#fff !important;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 18 0h85L85 60ZM100 60l18-60h85l-18 60ZM200 60l18-60h85l-18 60ZM300 60l18-60h85l-18 60ZM400 60l18-60h85l-18 60Z'/%3E%3C/svg%3E") !important;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 30 0h70L70 60ZM100 60l30-60h70l-30 60ZM200 60l30-60h70l-30 60ZM300 60l30-60h70l-30 60ZM400 60l30-60h70l-30 60Z'/%3E%3C/svg%3E") !important;
       background-repeat:no-repeat !important;background-position:center !important;background-size:100% 100% !important;
     }
     .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child, .gaiola-print-page:last-child {

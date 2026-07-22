@@ -1568,15 +1568,15 @@ body {
   pointer-events:none;
   z-index:3;
 }
-.preview-grande .grande-stripe-tl { top:14px; left:40px; width:300px; height:38px; }
-.preview-grande .grande-stripe-br { bottom:14px; right:40px; width:300px; height:38px; }
+.preview-grande .grande-stripe-tl { top:14px; left:40px; width:300px; height:24px; }
+.preview-grande .grande-stripe-br { bottom:14px; right:40px; width:300px; height:24px; }
 .preview-grande .grande-nome { left:6%; width:42%; font-size:52px; text-align:center; }
 .preview-grande .grande-qr { right:62px; width:235px; height:235px; border:0; }
 .preview-grande .grande-qr img, .preview-grande .grande-qr canvas { width:235px !important; height:235px !important; }
 
 .preview-simples { width:min(100%, 760px); height:430px; border:0; }
-.preview-simples .simples-stripe-tl { top:14px; left:40px; width:300px; height:38px; }
-.preview-simples .simples-stripe-br { bottom:14px; right:40px; width:300px; height:38px; }
+.preview-simples .simples-stripe-tl { top:14px; left:40px; width:300px; height:24px; }
+.preview-simples .simples-stripe-br { bottom:14px; right:40px; width:300px; height:24px; }
 .preview-simples .simples-nome { inset:54px 45px; gap:13px; }
 .preview-simples .simples-nome span { font-size:var(--nome-font-size, 58px); }
 
@@ -1613,7 +1613,7 @@ body {
 .print-simples-stripe-tl,
 .print-simples-stripe-br {
   background-color:#fff !important;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 18 0h85L85 60ZM100 60l18-60h85l-18 60ZM200 60l18-60h85l-18 60ZM300 60l18-60h85l-18 60ZM400 60l18-60h85l-18 60Z'/%3E%3C/svg%3E") !important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 30 0h70L70 60ZM100 60l30-60h70l-30 60ZM200 60l30-60h70l-30 60ZM300 60l30-60h70l-30 60ZM400 60l30-60h70l-30 60Z'/%3E%3C/svg%3E") !important;
   background-repeat:no-repeat !important;
   background-position:center !important;
   background-size:100% 100% !important;
