@@ -699,14 +699,23 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   div.innerHTML = `
     <div class="ws-stripe ws-stripe-top"></div>
     <div class="ws-body">
-      <div class="ws-name">${escHtml(codigo)}</div>
-      <div class="ws-num">${preenchida ? escHtml(numero) : ''}</div>
+      <div class="ws-name" style="${estiloTextoWs(codigo, 19, 430)}">${escHtml(codigo)}</div>
+      <div class="ws-num" style="${estiloTextoWs(numero, 14, 430)}">${preenchida ? escHtml(numero) : ''}</div>
       <div class="ws-qr"></div>
-      <div class="ws-posto">${preenchida ? escHtml(rodape) : ''}</div>
+      <div class="ws-posto" style="${estiloTextoWs(rodape, 14, 430)}">${preenchida ? escHtml(rodape) : ''}</div>
     </div>
     <div class="ws-stripe ws-stripe-bottom"></div>
   `;
   return div;
+}
+
+function escalaParaCaber(texto, fonte, capacidade) {
+  const tamanho = Math.max(String(texto || '').length, 1);
+  return Math.max(.04, Math.min(1, capacidade / (fonte * tamanho)));
+}
+
+function estiloTextoWs(texto, fonte, capacidade) {
+  return `font-size:${fonte}px;white-space:nowrap;transform:scaleX(${escalaParaCaber(texto, fonte, capacidade)});transform-origin:center;`;
 }
 
 function buildWsPrintPages(itens) {
@@ -716,16 +725,16 @@ function buildWsPrintPages(itens) {
       const item = itens[inicio + coluna];
       const preenchida = Boolean(item);
       return `<div style="height:5.2in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
-        <div style="width:60%;height:.32in;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
+        <div class="stripe-five" style="width:60%;height:.32in;"></div>
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
-          <div style="font-size:20pt;font-weight:700;padding-top:.15in;text-align:center;">${preenchida ? escHtml(item.codigo) : ''}</div>
-          <div style="font-size:14pt;font-weight:700;margin-top:.22in;height:.25in;text-align:center;">${preenchida ? escHtml(item.numero) : ''}</div>
+          <div style="font-size:20pt;font-weight:700;padding-top:.15in;text-align:center;white-space:nowrap;transform:scaleX(${escalaParaCaber(item?.codigo, 20, 430)});">${preenchida ? escHtml(item.codigo) : ''}</div>
+          <div style="font-size:14pt;font-weight:700;margin-top:.22in;height:.25in;text-align:center;white-space:nowrap;transform:scaleX(${escalaParaCaber(item?.numero, 14, 430)});">${preenchida ? escHtml(item.numero) : ''}</div>
           <div style="height:2.35in;margin-top:.24in;display:flex;align-items:center;justify-content:center;">
             ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
-          <div style="width:100%;margin-top:.26in;font-size:14pt;font-weight:700;text-align:center;line-height:1;">${preenchida ? escHtml(item.rodape) : ''}</div>
+          <div style="width:100%;margin-top:.26in;font-size:14pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;transform:scaleX(${escalaParaCaber(item?.rodape, 14, 430)});">${preenchida ? escHtml(item.rodape) : ''}</div>
         </div>
-        <div style="width:60%;height:.32in;margin-left:40%;background:repeating-linear-gradient(135deg,#000 0 .18in,transparent .18in .36in);"></div>
+        <div class="stripe-five" style="width:60%;height:.32in;margin-left:40%;"></div>
       </div>`;
     }).join('');
 
@@ -755,7 +764,7 @@ async function renderSaidaPreview(area) {
     card.innerHTML = `
       <div class="grande-stripe-tl"></div>
       <div class="grande-stripe-br"></div>
-      <div class="grande-nome">${escHtml(item.nome)}</div>
+      <div class="grande-nome" style="white-space:nowrap;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, 52, 520)});">${escHtml(item.nome)}</div>
       <div class="grande-qr"></div>
     `;
     const qrCanvas = await generateQR(item.qrText, 260);
@@ -781,8 +790,12 @@ function quebrarTextoPlaca(valor) {
 
 function tamanhoFonteNome(linhas) {
   const maiorLinha = Math.max(...linhas.map(linha => String(linha).length), 1);
-  // 70 pt é o máximo. Textos longos diminuem até caber com segurança na placa.
-  return Math.max(28, Math.min(70, Math.floor(1050 / maiorLinha)));
+  // Sem limite de caracteres: reduz até 6 pt e comprime horizontalmente se necessário.
+  return Math.max(6, Math.min(70, Math.floor(1050 / maiorLinha)));
+}
+
+function escalaLinhaNome(texto, fonte, capacidade = 1050) {
+  return escalaParaCaber(texto, fonte, capacidade);
 }
 
 function tamanhoFonteNomeSelecionado(linhas, configuracao = null) {
@@ -805,13 +818,14 @@ function renderNomePreview(area) {
 
   for (const item of itens) {
     const linhas = quebrarTextoPlaca(item.nome);
-    const fontePreview = Math.round(tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item) * .83);
+    const fontePt = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
+    const fontePreview = Math.max(5, Math.round(fontePt * .83));
     const card = document.createElement('div');
     card.className = 'preview-simples';
     card.innerHTML = `
       <div class="simples-stripe-tl"></div>
       <div class="simples-stripe-br"></div>
-      <div class="simples-nome" style="--nome-font-size:${fontePreview}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 700}">${linhas.map(linha => `<span>${escHtml(linha)}</span>`).join('')}</div>
+      <div class="simples-nome" style="--nome-font-size:${fontePreview}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 700}">${linhas.map(linha => `<span style="--nome-scale-x:${escalaLinhaNome(linha, fontePt)}">${escHtml(linha)}</span>`).join('')}</div>
     `;
     wrap.appendChild(card);
   }
@@ -833,9 +847,9 @@ function renderNomeDuploPreview(area) {
   const folha = document.createElement('div');
   folha.style.cssText = 'width:min(100%,760px);aspect-ratio:11/8.5;background:#fff;padding:28px;display:grid;grid-template-rows:1fr 1fr;gap:28px;';
   folha.innerHTML = exibidos.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
-    <div style="position:absolute;left:0;top:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
-    <div style="position:absolute;right:0;bottom:0;width:42%;height:24px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
-    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 90) : 60}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
+    <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:24px;"></div>
+    <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:24px;"></div>
+    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;transform:scaleX(${item ? escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 950) : 1});font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado([item.nome], item), 90) : 60}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
   </div>`).join('');
   area.appendChild(folha);
 }
@@ -848,9 +862,9 @@ function renderNomeQuatroPreview(area) {
   const folha = document.createElement('div');
   folha.style.cssText = 'width:min(100%,900px);aspect-ratio:11/8.5;background:#fff;padding:34px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:34px;';
   folha.innerHTML = itens.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
-    <div style="position:absolute;left:0;top:0;width:42%;height:22px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
-    <div style="position:absolute;right:0;bottom:0;width:42%;height:22px;background:repeating-linear-gradient(135deg,#000 0 22px,#fff 22px 35px);"></div>
-    <div style="position:absolute;inset:30px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item), 70) : 48}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
+    <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:22px;"></div>
+    <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:22px;"></div>
+    <div style="position:absolute;inset:30px;display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;transform:scaleX(${item ? escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 450) : 1});font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado([item.nome], item), 70) : 48}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
   </div>`).join('');
   area.appendChild(folha);
 }
@@ -1011,8 +1025,7 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
         <div style="position:absolute;left:${xq - 0.12}in;top:${0.22 + offsetY}in;width:2.86in;height:7.85in;
           border:1.5px solid #111;box-sizing:border-box;"></div>
         <!-- Stripe top -->
-        <div style="position:absolute;left:${xq}in;top:${STRIPE_TOP_Y + offsetY}in;width:2.57in;height:0.30in;
-          background:repeating-linear-gradient(135deg,#000 0 0.18in,#fff 0.18in 0.36in);"></div>
+        <div class="stripe-five" style="position:absolute;left:${xq}in;top:${STRIPE_TOP_Y + offsetY}in;width:2.57in;height:0.30in;"></div>
         <!-- Name -->
         <div style="position:absolute;left:${xn}in;top:${NAME_Y + offsetY}in;width:2.42in;height:0.30in;
           font-size:14pt;font-weight:800;font-family:Inter,sans-serif;
@@ -1037,8 +1050,7 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
           ${preenchida ? escHtml(rodape) : ''}
         </div>
         <!-- Stripe bottom -->
-        <div style="position:absolute;left:${xq}in;top:${STRIPE_BOT_Y + offsetY}in;width:2.57in;height:0.30in;
-          background:repeating-linear-gradient(135deg,#000 0 0.18in,#fff 0.18in 0.36in);"></div>
+        <div class="stripe-five" style="position:absolute;left:${xq}in;top:${STRIPE_BOT_Y + offsetY}in;width:2.57in;height:0.30in;"></div>
       `;
     }
   }
@@ -1080,13 +1092,11 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div style="position:absolute;left:0.22in;top:0.22in;width:10.54in;height:8.04in;
         border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div style="position:absolute;left:0.30in;top:0.82in;width:4.45in;height:0.40in;
-        background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
+      <div class="stripe-five" style="position:absolute;left:0.30in;top:0.82in;width:4.45in;height:0.40in;"></div>
       <!-- Stripe bottom-right -->
-      <div style="position:absolute;right:0.30in;bottom:0.82in;width:4.45in;height:0.40in;
-        background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
+      <div class="stripe-five" style="position:absolute;right:0.30in;bottom:0.82in;width:4.45in;height:0.40in;"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:1.05in;
+      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, 48, 520)});width:44%;height:1.05in;white-space:nowrap;
         font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
         display:flex;align-items:center;justify-content:center;text-align:center;">
         ${escHtml(item.nome)}
@@ -1116,11 +1126,11 @@ document.getElementById('print-nome').addEventListener('click', () => {
     const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
     return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
-      <div style="position:absolute;left:.12in;top:.82in;width:45%;height:.82in;background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
-      <div style="position:absolute;right:.12in;bottom:.82in;width:45%;height:.82in;background:repeating-linear-gradient(135deg,#000 0 .38in,#fff .38in .58in);"></div>
+      <div class="stripe-five" style="position:absolute;left:.12in;top:.82in;width:45%;height:.82in;"></div>
+      <div class="stripe-five" style="position:absolute;right:.12in;bottom:.82in;width:45%;height:.82in;"></div>
       <div style="position:absolute;inset:1.45in .9in;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
-        ${linhas.map(linha => `<div>${escHtml(linha)}</div>`).join('')}
+        ${linhas.map(linha => `<div style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte)});">${escHtml(linha)}</div>`).join('')}
       </div>
     </div>
   </section>`;
@@ -1141,11 +1151,9 @@ document.getElementById('print-nome').addEventListener('click', () => {
       <div style="position:absolute;left:0.28in;top:${0.22 + offsetY}in;width:10.44in;height:8.06in;
         border:1.5px solid #555;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div style="position:absolute;left:0.28in;top:${0.22 + offsetY}in;width:4.25in;height:0.72in;
-        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div class="stripe-five" style="position:absolute;left:0.28in;top:${0.22 + offsetY}in;width:4.25in;height:0.72in;"></div>
       <!-- Stripe bottom-right -->
-      <div style="position:absolute;right:0.28in;top:${7.56 + offsetY}in;width:4.25in;height:0.72in;
-        background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      <div class="stripe-five" style="position:absolute;right:0.28in;top:${7.56 + offsetY}in;width:4.25in;height:0.72in;"></div>
       <!-- Nome -->
       <div style="position:absolute;left:1.32in;top:${1.83 + offsetY}in;width:7.30in;height:1.57in;
         font-size:80pt;font-weight:900;font-family:Calibri,Arial,sans-serif;line-height:1;
@@ -1174,9 +1182,9 @@ document.getElementById('print-nome-quatro').addEventListener('click', () => {
   for (let i = 0; i < itens.length; i += 4) {
     const grupo = itens.slice(i, i + 4); while (grupo.length < 4) grupo.push(null);
     const placas = grupo.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
-      ${item ? `<div style="position:absolute;left:0;top:0;width:42%;height:.25in;background:repeating-linear-gradient(135deg,#000 0 .30in,#fff .30in .47in);"></div>
-      <div style="position:absolute;right:0;bottom:0;width:42%;height:.25in;background:repeating-linear-gradient(135deg,#000 0 .30in,#fff .30in .47in);"></div>
-      <div style="position:absolute;inset:.45in;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:${item.negrito === false ? 400 : 700};font-size:${tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item)}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
+      ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.25in;"></div>
+      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.25in;"></div>
+      <div style="position:absolute;inset:.45in;display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;transform:scaleX(${escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 450)});font-weight:${item.negrito === false ? 400 : 700};font-size:${tamanhoFonteNomeSelecionado([item.nome], item)}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
     </div>`).join('');
     paginas.push(`<section style="width:10.98in;height:8.48in;padding:.5in;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
   }
@@ -1202,10 +1210,10 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
   for (let i = 0; i < itens.length; i += 2) {
     const dupla = [itens[i], itens[i + 1]];
     const placas = dupla.map(item => `<div style="height:3.65in;position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
-      ${item ? `<div style="position:absolute;left:0;top:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
-      <div style="position:absolute;right:0;bottom:0;width:42%;height:.28in;background:repeating-linear-gradient(135deg,#000 0 .34in,#fff .34in .52in);"></div>
+      ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.28in;"></div>
+      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.28in;"></div>
       <div style="position:absolute;inset:.55in .65in;display:flex;align-items:center;justify-content:center;text-align:center;
-        font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? tamanhoFonteNomeSelecionado(quebrarTextoPlaca(item.nome), item) : 70}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
+        white-space:nowrap;transform:scaleX(${escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 950)});font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? tamanhoFonteNomeSelecionado([item.nome], item) : 70}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
     </div>`).join('');
     paginas.push(`<section class="nome-duplo-print-page" style="width:10.98in;height:8.48in;padding:.38in .62in;display:grid;
       grid-template-rows:3.65in 3.65in;gap:.42in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
@@ -1364,6 +1372,11 @@ function triggerPrint(contentHtml, orientation = 'portrait', documentTitle = 'Im
       font-family:Inter,sans-serif; margin-right:8px;
     }
     @media print { .no-print { display:none; } }
+    .stripe-five {
+      background-color:#fff !important;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 35 0h65L65 60ZM100 60l35-60h65l-35 60ZM200 60l35-60h65l-35 60ZM300 60l35-60h65l-35 60ZM400 60l35-60h65l-35 60Z'/%3E%3C/svg%3E") !important;
+      background-repeat:no-repeat !important;background-position:center !important;background-size:100% 100% !important;
+    }
     .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child, .gaiola-print-page:last-child {
       page-break-after:auto !important; break-after:auto !important;
     }

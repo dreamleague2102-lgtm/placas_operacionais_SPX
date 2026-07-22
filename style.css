@@ -1588,6 +1588,34 @@ body {
 .preview-gaiola .gaiola-qr img, .preview-gaiola .gaiola-qr canvas { width:160px !important; height:160px !important; }
 .preview-gaiola .gaiola-rodape { font-size:13px; padding:10px; }
 
+/* Faixa operacional padronizada: exatamente cinco listras pretas */
+.stripe-five,
+.mini-stripe,
+.mini-corner,
+.preview-ws .ws-stripe,
+.preview-grande .grande-stripe-tl,
+.preview-grande .grande-stripe-br,
+.preview-simples .simples-stripe-tl,
+.preview-simples .simples-stripe-br,
+.print-ws-stripe-top,
+.print-ws-stripe-bottom,
+.print-grande-stripe-tl,
+.print-grande-stripe-br,
+.print-simples-stripe-tl,
+.print-simples-stripe-br {
+  background-color:#fff !important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 35 0h65L65 60ZM100 60l35-60h65l-35 60ZM200 60l35-60h65l-35 60ZM300 60l35-60h65l-35 60ZM400 60l35-60h65l-35 60Z'/%3E%3C/svg%3E") !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:100% 100% !important;
+}
+.preview-simples .simples-nome span {
+  max-width:100%;
+  white-space:nowrap;
+  transform:scaleX(var(--nome-scale-x,1));
+  transform-origin:center;
+}
+
 /* Modo dedicado: QR Gaiola SPX (mantém os demais modelos inalterados) */
 .main-panel.gaiola-mode { padding-top: 1.5rem; }
 .gaiola-mode .panel-grid { grid-template-columns: 420px minmax(620px, 1fr); gap: 24px; }
