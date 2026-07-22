@@ -98,6 +98,30 @@ addListener('shopee-qtd', updatePreview);
 addListener('saida-codigo', updatePreview);
 addListener('saida-qr', updatePreview);
 addListener('saida-qtd', updatePreview);
+addListener('saida-fonte', updatePreview);
+addListener('saida-tamanho', () => {
+  document.getElementById('saida-tamanho-valor').textContent = `${document.getElementById('saida-tamanho').value} pt`;
+  updatePreview();
+});
+document.getElementById('saida-tamanho-auto').addEventListener('change', function() {
+  const controle = document.getElementById('saida-tamanho');
+  controle.disabled = this.checked;
+  document.getElementById('saida-tamanho-menor').disabled = this.checked;
+  document.getElementById('saida-tamanho-maior').disabled = this.checked;
+  document.getElementById('saida-tamanho-valor').textContent = this.checked ? 'Automático' : `${controle.value} pt`;
+  updatePreview();
+});
+function alterarTamanhoSaida(delta) {
+  const controle = document.getElementById('saida-tamanho');
+  controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 70) + delta));
+  controle.dispatchEvent(new Event('input', { bubbles:true }));
+}
+document.getElementById('saida-tamanho-menor').addEventListener('click', () => alterarTamanhoSaida(-1));
+document.getElementById('saida-tamanho-maior').addEventListener('click', () => alterarTamanhoSaida(1));
+document.getElementById('saida-negrito').addEventListener('click', function() {
+  const ativo = this.getAttribute('aria-pressed') !== 'true';
+  this.setAttribute('aria-pressed', String(ativo)); this.classList.toggle('active', ativo); updatePreview();
+});
 
 // Nome
 addListener('nome-texto', updatePreview);
@@ -223,7 +247,7 @@ function renderLotes() {
 
   const saidaLista = document.getElementById('saida-lista');
   saidaLista.innerHTML = saidaLote.length ? saidaLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong></div>
+    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.familia || 'Calibri'} · ${item.fonteAuto === false ? `${item.fonte || 70} pt` : 'automática'} · ${item.negrito === false ? 'normal' : 'negrito'}</span></div>
     <button type="button" data-remove-saida="${index}">Remover</button></div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 
@@ -280,7 +304,13 @@ document.getElementById('add-saida').addEventListener('click', () => {
   const qtd = Math.min(Math.max(parseInt(document.getElementById('saida-qtd').value) || 1, 1), 20);
   if (!codigo) { alert('Preencha o nome da placa.'); return; }
   if (!qrText) { alert('Preencha o conteúdo do QR Code.'); return; }
-  saidaLote.push({ nome: codigo, qrText, qtd });
+  saidaLote.push({
+    nome: codigo, qrText, qtd,
+    fonteAuto: document.getElementById('saida-tamanho-auto').checked,
+    fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
+    familia: document.getElementById('saida-fonte').value,
+    negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
+  });
   renderLotes();
   updatePreview();
   document.getElementById('saida-codigo').value = '';
@@ -577,7 +607,7 @@ document.getElementById('gerar-lote').addEventListener('click', () => {
   if (modelo === 'shopee') {
     shopeeLote = registros.map(item => ({ codigo:item.codigo || item.nome, numero:item.numero || item.id, rodape:item.rodape || '', qrText:item.qrText || item.id }));
   } else if (modelo === 'saida') {
-    saidaLote = registros.map(item => ({ nome:item.nome, qrText:item.id, qtd:1 }));
+    saidaLote = registros.map(item => ({ nome:item.nome, qrText:item.id, qtd:1, fonteAuto:true, fonte:70, familia:'Calibri', negrito:true }));
   } else if (modelo === 'nome') {
     nomeLote = registros.map(item => ({ nome:item.nome, ...estiloNome }));
   } else if (modelo === 'nome-duplo') {
@@ -786,20 +816,28 @@ async function renderSaidaPreview(area) {
   const qtd = Math.min(parseInt(document.getElementById('saida-qtd').value) || 1, 3);
   const itens = saidaLote.length
     ? saidaLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
-    : Array.from({ length: qtd }, () => ({ nome: codigo, qrText }));
+    : Array.from({ length: qtd }, () => ({
+        nome: codigo, qrText,
+        fonteAuto: document.getElementById('saida-tamanho-auto').checked,
+        fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
+        familia: document.getElementById('saida-fonte').value,
+        negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
+      }));
 
   area.innerHTML = '';
   const wrap = document.createElement('div');
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
   for (const item of itens) {
-    const tamanhoNome = Math.max(24, Math.min(64, Math.floor(560 / Math.max(String(item.nome).length, 1))));
+    const tamanhoAuto = Math.max(24, Math.min(70, Math.floor(560 / Math.max(String(item.nome).length, 1))));
+    const tamanhoPt = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 70)) : tamanhoAuto;
+    const tamanhoNome = Math.max(5, Math.round(tamanhoPt * .83));
     const card = document.createElement('div');
     card.className = 'preview-grande';
     card.innerHTML = `
       <div class="grande-stripe-tl"></div>
       <div class="grande-stripe-br"></div>
-      <div class="grande-nome" style="font-size:${tamanhoNome}px;white-space:nowrap;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, tamanhoNome, 520)});">${escHtml(item.nome)}</div>
+      <div class="grande-nome" style="font-size:${tamanhoNome}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 900};white-space:nowrap;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, tamanhoNome, 520)});">${escHtml(item.nome)}</div>
       <div class="grande-qr"></div>
     `;
     const qrCanvas = await generateQR(item.qrText, 260);
@@ -1108,7 +1146,13 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 
   if (!saidaLote.length && !codigo) { alert('Adicione uma placa à lista ou preencha o nome da placa.'); return; }
   if (!saidaLote.length && !qrText) { alert('Preencha o conteúdo do QR Code.'); return; }
-  const atual = codigo && qrText ? { nome: codigo, qrText, qtd } : null;
+  const atual = codigo && qrText ? {
+    nome: codigo, qrText, qtd,
+    fonteAuto: document.getElementById('saida-tamanho-auto').checked,
+    fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
+    familia: document.getElementById('saida-fonte').value,
+    negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
+  } : null;
   const itens = (saidaLote.length ? saidaLote : [atual])
     .flatMap(item => Array.from({ length: item.qtd }, () => item));
   preparePrintWindow();
@@ -1121,7 +1165,8 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 
   for (let i = 0; i < itens.length; i++) {
     const item = itens[i];
-    const fonteNome = Math.max(18, Math.min(70, Math.floor(760 / Math.max(String(item.nome).length, 1))));
+    const fonteAutomatica = Math.max(18, Math.min(70, Math.floor(760 / Math.max(String(item.nome).length, 1))));
+    const fonteNome = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 70)) : fonteAutomatica;
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
       <!-- Placa Grande ${i+1} -->
@@ -1133,7 +1178,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <div class="stripe-five" style="position:absolute;right:0.55in;bottom:0.55in;width:4.20in;height:0.42in;"></div>
       <!-- Nome OUT -->
       <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, fonteNome, 520)});width:44%;height:1.20in;white-space:nowrap;
-        font-size:${fonteNome}pt;font-weight:900;font-family:Calibri,Arial,sans-serif;
+        font-size:${fonteNome}pt;font-weight:${item.negrito === false ? 400 : 900};font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;
         display:flex;align-items:center;justify-content:center;text-align:center;">
         ${escHtml(item.nome)}
       </div>
@@ -1410,7 +1455,7 @@ function triggerPrint(contentHtml, orientation = 'portrait', documentTitle = 'Im
     @media print { .no-print { display:none; } }
     .stripe-five {
       background-color:#fff !important;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 30 0h50L50 60ZM100 60l30-60h50l-30 60ZM200 60l30-60h50l-30 60ZM300 60l30-60h50l-30 60ZM400 60l30-60h50l-30 60Z'/%3E%3C/svg%3E") !important;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 25 0h70L70 60ZM100 60l25-60h70l-25 60ZM200 60l25-60h70l-25 60ZM300 60l25-60h70l-25 60ZM400 60l25-60h70l-25 60Z'/%3E%3C/svg%3E") !important;
       background-repeat:no-repeat !important;background-position:center !important;background-size:100% 100% !important;
     }
     .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child, .gaiola-print-page:last-child {

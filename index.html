@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260722-4" />
+  <link rel="stylesheet" href="style.css?v=20260722-5" />
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -239,6 +239,23 @@
               </label>
               <input class="field-input" type="text" id="saida-codigo" placeholder="Digite o nome" />
               <span class="field-hint">O nome será exibido exatamente como foi digitado.</span>
+            </div>
+            <div class="font-size-control">
+              <div class="font-size-heading">
+                <label class="field-label" for="saida-tamanho">🔠 Fonte do nome</label>
+                <output id="saida-tamanho-valor">Automático</output>
+              </div>
+              <div class="font-toolbar" aria-label="Formatação do nome da placa com QR Code">
+                <select class="font-family-select" id="saida-fonte" aria-label="Família da fonte">
+                  <option>Calibri</option><option>Arial</option><option>Verdana</option><option>Tahoma</option><option>Trebuchet MS</option><option>Georgia</option><option>Times New Roman</option><option>Arial Black</option><option>Impact</option>
+                </select>
+                <button type="button" id="saida-tamanho-menor" title="Diminuir fonte" disabled>−</button>
+                <input type="number" id="saida-tamanho" min="6" max="160" value="70" list="nome-tamanhos" disabled />
+                <button type="button" id="saida-tamanho-maior" title="Aumentar fonte" disabled>+</button>
+                <button type="button" class="font-bold-button active" id="saida-negrito" title="Ativar ou remover negrito" aria-pressed="true">B</button>
+              </div>
+              <label class="auto-font-option"><input type="checkbox" id="saida-tamanho-auto" checked /> Ajustar automaticamente para caber</label>
+              <span class="field-hint">Desmarque a opção automática para escolher a fonte e o tamanho.</span>
             </div>
             <div class="field-group">
               <label class="field-label" for="saida-qr">
@@ -471,6 +488,6 @@
   <!-- PRINT AREA (hidden, only for printing) -->
   <div id="printArea" class="print-only"></div>
 
-  <script src="app.js?v=20260722-4"></script>
+  <script src="app.js?v=20260722-5"></script>
 </body>
 </html>
