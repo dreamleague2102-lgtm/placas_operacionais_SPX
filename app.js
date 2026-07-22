@@ -1125,12 +1125,12 @@ document.getElementById('print-saida').addEventListener('click', async () => {
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
       <!-- Placa Grande ${i+1} -->
-      <div style="position:absolute;left:0.22in;top:0.22in;width:10.54in;height:8.04in;
+      <div style="position:absolute;left:0.55in;top:0.55in;width:9.88in;height:7.38in;
         border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div class="stripe-five" style="position:absolute;left:0.22in;top:0.22in;width:4.20in;height:0.42in;"></div>
+      <div class="stripe-five" style="position:absolute;left:0.55in;top:0.55in;width:4.20in;height:0.42in;"></div>
       <!-- Stripe bottom-right -->
-      <div class="stripe-five" style="position:absolute;right:0.22in;bottom:0.22in;width:4.20in;height:0.42in;"></div>
+      <div class="stripe-five" style="position:absolute;right:0.55in;bottom:0.55in;width:4.20in;height:0.42in;"></div>
       <!-- Nome OUT -->
       <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, fonteNome, 520)});width:44%;height:1.20in;white-space:nowrap;
         font-size:${fonteNome}pt;font-weight:900;font-family:Calibri,Arial,sans-serif;
@@ -1160,7 +1160,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
   const placa = (item) => {
     const linhas = quebrarTextoPlaca(item.nome);
     const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
-    return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
+    return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.55in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.46in;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.46in;"></div>
