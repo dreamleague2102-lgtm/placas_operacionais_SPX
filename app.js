@@ -694,19 +694,50 @@ async function renderShopeePreview(area) {
 }
 
 function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
+  const titulo = formatarTextoWs(codigo, 19, 230, 2);
+  const superior = formatarTextoWs(numero, 14, 150, 1);
+  const inferior = formatarTextoWs(rodape, 14, 150, 1);
   const div = document.createElement('div');
   div.className = 'preview-ws';
   div.innerHTML = `
     <div class="ws-stripe ws-stripe-top"></div>
     <div class="ws-body">
-      <div class="ws-name" style="${estiloTextoWs(codigo, 19, 430)}">${escHtml(codigo)}</div>
-      <div class="ws-num" style="${estiloTextoWs(numero, 14, 430)}">${preenchida ? escHtml(numero) : ''}</div>
+      <div class="ws-name" style="font-size:${titulo.fonte}px;line-height:1.08">${titulo.linhas.map(escHtml).join('<br>')}</div>
+      <div class="ws-num" style="font-size:${superior.fonte}px;transform:scaleX(${superior.escala})">${preenchida ? escHtml(numero) : ''}</div>
       <div class="ws-qr"></div>
-      <div class="ws-posto" style="${estiloTextoWs(rodape, 14, 430)}">${preenchida ? escHtml(rodape) : ''}</div>
+      <div class="ws-posto" style="font-size:${inferior.fonte}px;transform:scaleX(${inferior.escala})">${preenchida ? escHtml(rodape) : ''}</div>
     </div>
     <div class="ws-stripe ws-stripe-bottom"></div>
   `;
   return div;
+}
+
+function dividirTextoEquilibrado(texto, maxLinhas = 2) {
+  const valor = String(texto || '').trim();
+  if (!valor || maxLinhas === 1) return [valor];
+  const palavras = valor.split(/\s+/);
+  if (palavras.length === 1) {
+    if (valor.length <= 14) return [valor];
+    const meio = Math.ceil(valor.length / 2);
+    return [valor.slice(0, meio), valor.slice(meio)];
+  }
+  let melhor = 1;
+  let diferenca = Infinity;
+  for (let i = 1; i < palavras.length; i++) {
+    const a = palavras.slice(0, i).join(' ');
+    const b = palavras.slice(i).join(' ');
+    const atual = Math.abs(a.length - b.length);
+    if (atual < diferenca) { diferenca = atual; melhor = i; }
+  }
+  return [palavras.slice(0, melhor).join(' '), palavras.slice(melhor).join(' ')];
+}
+
+function formatarTextoWs(texto, fonteBase, larguraPx, maxLinhas = 1) {
+  const linhas = dividirTextoEquilibrado(texto, maxLinhas);
+  const maior = Math.max(...linhas.map(linha => linha.length), 1);
+  const fonte = Math.max(8, Math.min(fonteBase, Math.floor(larguraPx / (maior * .62))));
+  const escala = Math.max(.72, Math.min(1, larguraPx / (maior * fonte * .62)));
+  return { linhas, fonte, escala };
 }
 
 function escalaParaCaber(texto, fonte, capacidade) {
@@ -724,15 +755,18 @@ function buildWsPrintPages(itens) {
     const etiquetas = [0, 1, 2].map(coluna => {
       const item = itens[inicio + coluna];
       const preenchida = Boolean(item);
+      const titulo = formatarTextoWs(item?.codigo, 20, 205, 2);
+      const superior = formatarTextoWs(item?.numero, 14, 205, 1);
+      const inferior = formatarTextoWs(item?.rodape, 14, 205, 1);
       return `<div style="height:5.2in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
         <div class="stripe-five" style="width:60%;height:.32in;"></div>
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
-          <div style="font-size:20pt;font-weight:700;padding-top:.15in;text-align:center;white-space:nowrap;transform:scaleX(${escalaParaCaber(item?.codigo, 20, 430)});">${preenchida ? escHtml(item.codigo) : ''}</div>
-          <div style="font-size:14pt;font-weight:700;margin-top:.22in;height:.25in;text-align:center;white-space:nowrap;transform:scaleX(${escalaParaCaber(item?.numero, 14, 430)});">${preenchida ? escHtml(item.numero) : ''}</div>
+          <div style="font-size:${titulo.fonte}pt;font-weight:700;padding:.13in .12in 0;text-align:center;line-height:1.05;min-height:.55in;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
+          <div style="font-size:${superior.fonte}pt;font-weight:700;margin-top:.08in;height:.25in;text-align:center;white-space:nowrap;transform:scaleX(${superior.escala});">${preenchida ? escHtml(item.numero) : ''}</div>
           <div style="height:2.35in;margin-top:.24in;display:flex;align-items:center;justify-content:center;">
             ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
-          <div style="width:100%;margin-top:.26in;font-size:14pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;transform:scaleX(${escalaParaCaber(item?.rodape, 14, 430)});">${preenchida ? escHtml(item.rodape) : ''}</div>
+          <div style="width:100%;margin-top:.26in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;transform:scaleX(${inferior.escala});">${preenchida ? escHtml(item.rodape) : ''}</div>
         </div>
         <div class="stripe-five" style="width:60%;height:.32in;margin-left:40%;"></div>
       </div>`;
@@ -782,16 +816,16 @@ async function renderSaidaPreview(area) {
 // ---- NOME / SIMPLES ----
 function quebrarTextoPlaca(valor) {
   const palavras = String(valor || '').trim().toUpperCase().split(/\s+/).filter(Boolean);
-  if (palavras.length <= 2 || palavras.join(' ').length <= 11) return [palavras.join(' ')];
-  if (palavras.length === 3) return [palavras.slice(0, 2).join(' '), palavras[2]];
-  const meio = Math.ceil(palavras.length / 2);
-  return [palavras.slice(0, meio).join(' '), palavras.slice(meio).join(' ')];
+  const texto = palavras.join(' ');
+  if (!texto) return [''];
+  if (texto.length <= 14) return [texto];
+  return dividirTextoEquilibrado(texto, 2);
 }
 
 function tamanhoFonteNome(linhas) {
   const maiorLinha = Math.max(...linhas.map(linha => String(linha).length), 1);
   // Sem limite de caracteres: reduz até 6 pt e comprime horizontalmente se necessário.
-  return Math.max(6, Math.min(70, Math.floor(1050 / maiorLinha)));
+  return Math.max(6, Math.min(70, Math.floor(820 / maiorLinha)));
 }
 
 function escalaLinhaNome(texto, fonte, capacidade = 1050) {
@@ -1374,7 +1408,7 @@ function triggerPrint(contentHtml, orientation = 'portrait', documentTitle = 'Im
     @media print { .no-print { display:none; } }
     .stripe-five {
       background-color:#fff !important;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 35 0h65L65 60ZM100 60l35-60h65l-35 60ZM200 60l35-60h65l-35 60ZM300 60l35-60h65l-35 60ZM400 60l35-60h65l-35 60Z'/%3E%3C/svg%3E") !important;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 30 0h50L50 60ZM100 60l30-60h50l-30 60ZM200 60l30-60h50l-30 60ZM300 60l30-60h50l-30 60ZM400 60l30-60h50l-30 60Z'/%3E%3C/svg%3E") !important;
       background-repeat:no-repeat !important;background-position:center !important;background-size:100% 100% !important;
     }
     .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child, .gaiola-print-page:last-child {
