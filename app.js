@@ -793,12 +793,13 @@ async function renderSaidaPreview(area) {
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
   for (const item of itens) {
+    const tamanhoNome = Math.max(24, Math.min(64, Math.floor(560 / Math.max(String(item.nome).length, 1))));
     const card = document.createElement('div');
     card.className = 'preview-grande';
     card.innerHTML = `
       <div class="grande-stripe-tl"></div>
       <div class="grande-stripe-br"></div>
-      <div class="grande-nome" style="white-space:nowrap;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, 52, 520)});">${escHtml(item.nome)}</div>
+      <div class="grande-nome" style="font-size:${tamanhoNome}px;white-space:nowrap;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, tamanhoNome, 520)});">${escHtml(item.nome)}</div>
       <div class="grande-qr"></div>
     `;
     const qrCanvas = await generateQR(item.qrText, 260);
@@ -1120,18 +1121,19 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 
   for (let i = 0; i < itens.length; i++) {
     const item = itens[i];
+    const fonteNome = Math.max(18, Math.min(70, Math.floor(760 / Math.max(String(item.nome).length, 1))));
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
       <!-- Placa Grande ${i+1} -->
       <div style="position:absolute;left:0.22in;top:0.22in;width:10.54in;height:8.04in;
         border:1.5px solid #111;box-sizing:border-box;"></div>
       <!-- Stripe top-left -->
-      <div class="stripe-five" style="position:absolute;left:0.30in;top:0.82in;width:4.45in;height:0.40in;"></div>
+      <div class="stripe-five" style="position:absolute;left:0.22in;top:0.22in;width:4.20in;height:0.42in;"></div>
       <!-- Stripe bottom-right -->
-      <div class="stripe-five" style="position:absolute;right:0.30in;bottom:0.82in;width:4.45in;height:0.40in;"></div>
+      <div class="stripe-five" style="position:absolute;right:0.22in;bottom:0.22in;width:4.20in;height:0.42in;"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, 48, 520)});width:44%;height:1.05in;white-space:nowrap;
-        font-size:48pt;font-weight:900;font-family:Inter,sans-serif;
+      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, fonteNome, 520)});width:44%;height:1.20in;white-space:nowrap;
+        font-size:${fonteNome}pt;font-weight:900;font-family:Calibri,Arial,sans-serif;
         display:flex;align-items:center;justify-content:center;text-align:center;">
         ${escHtml(item.nome)}
       </div>
@@ -1160,9 +1162,9 @@ document.getElementById('print-nome').addEventListener('click', () => {
     const fonte = tamanhoFonteNomeSelecionado(linhas, item.fonteAuto === undefined ? null : item);
     return `<section class="simple-print-page" style="width:10.98in;height:8.48in;padding:.22in;overflow:hidden;page-break-after:always;break-after:page;background:#fff;">
     <div style="width:100%;height:100%;position:relative;border:1.5px solid #555;overflow:hidden;">
-      <div class="stripe-five" style="position:absolute;left:.12in;top:.82in;width:45%;height:.82in;"></div>
-      <div class="stripe-five" style="position:absolute;right:.12in;bottom:.82in;width:45%;height:.82in;"></div>
-      <div style="position:absolute;inset:1.45in .9in;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.46in;"></div>
+      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.46in;"></div>
+      <div style="position:absolute;inset:1.05in .72in;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
         ${linhas.map(linha => `<div style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte)});">${escHtml(linha)}</div>`).join('')}
       </div>
