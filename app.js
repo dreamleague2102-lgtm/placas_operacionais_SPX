@@ -1455,7 +1455,7 @@ function triggerPrint(contentHtml, orientation = 'portrait', documentTitle = 'Im
     @media print { .no-print { display:none; } }
     .stripe-five {
       background-color:#fff !important;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 25 0h70L70 60ZM100 60l25-60h70l-25 60ZM200 60l25-60h70l-25 60ZM300 60l25-60h70l-25 60ZM400 60l25-60h70l-25 60Z'/%3E%3C/svg%3E") !important;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 60' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M0 60 18 0h85L85 60ZM100 60l18-60h85l-18 60ZM200 60l18-60h85l-18 60ZM300 60l18-60h85l-18 60ZM400 60l18-60h85l-18 60Z'/%3E%3C/svg%3E") !important;
       background-repeat:no-repeat !important;background-position:center !important;background-size:100% 100% !important;
     }
     .ws-print-page:last-child, .simple-print-page:last-child, .out-print-page:last-child, .gaiola-print-page:last-child {
