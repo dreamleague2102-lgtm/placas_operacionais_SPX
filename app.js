@@ -103,7 +103,7 @@ addListener('saida-tamanho', () => {
   document.getElementById('saida-tamanho-valor').textContent = `${document.getElementById('saida-tamanho').value} pt`;
   updatePreview();
 });
-document.getElementById('saida-tamanho-auto').addEventListener('change', function() {
+document.getElementById('saida-tamanho-auto').addEventListener('change', function () {
   const controle = document.getElementById('saida-tamanho');
   controle.disabled = this.checked;
   document.getElementById('saida-tamanho-menor').disabled = this.checked;
@@ -114,11 +114,11 @@ document.getElementById('saida-tamanho-auto').addEventListener('change', functio
 function alterarTamanhoSaida(delta) {
   const controle = document.getElementById('saida-tamanho');
   controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 70) + delta));
-  controle.dispatchEvent(new Event('input', { bubbles:true }));
+  controle.dispatchEvent(new Event('input', { bubbles: true }));
 }
 document.getElementById('saida-tamanho-menor').addEventListener('click', () => alterarTamanhoSaida(-1));
 document.getElementById('saida-tamanho-maior').addEventListener('click', () => alterarTamanhoSaida(1));
-document.getElementById('saida-negrito').addEventListener('click', function() {
+document.getElementById('saida-negrito').addEventListener('click', function () {
   const ativo = this.getAttribute('aria-pressed') !== 'true';
   this.setAttribute('aria-pressed', String(ativo)); this.classList.toggle('active', ativo); updatePreview();
 });
@@ -127,7 +127,7 @@ document.getElementById('saida-negrito').addEventListener('click', function() {
 addListener('nome-texto', updatePreview);
 addListener('nome-qtd', updatePreview);
 addListener('nome-fonte', updatePreview);
-document.getElementById('nome-negrito').addEventListener('click', function() {
+document.getElementById('nome-negrito').addEventListener('click', function () {
   const ativo = this.getAttribute('aria-pressed') !== 'true';
   this.setAttribute('aria-pressed', String(ativo)); this.classList.toggle('active', ativo); updatePreview();
 });
@@ -137,7 +137,7 @@ addListener('nome-duplo-tamanho', () => {
   updatePreview();
 });
 
-document.getElementById('nome-duplo-tamanho-auto').addEventListener('change', function() {
+document.getElementById('nome-duplo-tamanho-auto').addEventListener('change', function () {
   const controle = document.getElementById('nome-duplo-tamanho');
   controle.disabled = this.checked;
   document.getElementById('nome-duplo-tamanho-menor').disabled = this.checked;
@@ -149,12 +149,12 @@ document.getElementById('nome-duplo-tamanho-auto').addEventListener('change', fu
 function alterarTamanhoNomeDuplo(delta) {
   const controle = document.getElementById('nome-duplo-tamanho');
   controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 70) + delta));
-  controle.dispatchEvent(new Event('input', { bubbles:true }));
+  controle.dispatchEvent(new Event('input', { bubbles: true }));
 }
 document.getElementById('nome-duplo-tamanho-menor').addEventListener('click', () => alterarTamanhoNomeDuplo(-1));
 document.getElementById('nome-duplo-tamanho-maior').addEventListener('click', () => alterarTamanhoNomeDuplo(1));
 addListener('nome-duplo-fonte', updatePreview);
-document.getElementById('nome-duplo-negrito').addEventListener('click', function() {
+document.getElementById('nome-duplo-negrito').addEventListener('click', function () {
   const ativo = this.getAttribute('aria-pressed') !== 'true';
   this.setAttribute('aria-pressed', String(ativo));
   this.classList.toggle('active', ativo);
@@ -166,7 +166,7 @@ addListener('nome-quatro-tamanho', () => {
   document.getElementById('nome-quatro-tamanho-valor').textContent = `${document.getElementById('nome-quatro-tamanho').value} pt`;
   updatePreview();
 });
-document.getElementById('nome-quatro-tamanho-auto').addEventListener('change', function() {
+document.getElementById('nome-quatro-tamanho-auto').addEventListener('change', function () {
   const controle = document.getElementById('nome-quatro-tamanho');
   controle.disabled = this.checked;
   document.getElementById('nome-quatro-tamanho-menor').disabled = this.checked;
@@ -177,12 +177,12 @@ document.getElementById('nome-quatro-tamanho-auto').addEventListener('change', f
 function alterarTamanhoNomeQuatro(delta) {
   const controle = document.getElementById('nome-quatro-tamanho');
   controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 60) + delta));
-  controle.dispatchEvent(new Event('input', { bubbles:true }));
+  controle.dispatchEvent(new Event('input', { bubbles: true }));
 }
 document.getElementById('nome-quatro-tamanho-menor').addEventListener('click', () => alterarTamanhoNomeQuatro(-1));
 document.getElementById('nome-quatro-tamanho-maior').addEventListener('click', () => alterarTamanhoNomeQuatro(1));
 addListener('nome-quatro-fonte', updatePreview);
-document.getElementById('nome-quatro-negrito').addEventListener('click', function() {
+document.getElementById('nome-quatro-negrito').addEventListener('click', function () {
   const ativo = this.getAttribute('aria-pressed') !== 'true';
   this.setAttribute('aria-pressed', String(ativo)); this.classList.toggle('active', ativo); updatePreview();
 });
@@ -191,7 +191,7 @@ addListener('nome-tamanho', () => {
   updatePreview();
 });
 
-document.getElementById('nome-tamanho-auto').addEventListener('change', function() {
+document.getElementById('nome-tamanho-auto').addEventListener('change', function () {
   const controle = document.getElementById('nome-tamanho');
   controle.disabled = this.checked;
   document.getElementById('nome-tamanho-menor').disabled = this.checked;
@@ -203,7 +203,7 @@ document.getElementById('nome-tamanho-auto').addEventListener('change', function
 function alterarTamanhoNome(delta) {
   const controle = document.getElementById('nome-tamanho');
   controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 70) + delta));
-  controle.dispatchEvent(new Event('input', { bubbles:true }));
+  controle.dispatchEvent(new Event('input', { bubbles: true }));
 }
 document.getElementById('nome-tamanho-menor').addEventListener('click', () => alterarTamanhoNome(-1));
 document.getElementById('nome-tamanho-maior').addEventListener('click', () => alterarTamanhoNome(1));
@@ -234,7 +234,7 @@ document.getElementById('shopee-numero').addEventListener('input', () => {
     updatePreview();
   }
 });
-document.getElementById('shopee-qr').addEventListener('input', function() {
+document.getElementById('shopee-qr').addEventListener('input', function () {
   this.dataset.manual = '1';
 });
 
@@ -247,8 +247,16 @@ function renderLotes() {
 
   const saidaLista = document.getElementById('saida-lista');
   saidaLista.innerHTML = saidaLote.length ? saidaLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.familia || 'Calibri'} · ${item.fonteAuto === false ? `${item.fonte || 70} pt` : 'automática'} · ${item.negrito === false ? 'normal' : 'negrito'}</span></div>
-    <button type="button" data-remove-saida="${index}">Remover</button></div>`).join('')
+    <div class="batch-item nome-duplo-item">
+      <div><strong>Placa ${index + 1} · ${escHtml(item.nome)}</strong><span>Configuração individual do nome</span></div>
+      <div class="batch-font-controls">
+        <label><input type="checkbox" data-saida-auto="${index}" ${item.fonteAuto !== false ? 'checked' : ''}> Automático</label>
+        <select data-saida-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
+        <input type="number" min="6" max="160" value="${item.fonte || 70}" data-saida-fonte="${index}" ${item.fonteAuto !== false ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
+        <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-saida-negrito="${index}" title="Ativar ou remover negrito">B</button>
+        <button type="button" data-remove-saida="${index}">Remover</button>
+      </div>
+    </div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 
   const nomeLista = document.getElementById('nome-lista');
@@ -263,7 +271,7 @@ function renderLotes() {
       <div><strong>Placa ${index + 1} · ${index % 2 === 0 ? 'superior' : 'inferior'}</strong><span>${escHtml(item.nome)}</span></div>
       <div class="batch-font-controls">
         <label><input type="checkbox" data-nome-duplo-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
-        <select data-nome-duplo-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri','Arial','Verdana','Tahoma','Trebuchet MS','Georgia','Times New Roman','Arial Black','Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
+        <select data-nome-duplo-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
         <input type="number" min="6" max="160" value="${item.fonte}" data-nome-duplo-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}">
         <span>pt</span>
         <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-duplo-negrito="${index}" title="Ativar ou remover negrito">B</button>
@@ -276,7 +284,7 @@ function renderLotes() {
   nomeQuatroLista.innerHTML = nomeQuatroLote.length ? nomeQuatroLote.map((item, index) => `
     <div class="batch-item nome-duplo-item"><div><strong>Placa ${index + 1} · posição ${(index % 4) + 1}</strong><span>${escHtml(item.nome)}</span></div>
       <div class="batch-font-controls"><label><input type="checkbox" data-nome-quatro-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
-      <select data-nome-quatro-familia="${index}">${['Calibri','Arial','Verdana','Tahoma','Trebuchet MS','Georgia','Times New Roman','Arial Black','Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
+      <select data-nome-quatro-familia="${index}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
       <input type="number" min="6" max="160" value="${item.fonte}" data-nome-quatro-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''}><span>pt</span>
       <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-quatro-negrito="${index}">B</button>
       <button type="button" data-remove-nome-quatro="${index}">Remover</button></div></div>`).join('')
@@ -361,8 +369,23 @@ document.getElementById('add-nome-quatro').addEventListener('click', () => {
 
 document.getElementById('saida-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-saida]');
-  if (!botao) return;
-  saidaLote.splice(Number(botao.dataset.removeSaida), 1);
+  const negrito = event.target.closest('[data-saida-negrito]');
+  if (botao) saidaLote.splice(Number(botao.dataset.removeSaida), 1);
+  else if (negrito) {
+    const item = saidaLote[Number(negrito.dataset.saidaNegrito)];
+    item.negrito = item.negrito === false;
+  } else return;
+  renderLotes(); updatePreview();
+});
+
+document.getElementById('saida-lista').addEventListener('change', event => {
+  const auto = event.target.closest('[data-saida-auto]');
+  const fonte = event.target.closest('[data-saida-fonte]');
+  const familia = event.target.closest('[data-saida-familia]');
+  if (auto) saidaLote[Number(auto.dataset.saidaAuto)].fonteAuto = auto.checked;
+  else if (fonte) saidaLote[Number(fonte.dataset.saidaFonte)].fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 70));
+  else if (familia) saidaLote[Number(familia.dataset.saidaFamilia)].familia = familia.value;
+  else return;
   renderLotes(); updatePreview();
 });
 
@@ -531,7 +554,7 @@ function interpretarLote(texto) {
     const partes = linha.includes('\t') ? linha.split('\t') : linha.includes(';') ? linha.split(';') : linha.split(',');
     const id = String(partes.shift() || '').trim();
     const nome = partes.join(' ').trim();
-    return { id, nome, selecionada:true, linha:index + 1 };
+    return { id, nome, selecionada: true, linha: index + 1 };
   }).filter(item => item.id && item.nome);
 }
 
@@ -540,7 +563,7 @@ function interpretarColunasLote(textoIds, textoNomes) {
   const ids = String(textoIds || '').split(/\r?\n/).map(valor => valor.trim());
   const nomes = String(textoNomes || '').split(/\r?\n/).map(valor => valor.trim());
   const total = Math.max(ids.length, nomes.length);
-  return Array.from({ length:total }, (_, index) => ({ id:ids[index] || '', nome:nomes[index] || '', selecionada:true, linha:index + 1 }))
+  return Array.from({ length: total }, (_, index) => ({ id: ids[index] || '', nome: nomes[index] || '', selecionada: true, linha: index + 1 }))
     .filter(item => item.id && item.nome);
 }
 
@@ -549,7 +572,7 @@ function linhasLote(texto) {
 }
 
 function interpretarLoteNomes(texto) {
-  return linhasLote(texto).filter(Boolean).map((nome, index) => ({ id:`Placa ${index + 1}`, nome, selecionada:true, linha:index + 1 }));
+  return linhasLote(texto).filter(Boolean).map((nome, index) => ({ id: `Placa ${index + 1}`, nome, selecionada: true, linha: index + 1 }));
 }
 
 function interpretarLoteWorkstation(painel) {
@@ -558,11 +581,11 @@ function interpretarLoteWorkstation(painel) {
   const rodapes = linhasLote(painel.querySelector('[data-ws-rodape]').value);
   const qrs = linhasLote(painel.querySelector('[data-ws-qr]').value);
   const total = Math.max(codigos.length, numeros.length, rodapes.length, qrs.length);
-  return Array.from({ length:total }, (_, index) => ({
-    id:qrs[index] || numeros[index] || '',
-    nome:codigos[index] || '',
-    codigo:codigos[index] || '', numero:numeros[index] || '', rodape:rodapes[index] || '', qrText:qrs[index] || '',
-    selecionada:true, linha:index + 1
+  return Array.from({ length: total }, (_, index) => ({
+    id: qrs[index] || numeros[index] || '',
+    nome: codigos[index] || '',
+    codigo: codigos[index] || '', numero: numeros[index] || '', rodape: rodapes[index] || '', qrText: qrs[index] || '',
+    selecionada: true, linha: index + 1
   })).filter(item => item.codigo && item.qrText);
 }
 
@@ -594,7 +617,7 @@ document.getElementById('lote-lista').addEventListener('change', event => {
   renderListaLote();
 });
 
-document.getElementById('lote-selecionar-todos').addEventListener('change', function() {
+document.getElementById('lote-selecionar-todos').addEventListener('change', function () {
   loteImportado.forEach(item => { item.selecionada = this.checked; });
   renderListaLote();
 });
@@ -603,24 +626,24 @@ document.getElementById('gerar-lote').addEventListener('click', () => {
   const registros = loteImportado.filter(item => item.selecionada);
   const modelo = document.getElementById('lote-modelo').value;
   if (!registros.length) { alert('Selecione pelo menos uma placa.'); return; }
-  const estiloNome = { qtd:1, fonteAuto:true, fonte:70, familia:'Calibri', negrito:true };
+  const estiloNome = { qtd: 1, fonteAuto: false, fonte: 70, familia: 'Calibri', negrito: true };
   if (modelo === 'shopee') {
-    shopeeLote = registros.map(item => ({ codigo:item.codigo || item.nome, numero:item.numero || item.id, rodape:item.rodape || '', qrText:item.qrText || item.id }));
+    shopeeLote = registros.map(item => ({ codigo: item.codigo || item.nome, numero: item.numero || item.id, rodape: item.rodape || '', qrText: item.qrText || item.id }));
   } else if (modelo === 'saida') {
-    saidaLote = registros.map(item => ({ nome:item.nome, qrText:item.id, qtd:1, fonteAuto:true, fonte:70, familia:'Calibri', negrito:true }));
+    saidaLote = registros.map(item => ({ nome: item.nome, qrText: item.id, qtd: 1, fonteAuto: false, fonte: 70, familia: 'Calibri', negrito: true }));
   } else if (modelo === 'nome') {
-    nomeLote = registros.map(item => ({ nome:item.nome, ...estiloNome }));
+    nomeLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
   } else if (modelo === 'nome-duplo') {
-    nomeDuploLote = registros.map(item => ({ nome:item.nome, ...estiloNome }));
+    nomeDuploLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
   } else if (modelo === 'nome-quatro') {
-    nomeQuatroLote = registros.map(item => ({ nome:item.nome, ...estiloNome }));
+    nomeQuatroLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
   }
   renderLotes();
   document.getElementById(`print-${modelo}`).click();
 });
 
 // Force uppercase for nome
-document.getElementById('nome-texto').addEventListener('input', function() {
+document.getElementById('nome-texto').addEventListener('input', function () {
   const pos = this.selectionStart;
   this.value = this.value.toUpperCase();
   this.setSelectionRange(pos, pos);
@@ -650,8 +673,10 @@ async function generateQR(text, size = 256) {
   if (qrCache[key]) return qrCache[key];
   try {
     const host = document.createElement('div');
-    new QRCode(host, { text: text || ' ', width: size, height: size,
-      colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+    new QRCode(host, {
+      text: text || ' ', width: size, height: size,
+      colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H
+    });
     const canvas = host.querySelector('canvas');
     if (!canvas) throw new Error('QR Code não foi renderizado');
     qrCache[key] = canvas;
@@ -710,11 +735,11 @@ async function renderShopeePreview(area) {
       const card = buildShopeeCard(item?.codigo || '', item?.numero || '', item?.rodape || '', Boolean(item));
       if (item) {
         const qrCanvas = await generateQR(item.qrText, 200);
-      if (qrCanvas) {
-        const img = new Image();
-        img.src = qrCanvas.toDataURL();
-        card.querySelector('.ws-qr').appendChild(img);
-      }
+        if (qrCanvas) {
+          const img = new Image();
+          img.src = qrCanvas.toDataURL();
+          card.querySelector('.ws-qr').appendChild(img);
+        }
       }
       folha.appendChild(card);
     }
@@ -817,12 +842,12 @@ async function renderSaidaPreview(area) {
   const itens = saidaLote.length
     ? saidaLote.flatMap(item => Array.from({ length: item.qtd }, () => item))
     : Array.from({ length: qtd }, () => ({
-        nome: codigo, qrText,
-        fonteAuto: document.getElementById('saida-tamanho-auto').checked,
-        fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
-        familia: document.getElementById('saida-fonte').value,
-        negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
-      }));
+      nome: codigo, qrText,
+      fonteAuto: document.getElementById('saida-tamanho-auto').checked,
+      fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
+      familia: document.getElementById('saida-fonte').value,
+      negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
+    }));
 
   area.innerHTML = '';
   const wrap = document.createElement('div');
@@ -837,7 +862,7 @@ async function renderSaidaPreview(area) {
     card.innerHTML = `
       <div class="grande-stripe-tl"></div>
       <div class="grande-stripe-br"></div>
-      <div class="grande-nome" style="font-size:${tamanhoNome}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 900};white-space:nowrap;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, tamanhoNome, 520)});">${escHtml(item.nome)}</div>
+      <div class="grande-nome" style="font-size:${tamanhoNome}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 900};white-space:nowrap;overflow:hidden;transform:translateY(-50%);">${escHtml(item.nome)}</div>
       <div class="grande-qr"></div>
     `;
     const qrCanvas = await generateQR(item.qrText, 260);
@@ -1069,17 +1094,17 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
 
   const COLS = [0, 1, 2];
   const COL_X_NAME = [0.41, 3.74, 7.07];   // in
-  const COL_X_QR   = [0.37, 3.70, 7.03];   // in
+  const COL_X_QR = [0.37, 3.70, 7.03];   // in
 
   // Stripe positions (slightly above name, below posto)
   const STRIPE_TOP_Y = 0.35;
-  const NAME_Y       = 0.78;
-  const QR_Y         = 1.65;
-  const POSTO_Y      = 4.65;
+  const NAME_Y = 0.78;
+  const QR_Y = 1.65;
+  const POSTO_Y = 4.65;
   const STRIPE_BOT_Y = 7.45;
-  const SHOPEE_Y     = 0.40;
+  const SHOPEE_Y = 0.40;
 
-  const ROW_HEIGHT   = 5.2;    // in — vertical gap between rows
+  const ROW_HEIGHT = 5.2;    // in — vertical gap between rows
 
   let plates = '';
   const rows = Math.ceil(qtd / 3);
@@ -1169,14 +1194,14 @@ document.getElementById('print-saida').addEventListener('click', async () => {
     const fonteNome = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 70)) : fonteAutomatica;
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
-      <!-- Placa Grande ${i+1} -->
+      <!-- Placa Grande ${i + 1} -->
       <div style="position:absolute;left:0.58in;top:1.09in;width:9.82in;height:6.30in;"></div>
       <!-- Stripe top-left -->
       <div class="stripe-five" style="position:absolute;left:0.58in;top:1.09in;width:4.20in;height:0.28in;"></div>
       <!-- Stripe bottom-right -->
       <div class="stripe-five" style="position:absolute;right:0.58in;bottom:1.09in;width:4.20in;height:0.28in;"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%) scaleX(${escalaParaCaber(item.nome, fonteNome, 520)});width:44%;height:1.20in;white-space:nowrap;
+      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:1.20in;white-space:nowrap;overflow:hidden;
         font-size:${fonteNome}pt;font-weight:${item.negrito === false ? 400 : 900};font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;
         display:flex;align-items:center;justify-content:center;text-align:center;">
         ${escHtml(item.nome)}
@@ -1226,7 +1251,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
   for (let i = 0; i < qtd; i++) {
     const offsetY = i * PAGE_H;
     pages += `
-      <!-- Placa Simples ${i+1} -->
+      <!-- Placa Simples ${i + 1} -->
       <!-- Border -->
       <div style="position:absolute;left:0.28in;top:${0.22 + offsetY}in;width:10.44in;height:8.06in;
         border:1.5px solid #555;box-sizing:border-box;"></div>
@@ -1278,12 +1303,12 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
   const itens = nomeDuploLote.length
     ? [...nomeDuploLote]
     : atual ? [{
-        nome: atual,
-        fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
-        fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70,
-        familia: document.getElementById('nome-duplo-fonte').value,
-        negrito: document.getElementById('nome-duplo-negrito').getAttribute('aria-pressed') === 'true'
-      }] : [];
+      nome: atual,
+      fonteAuto: document.getElementById('nome-duplo-tamanho-auto').checked,
+      fonte: parseInt(document.getElementById('nome-duplo-tamanho').value) || 70,
+      familia: document.getElementById('nome-duplo-fonte').value,
+      negrito: document.getElementById('nome-duplo-negrito').getAttribute('aria-pressed') === 'true'
+    }] : [];
   if (!itens.length) { alert('Adicione pelo menos um nome à lista.'); return; }
 
   const paginas = [];
@@ -1374,12 +1399,12 @@ document.getElementById('print-gaiola').addEventListener('click', async () => {
 
   triggerPrint(pagesHtml, 'portrait');
 });
-document.getElementById('nome-duplo-texto').addEventListener('input', function() {
+document.getElementById('nome-duplo-texto').addEventListener('input', function () {
   const pos = this.selectionStart;
   this.value = this.value.toUpperCase();
   this.setSelectionRange(pos, pos);
 });
-document.getElementById('nome-quatro-texto').addEventListener('input', function() {
+document.getElementById('nome-quatro-texto').addEventListener('input', function () {
   const pos = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(pos, pos);
 });
 
