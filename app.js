@@ -113,7 +113,7 @@ document.getElementById('saida-tamanho-auto').addEventListener('change', functio
 });
 function alterarTamanhoSaida(delta) {
   const controle = document.getElementById('saida-tamanho');
-  controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 70) + delta));
+  controle.value = Math.min(160, Math.max(6, (parseInt(controle.value) || 65) + delta));
   controle.dispatchEvent(new Event('input', { bubbles: true }));
 }
 document.getElementById('saida-tamanho-menor').addEventListener('click', () => alterarTamanhoSaida(-1));
@@ -252,7 +252,7 @@ function renderLotes() {
       <div class="batch-font-controls">
         <label><input type="checkbox" data-saida-auto="${index}" ${item.fonteAuto !== false ? 'checked' : ''}> Automático</label>
         <select data-saida-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
-        <input type="number" min="6" max="160" value="${item.fonte || 70}" data-saida-fonte="${index}" ${item.fonteAuto !== false ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
+        <input type="number" min="6" max="160" value="${item.fonte || 65}" data-saida-fonte="${index}" ${item.fonteAuto !== false ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
         <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-saida-negrito="${index}" title="Ativar ou remover negrito">B</button>
         <button type="button" data-remove-saida="${index}">Remover</button>
       </div>
@@ -315,7 +315,7 @@ document.getElementById('add-saida').addEventListener('click', () => {
   saidaLote.push({
     nome: codigo, qrText, qtd,
     fonteAuto: document.getElementById('saida-tamanho-auto').checked,
-    fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
+    fonte: parseInt(document.getElementById('saida-tamanho').value) || 65,
     familia: document.getElementById('saida-fonte').value,
     negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
   });
@@ -383,7 +383,7 @@ document.getElementById('saida-lista').addEventListener('change', event => {
   const fonte = event.target.closest('[data-saida-fonte]');
   const familia = event.target.closest('[data-saida-familia]');
   if (auto) saidaLote[Number(auto.dataset.saidaAuto)].fonteAuto = auto.checked;
-  else if (fonte) saidaLote[Number(fonte.dataset.saidaFonte)].fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 70));
+  else if (fonte) saidaLote[Number(fonte.dataset.saidaFonte)].fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 65));
   else if (familia) saidaLote[Number(familia.dataset.saidaFamilia)].familia = familia.value;
   else return;
   renderLotes(); updatePreview();
@@ -630,7 +630,7 @@ document.getElementById('gerar-lote').addEventListener('click', () => {
   if (modelo === 'shopee') {
     shopeeLote = registros.map(item => ({ codigo: item.codigo || item.nome, numero: item.numero || item.id, rodape: item.rodape || '', qrText: item.qrText || item.id }));
   } else if (modelo === 'saida') {
-    saidaLote = registros.map(item => ({ nome: item.nome, qrText: item.id, qtd: 1, fonteAuto: false, fonte: 70, familia: 'Calibri', negrito: true }));
+    saidaLote = registros.map(item => ({ nome: item.nome, qrText: item.id, qtd: 1, fonteAuto: false, fonte: 65, familia: 'Calibri', negrito: true }));
   } else if (modelo === 'nome') {
     nomeLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
   } else if (modelo === 'nome-duplo') {
@@ -844,7 +844,7 @@ async function renderSaidaPreview(area) {
     : Array.from({ length: qtd }, () => ({
       nome: codigo, qrText,
       fonteAuto: document.getElementById('saida-tamanho-auto').checked,
-      fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
+      fonte: parseInt(document.getElementById('saida-tamanho').value) || 65,
       familia: document.getElementById('saida-fonte').value,
       negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
     }));
@@ -854,8 +854,8 @@ async function renderSaidaPreview(area) {
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
   for (const item of itens) {
-    const tamanhoAuto = Math.max(24, Math.min(70, Math.floor(560 / Math.max(String(item.nome).length, 1))));
-    const tamanhoPt = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 70)) : tamanhoAuto;
+    const tamanhoAuto = Math.max(24, Math.min(65, Math.floor(560 / Math.max(String(item.nome).length, 1))));
+    const tamanhoPt = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 65)) : tamanhoAuto;
     const tamanhoNome = Math.max(5, Math.round(tamanhoPt * .83));
     const card = document.createElement('div');
     card.className = 'preview-grande';
@@ -1174,7 +1174,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
   const atual = codigo && qrText ? {
     nome: codigo, qrText, qtd,
     fonteAuto: document.getElementById('saida-tamanho-auto').checked,
-    fonte: parseInt(document.getElementById('saida-tamanho').value) || 70,
+    fonte: parseInt(document.getElementById('saida-tamanho').value) || 65,
     familia: document.getElementById('saida-fonte').value,
     negrito: document.getElementById('saida-negrito').getAttribute('aria-pressed') === 'true'
   } : null;
@@ -1190,8 +1190,8 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 
   for (let i = 0; i < itens.length; i++) {
     const item = itens[i];
-    const fonteAutomatica = Math.max(18, Math.min(70, Math.floor(760 / Math.max(String(item.nome).length, 1))));
-    const fonteNome = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 70)) : fonteAutomatica;
+    const fonteAutomatica = Math.max(18, Math.min(65, Math.floor(760 / Math.max(String(item.nome).length, 1))));
+    const fonteNome = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 65)) : fonteAutomatica;
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
       <!-- Placa Grande ${i + 1} -->
