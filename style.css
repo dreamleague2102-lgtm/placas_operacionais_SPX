@@ -1707,6 +1707,61 @@ html[data-theme="light"] .batch-font-controls input[type="number"] {
   transform-origin:center;
 }
 
+/* Contraste completo da interface no tema claro */
+html[data-theme="light"] .type-card-info h3,
+html[data-theme="light"] .form-guide,
+html[data-theme="light"] .form-guide strong,
+html[data-theme="light"] .font-size-heading output,
+html[data-theme="light"] .font-family-display,
+html[data-theme="light"] .font-family-select,
+html[data-theme="light"] .font-toolbar button,
+html[data-theme="light"] .font-toolbar input[type="number"],
+html[data-theme="light"] .batch-font-controls label,
+html[data-theme="light"] .inline-bulk-title strong,
+html[data-theme="light"] .inline-bulk-panel code,
+html[data-theme="light"] .inline-bulk-columns label > span,
+html[data-theme="light"] .btn-add-plate,
+html[data-theme="light"] .bulk-back-button {
+  color:#17191d;
+}
+html[data-theme="light"] .type-card-info p,
+html[data-theme="light"] .field-hint,
+html[data-theme="light"] .inline-bulk-panel > p {
+  color:#59616d;
+}
+html[data-theme="light"] .font-toolbar,
+html[data-theme="light"] .font-family-select,
+html[data-theme="light"] .font-family-select option,
+html[data-theme="light"] .font-toolbar input[type="number"],
+html[data-theme="light"] .batch-font-controls select,
+html[data-theme="light"] .batch-font-controls input[type="number"],
+html[data-theme="light"] .inline-bulk-panel .bulk-textarea {
+  background:#fff;
+  color:#17191d;
+  border-color:#c8ced7;
+}
+html[data-theme="light"] .inline-bulk-panel {
+  background:#f7f9fc;
+  border-color:#cbd5e7;
+}
+html[data-theme="light"] .inline-bulk-title {
+  border-bottom-color:#d5dae1;
+}
+html[data-theme="light"] .inline-bulk-title button {
+  background:#fff;
+  border-color:#cfd5dd;
+  color:#303640;
+}
+html[data-theme="light"] .type-card-preview {
+  background:#e6e8eb;
+  border-color:#d3d7dc;
+}
+html[data-theme="light"] .btn-print,
+html[data-theme="light"] .type-card-badge,
+html[data-theme="light"] .bulk-mini-preview strong {
+  color:#fff;
+}
+
 /* Modo dedicado: QR Gaiola SPX (mantém os demais modelos inalterados) */
 .main-panel.gaiola-mode { padding-top: 1.5rem; }
 .gaiola-mode .panel-grid { grid-template-columns: 420px minmax(620px, 1fr); gap: 24px; }
