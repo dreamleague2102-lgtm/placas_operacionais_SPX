@@ -976,11 +976,15 @@ function renderNomeDuploPreview(area) {
   area.innerHTML = '';
   const folha = document.createElement('div');
   folha.style.cssText = 'width:min(100%,760px);aspect-ratio:11/8.5;background:#fff;padding:28px;display:grid;grid-template-rows:1fr 1fr;gap:28px;';
-  folha.innerHTML = exibidos.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
-    <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:24px;"></div>
-    <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:24px;"></div>
-    <div style="position:absolute;inset:35px;display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;transform:scaleX(${item ? escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 950) : 1});font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado([item.nome], item), 90) : 60}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
-  </div>`).join('');
+  folha.innerHTML = exibidos.map(item => {
+    const linhas = item ? quebrarTextoPlaca(item.nome) : [];
+    const fonte = item ? Math.min(tamanhoFonteNomeSelecionado(linhas, item), 90) : 60;
+    return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
+      <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:24px;"></div>
+      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:24px;"></div>
+      <div style="position:absolute;inset:35px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 950)});">${escHtml(linha)}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
   area.appendChild(folha);
 }
 
@@ -991,11 +995,15 @@ function renderNomeQuatroPreview(area) {
   area.innerHTML = '';
   const folha = document.createElement('div');
   folha.style.cssText = 'width:min(100%,900px);aspect-ratio:11/8.5;background:#fff;padding:34px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:34px;';
-  folha.innerHTML = itens.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
-    <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:22px;"></div>
-    <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:22px;"></div>
-    <div style="position:absolute;inset:30px;display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;transform:scaleX(${item ? escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 450) : 1});font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? Math.min(tamanhoFonteNomeSelecionado([item.nome], item), 70) : 48}px;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${item ? escHtml(item.nome) : ''}</div>
-  </div>`).join('');
+  folha.innerHTML = itens.map(item => {
+    const linhas = item ? quebrarTextoPlaca(item.nome) : [];
+    const fonte = item ? Math.min(tamanhoFonteNomeSelecionado(linhas, item), 70) : 48;
+    return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
+      <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:22px;"></div>
+      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:22px;"></div>
+      <div style="position:absolute;inset:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 450)});">${escHtml(linha)}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
   area.appendChild(folha);
 }
 
@@ -1318,11 +1326,15 @@ document.getElementById('print-nome-quatro').addEventListener('click', () => {
   const paginas = [];
   for (let i = 0; i < itens.length; i += 4) {
     const grupo = itens.slice(i, i + 4); while (grupo.length < 4) grupo.push(null);
-    const placas = grupo.map(item => `<div style="position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
-      ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.25in;"></div>
-      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.25in;"></div>
-      <div style="position:absolute;inset:.45in;display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;transform:scaleX(${escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 450)});font-weight:${item.negrito === false ? 400 : 700};font-size:${tamanhoFonteNomeSelecionado([item.nome], item)}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
-    </div>`).join('');
+    const placas = grupo.map(item => {
+      const linhas = item ? quebrarTextoPlaca(item.nome) : [];
+      const fonte = item ? tamanhoFonteNomeSelecionado(linhas, item) : 60;
+      return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
+        ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.25in;"></div>
+        <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.25in;"></div>
+        <div style="position:absolute;inset:.45in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 450)});">${escHtml(linha)}</span>`).join('')}</div>` : ''}
+      </div>`;
+    }).join('');
     paginas.push(`<section style="width:10.98in;height:8.48in;padding:.5in;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
   }
   triggerPrint(paginas.join(''), 'landscape', 'Placas de Nome — 4 por folha');
@@ -1346,12 +1358,15 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
   const paginas = [];
   for (let i = 0; i < itens.length; i += 2) {
     const dupla = [itens[i], itens[i + 1]];
-    const placas = dupla.map(item => `<div style="height:3.65in;position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
-      ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.28in;"></div>
-      <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.28in;"></div>
-      <div style="position:absolute;inset:.55in .65in;display:flex;align-items:center;justify-content:center;text-align:center;
-        white-space:nowrap;transform:scaleX(${escalaLinhaNome(item.nome, tamanhoFonteNomeSelecionado([item.nome], item), 950)});font-weight:${item?.negrito === false ? 400 : 700};font-size:${item ? tamanhoFonteNomeSelecionado([item.nome], item) : 70}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${escHtml(item.nome)}</div>` : ''}
-    </div>`).join('');
+    const placas = dupla.map(item => {
+      const linhas = item ? quebrarTextoPlaca(item.nome) : [];
+      const fonte = item ? tamanhoFonteNomeSelecionado(linhas, item) : 70;
+      return `<div style="height:3.65in;position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
+        ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.28in;"></div>
+        <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.28in;"></div>
+        <div style="position:absolute;inset:.55in .65in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 950)});">${escHtml(linha)}</span>`).join('')}</div>` : ''}
+      </div>`;
+    }).join('');
     paginas.push(`<section class="nome-duplo-print-page" style="width:10.98in;height:8.48in;padding:.38in .62in;display:grid;
       grid-template-rows:3.65in 3.65in;gap:.42in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
   }
@@ -1438,6 +1453,14 @@ document.getElementById('nome-duplo-texto').addEventListener('input', function (
 });
 document.getElementById('nome-quatro-texto').addEventListener('input', function () {
   const pos = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(pos, pos);
+});
+['nome-duplo-texto', 'nome-quatro-texto'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', function (event) {
+    if (event.key !== 'Enter' || (!event.altKey && !event.shiftKey)) return;
+    event.preventDefault();
+    this.setRangeText('\n', this.selectionStart, this.selectionEnd, 'end');
+    this.dispatchEvent(new Event('input', { bubbles: true }));
+  });
 });
 
 // PRINT SOMENTE NUMERO + QR CODE

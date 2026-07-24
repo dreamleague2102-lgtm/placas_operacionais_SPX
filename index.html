@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260724-3" />
+  <link rel="stylesheet" href="style.css?v=20260724-4" />
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -327,7 +327,8 @@
             <div class="form-guide"><strong>Como fazer:</strong> adicione os nomes à lista e ajuste cada placa separadamente. A primeira fica em cima e a segunda embaixo.</div>
             <div class="field-group">
               <label class="field-label" for="nome-duplo-texto"><span class="field-icon">🏷️</span> Nome da placa</label>
-              <input class="field-input" type="text" id="nome-duplo-texto" placeholder="NOME" style="text-transform:uppercase" />
+              <textarea class="field-input name-multiline-input" id="nome-duplo-texto" rows="3" aria-label="Nome da placa" style="text-transform:uppercase"></textarea>
+              <span class="field-hint">Use Alt + Enter ou Shift + Enter para criar uma nova linha.</span>
             </div>
             <div class="font-size-control">
               <div class="font-size-heading">
@@ -369,7 +370,8 @@
             <div class="form-guide"><strong>Como fazer:</strong> adicione até quatro nomes por folha. Cada placa pode ter seu próprio tamanho de fonte.</div>
             <div class="field-group">
               <label class="field-label" for="nome-quatro-texto"><span class="field-icon">🏷️</span> Nome da placa</label>
-              <input class="field-input" type="text" id="nome-quatro-texto" placeholder="NOME" style="text-transform:uppercase" />
+              <textarea class="field-input name-multiline-input" id="nome-quatro-texto" rows="3" aria-label="Nome da placa" style="text-transform:uppercase"></textarea>
+              <span class="field-hint">Use Alt + Enter ou Shift + Enter para criar uma nova linha.</span>
             </div>
             <div class="font-size-control">
               <div class="font-size-heading"><label class="field-label" for="nome-quatro-tamanho">🔠 Tamanho da fonte</label><output id="nome-quatro-tamanho-valor">Automático</output></div>
@@ -493,6 +495,6 @@
   <!-- PRINT AREA (hidden, only for printing) -->
   <div id="printArea" class="print-only"></div>
 
-  <script src="app.js?v=20260724-3"></script>
+  <script src="app.js?v=20260724-4"></script>
 </body>
 </html>
