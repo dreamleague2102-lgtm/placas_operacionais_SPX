@@ -261,8 +261,16 @@ function renderLotes() {
 
   const nomeLista = document.getElementById('nome-lista');
   nomeLista.innerHTML = nomeLote.length ? nomeLote.map((item, index) => `
-    <div class="batch-item"><div><strong>${escHtml(item.nome)}</strong><span>${item.familia || 'Calibri'} · ${item.fonteAuto ? 'automática' : `${item.fonte} pt`} · ${item.negrito === false ? 'normal' : 'negrito'}</span></div>
-    <button type="button" data-remove-nome="${index}">Remover</button></div>`).join('')
+    <div class="batch-item nome-duplo-item">
+      <div><strong>Placa ${index + 1} · ${escHtml(item.nome)}</strong><span>Configuração individual do nome</span></div>
+      <div class="batch-font-controls">
+        <label><input type="checkbox" data-nome-auto="${index}" ${item.fonteAuto !== false ? 'checked' : ''}> Automático</label>
+        <select data-nome-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
+        <input type="number" min="6" max="160" value="${item.fonte || 70}" data-nome-fonte="${index}" ${item.fonteAuto !== false ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
+        <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-negrito="${index}" title="Ativar ou remover negrito">B</button>
+        <button type="button" data-remove-nome="${index}">Remover</button>
+      </div>
+    </div>`).join('')
     : '<div class="batch-empty">A lista ainda está vazia.</div>';
 
   const nomeDuploLista = document.getElementById('nome-duplo-lista');
@@ -419,8 +427,23 @@ document.getElementById('shopee-lista').addEventListener('click', event => {
 
 document.getElementById('nome-lista').addEventListener('click', event => {
   const botao = event.target.closest('[data-remove-nome]');
-  if (!botao) return;
-  nomeLote.splice(Number(botao.dataset.removeNome), 1);
+  const negrito = event.target.closest('[data-nome-negrito]');
+  if (botao) nomeLote.splice(Number(botao.dataset.removeNome), 1);
+  else if (negrito) {
+    const item = nomeLote[Number(negrito.dataset.nomeNegrito)];
+    item.negrito = item.negrito === false;
+  } else return;
+  renderLotes(); updatePreview();
+});
+
+document.getElementById('nome-lista').addEventListener('change', event => {
+  const auto = event.target.closest('[data-nome-auto]');
+  const fonte = event.target.closest('[data-nome-fonte]');
+  const familia = event.target.closest('[data-nome-familia]');
+  if (auto) nomeLote[Number(auto.dataset.nomeAuto)].fonteAuto = auto.checked;
+  else if (fonte) nomeLote[Number(fonte.dataset.nomeFonte)].fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 70));
+  else if (familia) nomeLote[Number(familia.dataset.nomeFamilia)].familia = familia.value;
+  else return;
   renderLotes(); updatePreview();
 });
 
