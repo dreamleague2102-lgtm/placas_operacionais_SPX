@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260724-1" />
+  <link rel="stylesheet" href="style.css?v=20260724-2" />
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -225,6 +225,7 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="shopee">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-shopee">+ Adicionar placa ao painel</button>
             <div class="plate-batch" id="shopee-lista" aria-live="polite"></div>
+            <button class="btn-clear-list" type="button" id="clear-shopee" hidden>Remover todas</button>
             <button class="btn-print" id="print-shopee">
               📄 Gerar PDF — Etiquetas Workstation
             </button>
@@ -268,6 +269,7 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="saida">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>
             <div class="plate-batch" id="saida-lista" aria-live="polite"></div>
+            <button class="btn-clear-list" type="button" id="clear-saida" hidden>Remover todas</button>
             <button class="btn-print" id="print-saida">
               📄 Gerar PDF — Placas com QR Code
             </button>
@@ -314,6 +316,7 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="nome">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-lista" aria-live="polite"></div>
+            <button class="btn-clear-list" type="button" id="clear-nome" hidden>Remover todas</button>
             <button class="btn-print" id="print-nome">
               📄 Gerar PDF — Placas de Nome
             </button>
@@ -357,6 +360,7 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="nome-duplo">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome-duplo">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-duplo-lista" aria-live="polite"></div>
+            <button class="btn-clear-list" type="button" id="clear-nome-duplo" hidden>Remover todas</button>
             <button class="btn-print" id="print-nome-duplo">📄 Gerar PDF — Nomes (2 por Folha)</button>
           </div>
 
@@ -380,6 +384,7 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="nome-quatro">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome-quatro">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-quatro-lista" aria-live="polite"></div>
+            <button class="btn-clear-list" type="button" id="clear-nome-quatro" hidden>Remover todas</button>
             <button class="btn-print" id="print-nome-quatro">📄 Gerar PDF — Nomes (4 por Folha)</button>
           </div>
 
@@ -488,6 +493,6 @@
   <!-- PRINT AREA (hidden, only for printing) -->
   <div id="printArea" class="print-only"></div>
 
-  <script src="app.js?v=20260724-1"></script>
+  <script src="app.js?v=20260724-2"></script>
 </body>
 </html>

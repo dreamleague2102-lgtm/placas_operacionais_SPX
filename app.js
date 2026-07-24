@@ -289,7 +289,28 @@ function renderLotes() {
       <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-quatro-negrito="${index}">B</button>
       <button type="button" data-remove-nome-quatro="${index}">Remover</button></div></div>`).join('')
     : '<div class="batch-empty">Adicione até quatro nomes por folha.</div>';
+
+  document.getElementById('clear-shopee').hidden = shopeeLote.length === 0;
+  document.getElementById('clear-saida').hidden = saidaLote.length === 0;
+  document.getElementById('clear-nome').hidden = nomeLote.length === 0;
+  document.getElementById('clear-nome-duplo').hidden = nomeDuploLote.length === 0;
+  document.getElementById('clear-nome-quatro').hidden = nomeQuatroLote.length === 0;
 }
+
+[
+  ['clear-shopee', 'Workstation SPX', () => { shopeeLote = []; }],
+  ['clear-saida', 'placas com QR Code', () => { saidaLote = []; }],
+  ['clear-nome', 'placas de nome', () => { nomeLote = []; }],
+  ['clear-nome-duplo', 'placas de nome', () => { nomeDuploLote = []; }],
+  ['clear-nome-quatro', 'placas de nome', () => { nomeQuatroLote = []; }]
+].forEach(([id, descricao, limpar]) => {
+  document.getElementById(id).addEventListener('click', () => {
+    if (!confirm(`Remover todas as ${descricao} da lista?`)) return;
+    limpar();
+    renderLotes();
+    updatePreview();
+  });
+});
 
 document.getElementById('add-shopee').addEventListener('click', () => {
   const codigo = document.getElementById('shopee-codigo').value.trim();

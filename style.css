@@ -712,6 +712,24 @@ body {
   max-height: 190px;
   overflow-y: auto;
 }
+.btn-clear-list {
+  width:100%;
+  margin-top:.5rem;
+  padding:.62rem .85rem;
+  border:1px solid rgba(255,55,75,.65);
+  border-radius:8px;
+  background:rgba(232,0,28,.08);
+  color:#ff6677;
+  font:700 .76rem Inter,Arial,sans-serif;
+  cursor:pointer;
+}
+.btn-clear-list:hover {
+  background:rgba(232,0,28,.18);
+  border-color:#ff5266;
+  color:#fff;
+}
+.btn-clear-list[hidden],
+.plate-form.bulk-mode > .btn-clear-list { display:none; }
 .batch-empty {
   padding: .7rem;
   border: 1px dashed var(--spx-border);
