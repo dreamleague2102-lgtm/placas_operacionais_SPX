@@ -730,6 +730,12 @@ body {
 }
 .btn-clear-list[hidden],
 .plate-form.bulk-mode > .btn-clear-list { display:none; }
+.name-multiline-input {
+  min-height:86px;
+  resize:vertical;
+  line-height:1.4;
+  font-family:Inter,Arial,sans-serif;
+}
 .batch-empty {
   padding: .7rem;
   border: 1px dashed var(--spx-border);

@@ -669,6 +669,14 @@ document.getElementById('nome-texto').addEventListener('input', function () {
   this.value = this.value.toUpperCase();
   this.setSelectionRange(pos, pos);
 });
+document.getElementById('nome-texto').addEventListener('keydown', function (event) {
+  if (event.key !== 'Enter' || (!event.altKey && !event.shiftKey)) return;
+  event.preventDefault();
+  const inicio = this.selectionStart;
+  const fim = this.selectionEnd;
+  this.setRangeText('\n', inicio, fim, 'end');
+  this.dispatchEvent(new Event('input', { bubbles: true }));
+});
 
 // ===================== GAIOLA TOTAL =====================
 function updateGaiolaTotal() {
@@ -900,7 +908,10 @@ async function renderSaidaPreview(area) {
 
 // ---- NOME / SIMPLES ----
 function quebrarTextoPlaca(valor) {
-  const palavras = String(valor || '').trim().toUpperCase().split(/\s+/).filter(Boolean);
+  const original = String(valor || '').trim().toUpperCase();
+  const linhasManuais = original.split(/\r?\n/).map(linha => linha.trim()).filter(Boolean);
+  if (linhasManuais.length > 1) return linhasManuais;
+  const palavras = original.split(/\s+/).filter(Boolean);
   const texto = palavras.join(' ');
   if (!texto) return [''];
   if (texto.length <= 14) return [texto];
@@ -909,8 +920,8 @@ function quebrarTextoPlaca(valor) {
 
 function tamanhoFonteNome(linhas) {
   const maiorLinha = Math.max(...linhas.map(linha => String(linha).length), 1);
-  // Sem limite de caracteres: reduz até 6 pt e comprime horizontalmente se necessário.
-  return Math.max(6, Math.min(70, Math.floor(820 / maiorLinha)));
+  const limiteVertical = Math.floor(280 / Math.max(linhas.length, 1));
+  return Math.max(6, Math.min(70, limiteVertical, Math.floor(820 / maiorLinha)));
 }
 
 function escalaLinhaNome(texto, fonte, capacidade = 1050) {

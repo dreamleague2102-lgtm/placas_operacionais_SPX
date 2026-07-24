@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260724-2" />
+  <link rel="stylesheet" href="style.css?v=20260724-3" />
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -282,8 +282,8 @@
               <label class="field-label" for="nome-texto">
                 <span class="field-icon">👤</span> Nome da placa
               </label>
-              <input class="field-input" type="text" id="nome-texto" placeholder="NOME" style="text-transform:uppercase" />
-              <span class="field-hint">Pode ser um nome, local ou identificação. Será impresso em maiúsculas.</span>
+              <textarea class="field-input name-multiline-input" id="nome-texto" rows="3" placeholder="PRIMEIRA FRASE&#10;SEGUNDA FRASE" style="text-transform:uppercase"></textarea>
+              <span class="field-hint">Use Alt + Enter ou Shift + Enter para colocar uma frase embaixo da outra.</span>
             </div>
             <div class="font-size-control">
               <div class="font-size-heading">
@@ -493,6 +493,6 @@
   <!-- PRINT AREA (hidden, only for printing) -->
   <div id="printArea" class="print-only"></div>
 
-  <script src="app.js?v=20260724-2"></script>
+  <script src="app.js?v=20260724-3"></script>
 </body>
 </html>
