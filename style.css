@@ -1761,6 +1761,39 @@ html[data-theme="light"] .type-card-badge,
 html[data-theme="light"] .bulk-mini-preview strong {
   color:#fff;
 }
+html[data-theme="light"] .btn-bulk-open {
+  background:#eef3ff;
+  border-color:#376de8;
+  color:#183c8f !important;
+  box-shadow:0 2px 8px rgba(55,109,232,.08);
+}
+html[data-theme="light"] .btn-bulk-open:hover {
+  background:#e1eaff;
+  border-color:#245bd4;
+  color:#102f79 !important;
+}
+html[data-theme="light"] .type-card-info h3,
+html[data-theme="light"] .type-card-info p,
+html[data-theme="light"] .form-guide,
+html[data-theme="light"] .form-guide strong,
+html[data-theme="light"] .auto-font-option,
+html[data-theme="light"] .field-hint,
+html[data-theme="light"] .font-size-heading output,
+html[data-theme="light"] .batch-font-controls label,
+html[data-theme="light"] .inline-bulk-panel,
+html[data-theme="light"] .inline-bulk-panel p,
+html[data-theme="light"] .inline-bulk-panel label,
+html[data-theme="light"] .inline-bulk-title strong,
+html[data-theme="light"] .inline-bulk-columns label > span,
+html[data-theme="light"] .bulk-actions,
+html[data-theme="light"] .batch-empty {
+  color:#17191d !important;
+}
+html[data-theme="light"] .field-hint,
+html[data-theme="light"] .type-card-info p,
+html[data-theme="light"] .inline-bulk-panel > p {
+  color:#535d69 !important;
+}
 
 /* Modo dedicado: QR Gaiola SPX (mantém os demais modelos inalterados) */
 .main-panel.gaiola-mode { padding-top: 1.5rem; }
