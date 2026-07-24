@@ -15,6 +15,28 @@ let loteImportado = [];
 const lotesPorModelo = {};
 let pendingPrintWindow = null;
 
+let temaSalvo = null;
+try { temaSalvo = localStorage.getItem('spx-theme'); } catch (_) {}
+document.documentElement.dataset.theme = temaSalvo
+  || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+function atualizarBotaoTema() {
+  const claro = document.documentElement.dataset.theme === 'light';
+  const botao = document.getElementById('theme-toggle');
+  if (!botao) return;
+  botao.querySelector('.theme-icon').textContent = claro ? '🌙' : '☀️';
+  botao.querySelector('.theme-label').textContent = claro ? 'Tema escuro' : 'Tema claro';
+  botao.setAttribute('aria-label', claro ? 'Mudar para tema escuro' : 'Mudar para tema claro');
+}
+
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const proximo = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = proximo;
+  try { localStorage.setItem('spx-theme', proximo); } catch (_) {}
+  atualizarBotaoTema();
+});
+atualizarBotaoTema();
+
 function preparePrintWindow() {
   if (pendingPrintWindow && !pendingPrintWindow.closed) return pendingPrintWindow;
   pendingPrintWindow = window.open('', '_blank', 'width=900,height=700');

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260724-5" />
+  <link rel="stylesheet" href="style.css?v=20260724-6" />
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -32,9 +32,15 @@
           <span class="logo-sub">Operacional · SPX Express</span>
         </div>
       </div>
-      <div class="header-badge">
-        <span class="badge-dot"></span>
-        <span><strong>Sistema</strong> operacional</span>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Mudar para tema claro" title="Alternar tema">
+          <span class="theme-icon" aria-hidden="true">☀️</span>
+          <span class="theme-label">Tema claro</span>
+        </button>
+        <div class="header-badge">
+          <span class="badge-dot"></span>
+          <span><strong>Sistema</strong> operacional</span>
+        </div>
       </div>
     </div>
   </header>
@@ -495,6 +501,6 @@
   <!-- PRINT AREA (hidden, only for printing) -->
   <div id="printArea" class="print-only"></div>
 
-  <script src="app.js?v=20260724-5"></script>
+  <script src="app.js?v=20260724-6"></script>
 </body>
 </html>
