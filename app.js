@@ -832,9 +832,9 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
     <div class="ws-stripe ws-stripe-top"></div>
     <div class="ws-body">
       <div class="ws-name" style="font-size:${titulo.fonte}px;line-height:1.08">${titulo.linhas.map(escHtml).join('<br>')}</div>
-      <div class="ws-num" style="font-size:${superior.fonte}px;transform:scaleX(${superior.escala})">${preenchida ? escHtml(numero) : ''}</div>
+      <div class="ws-num" style="font-size:${superior.fonte}px">${preenchida ? escHtml(numero) : ''}</div>
       <div class="ws-qr"></div>
-      <div class="ws-posto" style="font-size:${inferior.fonte}px;transform:scaleX(${inferior.escala})">${preenchida ? escHtml(rodape) : ''}</div>
+      <div class="ws-posto" style="font-size:${inferior.fonte}px">${preenchida ? escHtml(rodape) : ''}</div>
     </div>
     <div class="ws-stripe ws-stripe-bottom"></div>
   `;
@@ -864,18 +864,8 @@ function dividirTextoEquilibrado(texto, maxLinhas = 2) {
 function formatarTextoWs(texto, fonteBase, larguraPx, maxLinhas = 1) {
   const linhas = dividirTextoEquilibrado(texto, maxLinhas);
   const maior = Math.max(...linhas.map(linha => linha.length), 1);
-  const fonte = Math.max(8, Math.min(fonteBase, Math.floor(larguraPx / (maior * .62))));
-  const escala = Math.max(.72, Math.min(1, larguraPx / (maior * fonte * .62)));
-  return { linhas, fonte, escala };
-}
-
-function escalaParaCaber(texto, fonte, capacidade) {
-  const tamanho = Math.max(String(texto || '').length, 1);
-  return Math.max(.04, Math.min(1, capacidade / (fonte * tamanho)));
-}
-
-function estiloTextoWs(texto, fonte, capacidade) {
-  return `font-size:${fonte}px;white-space:nowrap;transform:scaleX(${escalaParaCaber(texto, fonte, capacidade)});transform-origin:center;`;
+  const fonte = Math.max(6, Math.min(fonteBase, Math.floor(larguraPx / (maior * .62))));
+  return { linhas, fonte, escala:1 };
 }
 
 function buildWsPrintPages(itens) {
@@ -891,11 +881,11 @@ function buildWsPrintPages(itens) {
         <div class="stripe-five" style="width:60%;height:.32in;"></div>
         <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
           <div style="font-size:${titulo.fonte}pt;font-weight:700;padding:.13in .12in 0;text-align:center;line-height:1.05;min-height:.55in;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
-          <div style="font-size:${superior.fonte}pt;font-weight:700;margin-top:.08in;height:.25in;text-align:center;white-space:nowrap;transform:scaleX(${superior.escala});">${preenchida ? escHtml(item.numero) : ''}</div>
+          <div style="font-size:${superior.fonte}pt;font-weight:700;margin-top:.08in;height:.25in;text-align:center;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
           <div style="height:2.35in;margin-top:.24in;display:flex;align-items:center;justify-content:center;">
             ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
           </div>
-          <div style="width:100%;margin-top:.26in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;transform:scaleX(${inferior.escala});">${preenchida ? escHtml(item.rodape) : ''}</div>
+          <div style="width:100%;margin-top:.26in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
         </div>
         <div class="stripe-five" style="width:60%;height:.32in;margin-left:40%;"></div>
       </div>`;
@@ -969,15 +959,19 @@ function tamanhoFonteNome(linhas) {
   return Math.max(6, Math.min(70, limiteVertical, Math.floor(820 / maiorLinha)));
 }
 
-function escalaLinhaNome(texto, fonte, capacidade = 1050) {
-  return escalaParaCaber(texto, fonte, capacidade);
-}
-
 function tamanhoFonteNomeSelecionado(linhas, configuracao = null) {
   const automatico = configuracao ? configuracao.fonteAuto : (document.getElementById('nome-tamanho-auto')?.checked ?? true);
   if (automatico) return tamanhoFonteNome(linhas);
   const valor = configuracao ? configuracao.fonte : document.getElementById('nome-tamanho').value;
   return Math.min(160, Math.max(6, parseInt(valor) || 70));
+}
+
+function tamanhoFonteNomeCompacta(linhas, configuracao = null) {
+  const base = tamanhoFonteNomeSelecionado(linhas, configuracao);
+  const automatico = configuracao ? configuracao.fonteAuto !== false : (document.getElementById('nome-quatro-tamanho-auto')?.checked ?? true);
+  if (!automatico) return base;
+  const maiorLinha = Math.max(...linhas.map(linha => String(linha).length), 1);
+  return Math.max(6, Math.min(base, Math.floor(600 / maiorLinha)));
 }
 
 function renderNomePreview(area) {
@@ -1000,7 +994,7 @@ function renderNomePreview(area) {
     card.innerHTML = `
       <div class="simples-stripe-tl"></div>
       <div class="simples-stripe-br"></div>
-      <div class="simples-nome" style="--nome-font-size:${fontePreview}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 700}">${linhas.map(linha => `<span style="--nome-scale-x:${escalaLinhaNome(linha, fontePt)}">${escHtml(linha)}</span>`).join('')}</div>
+      <div class="simples-nome" style="--nome-font-size:${fontePreview}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 700}">${linhas.map(linha => `<span>${escHtml(linha)}</span>`).join('')}</div>
     `;
     wrap.appendChild(card);
   }
@@ -1027,7 +1021,7 @@ function renderNomeDuploPreview(area) {
     return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:24px;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:24px;"></div>
-      <div style="position:absolute;inset:35px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 950)});">${escHtml(linha)}</span>`).join('')}</div>
+      <div style="position:absolute;inset:35px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>
     </div>`;
   }).join('');
   area.appendChild(folha);
@@ -1042,11 +1036,11 @@ function renderNomeQuatroPreview(area) {
   folha.style.cssText = 'width:min(100%,900px);aspect-ratio:11/8.5;background:#fff;padding:34px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:34px;';
   folha.innerHTML = itens.map(item => {
     const linhas = item ? quebrarTextoPlaca(item.nome) : [];
-    const fonte = item ? Math.min(tamanhoFonteNomeSelecionado(linhas, item), 70) : 48;
+    const fonte = item ? Math.min(tamanhoFonteNomeCompacta(linhas, item), 70) : 48;
     return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:22px;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:22px;"></div>
-      <div style="position:absolute;inset:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 450)});">${escHtml(linha)}</span>`).join('')}</div>
+      <div style="position:absolute;inset:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>
     </div>`;
   }).join('');
   area.appendChild(folha);
@@ -1320,7 +1314,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:4.20in;height:.28in;"></div>
       <div style="position:absolute;inset:1.05in .72in;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
-        ${linhas.map(linha => `<div style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte)});">${escHtml(linha)}</div>`).join('')}
+        ${linhas.map(linha => `<div style="white-space:nowrap;">${escHtml(linha)}</div>`).join('')}
       </div>
     </div>
   </section>`;
@@ -1373,11 +1367,11 @@ document.getElementById('print-nome-quatro').addEventListener('click', () => {
     const grupo = itens.slice(i, i + 4); while (grupo.length < 4) grupo.push(null);
     const placas = grupo.map(item => {
       const linhas = item ? quebrarTextoPlaca(item.nome) : [];
-      const fonte = item ? tamanhoFonteNomeSelecionado(linhas, item) : 60;
+      const fonte = item ? tamanhoFonteNomeCompacta(linhas, item) : 60;
       return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
         ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.25in;"></div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.25in;"></div>
-        <div style="position:absolute;inset:.45in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 450)});">${escHtml(linha)}</span>`).join('')}</div>` : ''}
+        <div style="position:absolute;inset:.45in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;overflow:hidden;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>` : ''}
       </div>`;
     }).join('');
     paginas.push(`<section style="width:10.98in;height:8.48in;padding:.5in;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
@@ -1409,7 +1403,7 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
       return `<div style="height:3.65in;position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
         ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.28in;"></div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.28in;"></div>
-        <div style="position:absolute;inset:.55in .65in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;">${linhas.map(linha => `<span style="white-space:nowrap;transform:scaleX(${escalaLinhaNome(linha, fonte, 950)});">${escHtml(linha)}</span>`).join('')}</div>` : ''}
+        <div style="position:absolute;inset:.55in .65in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;overflow:hidden;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>` : ''}
       </div>`;
     }).join('');
     paginas.push(`<section class="nome-duplo-print-page" style="width:10.98in;height:8.48in;padding:.38in .62in;display:grid;
