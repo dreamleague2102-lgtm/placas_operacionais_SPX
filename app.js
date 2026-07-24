@@ -626,11 +626,11 @@ document.getElementById('gerar-lote').addEventListener('click', () => {
   const registros = loteImportado.filter(item => item.selecionada);
   const modelo = document.getElementById('lote-modelo').value;
   if (!registros.length) { alert('Selecione pelo menos uma placa.'); return; }
-  const estiloNome = { qtd: 1, fonteAuto: false, fonte: 70, familia: 'Calibri', negrito: true };
+  const estiloNome = { qtd: 1, fonteAuto: true, fonte: 70, familia: 'Calibri', negrito: true };
   if (modelo === 'shopee') {
     shopeeLote = registros.map(item => ({ codigo: item.codigo || item.nome, numero: item.numero || item.id, rodape: item.rodape || '', qrText: item.qrText || item.id }));
   } else if (modelo === 'saida') {
-    saidaLote = registros.map(item => ({ nome: item.nome, qrText: item.id, qtd: 1, fonteAuto: false, fonte: 65, familia: 'Calibri', negrito: true }));
+    saidaLote = registros.map(item => ({ nome: item.nome, qrText: item.id, qtd: 1, fonteAuto: true, fonte: 65, familia: 'Calibri', negrito: true }));
   } else if (modelo === 'nome') {
     nomeLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
   } else if (modelo === 'nome-duplo') {
