@@ -121,6 +121,12 @@ addListener('saida-codigo', updatePreview);
 addListener('saida-qr', updatePreview);
 addListener('saida-qtd', updatePreview);
 addListener('saida-fonte', updatePreview);
+document.getElementById('saida-codigo').addEventListener('keydown', function (event) {
+  if (event.key !== 'Enter' || (!event.altKey && !event.shiftKey)) return;
+  event.preventDefault();
+  this.setRangeText('\n', this.selectionStart, this.selectionEnd, 'end');
+  this.dispatchEvent(new Event('input', { bubbles: true }));
+});
 addListener('saida-tamanho', () => {
   document.getElementById('saida-tamanho-valor').textContent = `${document.getElementById('saida-tamanho').value} pt`;
   updatePreview();
@@ -270,7 +276,7 @@ function renderLotes() {
   const saidaLista = document.getElementById('saida-lista');
   saidaLista.innerHTML = saidaLote.length ? saidaLote.map((item, index) => `
     <div class="batch-item nome-duplo-item">
-      <div><strong>Placa ${index + 1} · ${escHtml(item.nome)}</strong><span>Configuração individual do nome</span></div>
+      <div><strong>Placa ${index + 1} · ${escHtml(item.nome).replace(/\r?\n/g, ' / ')}</strong><span>Configuração individual do nome</span></div>
       <div class="batch-font-controls">
         <label><input type="checkbox" data-saida-auto="${index}" ${item.fonteAuto !== false ? 'checked' : ''}> Automático</label>
         <select data-saida-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
@@ -899,6 +905,19 @@ function buildWsPrintPages(itens) {
 }
 
 // ---- SAIDA / PLACA GRANDE ----
+function linhasNomeSaida(valor) {
+  const linhas = String(valor || '').trim().split(/\r?\n/).map(linha => linha.trim()).filter(Boolean);
+  return linhas.length ? linhas : [''];
+}
+
+function tamanhoFonteSaida(linhas, item) {
+  if (item.fonteAuto === false) return Math.min(160, Math.max(6, item.fonte || 65));
+  const maiorLinha = Math.max(...linhas.map(linha => String(linha).length), 1);
+  const limiteHorizontal = Math.floor(760 / maiorLinha);
+  const limiteVertical = Math.floor(150 / Math.max(linhas.length, 1));
+  return Math.max(10, Math.min(65, limiteHorizontal, limiteVertical));
+}
+
 async function renderSaidaPreview(area) {
   const codigo = document.getElementById('saida-codigo').value || 'NOME';
   const qrText = document.getElementById('saida-qr').value || 'QR-CODE';
@@ -918,15 +937,15 @@ async function renderSaidaPreview(area) {
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
   for (const item of itens) {
-    const tamanhoAuto = Math.max(24, Math.min(65, Math.floor(560 / Math.max(String(item.nome).length, 1))));
-    const tamanhoPt = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 65)) : tamanhoAuto;
+    const linhas = linhasNomeSaida(item.nome);
+    const tamanhoPt = tamanhoFonteSaida(linhas, item);
     const tamanhoNome = Math.max(5, Math.round(tamanhoPt * .83));
     const card = document.createElement('div');
     card.className = 'preview-grande';
     card.innerHTML = `
       <div class="grande-stripe-tl"></div>
       <div class="grande-stripe-br"></div>
-      <div class="grande-nome" style="font-size:${tamanhoNome}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 900};white-space:nowrap;overflow:hidden;transform:translateY(-50%);">${escHtml(item.nome)}</div>
+      <div class="grande-nome" style="font-size:${tamanhoNome}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 900};overflow:hidden;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.02;height:72%;">${linhas.map(linha => `<span style="white-space:nowrap;max-width:100%;">${escHtml(linha)}</span>`).join('')}</div>
       <div class="grande-qr"></div>
     `;
     const qrCanvas = await generateQR(item.qrText, 260);
@@ -1269,8 +1288,8 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 
   for (let i = 0; i < itens.length; i++) {
     const item = itens[i];
-    const fonteAutomatica = Math.max(18, Math.min(65, Math.floor(760 / Math.max(String(item.nome).length, 1))));
-    const fonteNome = item.fonteAuto === false ? Math.min(160, Math.max(6, item.fonte || 65)) : fonteAutomatica;
+    const linhas = linhasNomeSaida(item.nome);
+    const fonteNome = tamanhoFonteSaida(linhas, item);
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
       <!-- Placa Grande ${i + 1} -->
@@ -1280,10 +1299,10 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <!-- Stripe bottom-right -->
       <div class="stripe-five" style="position:absolute;right:0.58in;bottom:1.09in;width:4.20in;height:0.28in;"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:1.20in;white-space:nowrap;overflow:hidden;
+      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:3.20in;overflow:hidden;
         font-size:${fonteNome}pt;font-weight:${item.negrito === false ? 400 : 900};font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;
-        display:flex;align-items:center;justify-content:center;text-align:center;">
-        ${escHtml(item.nome)}
+        display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.02;">
+        ${linhas.map(linha => `<div style="white-space:nowrap;max-width:100%;">${escHtml(linha)}</div>`).join('')}
       </div>
       <!-- QR -->
       <div style="position:absolute;right:8%;top:50%;transform:translateY(-50%);width:3.40in;height:3.40in;
