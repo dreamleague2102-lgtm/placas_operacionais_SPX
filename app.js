@@ -294,7 +294,7 @@ function renderLotes() {
       <div class="batch-font-controls">
         <label><input type="checkbox" data-nome-auto="${index}" ${item.fonteAuto !== false ? 'checked' : ''}> Automático</label>
         <select data-nome-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
-        <input type="number" min="6" max="160" value="${item.fonte || 70}" data-nome-fonte="${index}" ${item.fonteAuto !== false ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
+        <input type="number" min="6" max="160" value="${item.fonte || 70}" data-nome-fonte="${index}" aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
         <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-negrito="${index}" title="Ativar ou remover negrito">B</button>
         <button type="button" data-remove-nome="${index}">Remover</button>
       </div>
@@ -308,7 +308,7 @@ function renderLotes() {
       <div class="batch-font-controls">
         <label><input type="checkbox" data-nome-duplo-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
         <select data-nome-duplo-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
-        <input type="number" min="6" max="160" value="${item.fonte}" data-nome-duplo-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}">
+        <input type="number" min="6" max="160" value="${item.fonte}" data-nome-duplo-fonte="${index}" aria-label="Tamanho da fonte da placa ${index + 1}">
         <span>pt</span>
         <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-duplo-negrito="${index}" title="Ativar ou remover negrito">B</button>
         <button type="button" data-remove-nome-duplo="${index}">Remover</button>
@@ -321,7 +321,7 @@ function renderLotes() {
     <div class="batch-item nome-duplo-item"><div><strong>Placa ${index + 1} · posição ${(index % 4) + 1}</strong><span>${escHtml(item.nome)}</span></div>
       <div class="batch-font-controls"><label><input type="checkbox" data-nome-quatro-auto="${index}" ${item.fonteAuto ? 'checked' : ''}> Automático</label>
       <select data-nome-quatro-familia="${index}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
-      <input type="number" min="6" max="160" value="${item.fonte}" data-nome-quatro-fonte="${index}" ${item.fonteAuto ? 'disabled' : ''}><span>pt</span>
+      <input type="number" min="6" max="160" value="${item.fonte}" data-nome-quatro-fonte="${index}"><span>pt</span>
       <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-nome-quatro-negrito="${index}">B</button>
       <button type="button" data-remove-nome-quatro="${index}">Remover</button></div></div>`).join('')
     : '<div class="batch-empty">Adicione até quatro nomes por folha.</div>';
@@ -486,7 +486,11 @@ document.getElementById('nome-lista').addEventListener('change', event => {
   const fonte = event.target.closest('[data-nome-fonte]');
   const familia = event.target.closest('[data-nome-familia]');
   if (auto) nomeLote[Number(auto.dataset.nomeAuto)].fonteAuto = auto.checked;
-  else if (fonte) nomeLote[Number(fonte.dataset.nomeFonte)].fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 70));
+  else if (fonte) {
+    const item = nomeLote[Number(fonte.dataset.nomeFonte)];
+    item.fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 70));
+    item.fonteAuto = false;
+  }
   else if (familia) nomeLote[Number(familia.dataset.nomeFamilia)].familia = familia.value;
   else return;
   renderLotes(); updatePreview();
@@ -511,7 +515,9 @@ document.getElementById('nome-duplo-lista').addEventListener('change', event => 
   if (auto) {
     nomeDuploLote[Number(auto.dataset.nomeDuploAuto)].fonteAuto = auto.checked;
   } else if (fonte) {
-    nomeDuploLote[Number(fonte.dataset.nomeDuploFonte)].fonte = parseInt(fonte.value) || 70;
+    const item = nomeDuploLote[Number(fonte.dataset.nomeDuploFonte)];
+    item.fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 70));
+    item.fonteAuto = false;
   } else if (familia) {
     nomeDuploLote[Number(familia.dataset.nomeDuploFamilia)].familia = familia.value;
   } else return;
@@ -532,11 +538,34 @@ document.getElementById('nome-quatro-lista').addEventListener('change', event =>
   const fonte = event.target.closest('[data-nome-quatro-fonte]');
   const familia = event.target.closest('[data-nome-quatro-familia]');
   if (auto) nomeQuatroLote[Number(auto.dataset.nomeQuatroAuto)].fonteAuto = auto.checked;
-  else if (fonte) nomeQuatroLote[Number(fonte.dataset.nomeQuatroFonte)].fonte = parseInt(fonte.value) || 60;
+  else if (fonte) {
+    const item = nomeQuatroLote[Number(fonte.dataset.nomeQuatroFonte)];
+    item.fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 60));
+    item.fonteAuto = false;
+  }
   else if (familia) nomeQuatroLote[Number(familia.dataset.nomeQuatroFamilia)].familia = familia.value;
   else return;
   renderLotes(); updatePreview();
 });
+
+function ativarFonteIndividualEmTempoReal(listaId, seletorFonte, chaveFonte, atributoAutomatico, obterItens, valorPadrao) {
+  document.getElementById(listaId).addEventListener('input', event => {
+    const fonte = event.target.closest(seletorFonte);
+    if (!fonte) return;
+    const indice = Number(fonte.dataset[chaveFonte]);
+    const item = obterItens()[indice];
+    if (!item) return;
+    item.fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || valorPadrao));
+    item.fonteAuto = false;
+    const automatico = document.querySelector(`[${atributoAutomatico}="${indice}"]`);
+    if (automatico) automatico.checked = false;
+    updatePreview();
+  });
+}
+
+ativarFonteIndividualEmTempoReal('nome-lista', '[data-nome-fonte]', 'nomeFonte', 'data-nome-auto', () => nomeLote, 70);
+ativarFonteIndividualEmTempoReal('nome-duplo-lista', '[data-nome-duplo-fonte]', 'nomeDuploFonte', 'data-nome-duplo-auto', () => nomeDuploLote, 70);
+ativarFonteIndividualEmTempoReal('nome-quatro-lista', '[data-nome-quatro-fonte]', 'nomeQuatroFonte', 'data-nome-quatro-auto', () => nomeQuatroLote, 60);
 
 renderLotes();
 
@@ -1084,7 +1113,7 @@ function renderNomeDuploPreview(area) {
   folha.style.cssText = 'width:min(100%,760px);aspect-ratio:11/8.5;background:#fff;padding:28px;display:grid;grid-template-rows:1fr 1fr;gap:28px;';
   folha.innerHTML = exibidos.map(item => {
     const linhas = item ? quebrarTextoPlaca(item.nome) : [];
-    const fonte = item ? Math.min(tamanhoFonteNomeSelecionado(linhas, item), 90) : 60;
+    const fonte = item ? tamanhoFonteNomeSelecionado(linhas, item) : 60;
     return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:24px;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:24px;"></div>
@@ -1103,7 +1132,7 @@ function renderNomeQuatroPreview(area) {
   folha.style.cssText = 'width:min(100%,900px);aspect-ratio:11/8.5;background:#fff;padding:34px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:34px;';
   folha.innerHTML = itens.map(item => {
     const linhas = item ? quebrarTextoPlaca(item.nome) : [];
-    const fonte = item ? Math.min(tamanhoFonteNomeCompacta(linhas, item), 70) : 48;
+    const fonte = item ? tamanhoFonteNomeCompacta(linhas, item) : 48;
     return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:22px;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:22px;"></div>
