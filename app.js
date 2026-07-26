@@ -905,9 +905,40 @@ function buildWsPrintPages(itens) {
 }
 
 // ---- SAIDA / PLACA GRANDE ----
-function linhasNomeSaida(valor) {
-  const linhas = String(valor || '').trim().split(/\r?\n/).map(linha => linha.trim()).filter(Boolean);
-  return linhas.length ? linhas : [''];
+function linhasNomeSaida(valor, automatico = true) {
+  const texto = String(valor || '').trim();
+  const linhasManuais = texto.split(/\r?\n/).map(linha => linha.trim()).filter(Boolean);
+  if (linhasManuais.length > 1 || !automatico || texto.length <= 14) {
+    return linhasManuais.length ? linhasManuais : [''];
+  }
+
+  const maximoLinhas = 3;
+  const tamanhoIdeal = 14;
+  const palavras = texto.split(/\s+/).filter(Boolean);
+
+  if (palavras.length === 1) {
+    const quantidade = Math.min(maximoLinhas, Math.ceil(texto.length / tamanhoIdeal));
+    const tamanhoParte = Math.ceil(texto.length / quantidade);
+    return Array.from({ length: quantidade }, (_, indice) =>
+      texto.slice(indice * tamanhoParte, (indice + 1) * tamanhoParte)
+    ).filter(Boolean);
+  }
+
+  const linhas = [];
+  let atual = '';
+  for (const palavra of palavras) {
+    const candidata = atual ? `${atual} ${palavra}` : palavra;
+    if (atual && candidata.length > tamanhoIdeal && linhas.length < maximoLinhas - 1) {
+      linhas.push(atual);
+      atual = palavra;
+    } else {
+      atual = candidata;
+    }
+  }
+  if (atual) linhas.push(atual);
+
+  if (linhas.length === 1) return dividirTextoEquilibrado(texto, 2);
+  return linhas;
 }
 
 function tamanhoFonteSaida(linhas, item) {
@@ -937,7 +968,7 @@ async function renderSaidaPreview(area) {
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
   for (const item of itens) {
-    const linhas = linhasNomeSaida(item.nome);
+    const linhas = linhasNomeSaida(item.nome, item.fonteAuto !== false);
     const tamanhoPt = tamanhoFonteSaida(linhas, item);
     const tamanhoNome = Math.max(5, Math.round(tamanhoPt * .83));
     const card = document.createElement('div');
@@ -945,7 +976,7 @@ async function renderSaidaPreview(area) {
     card.innerHTML = `
       <div class="grande-stripe-tl"></div>
       <div class="grande-stripe-br"></div>
-      <div class="grande-nome" style="font-size:${tamanhoNome}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 900};overflow:hidden;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.02;height:72%;">${linhas.map(linha => `<span style="white-space:nowrap;max-width:100%;">${escHtml(linha)}</span>`).join('')}</div>
+      <div class="grande-nome" style="font-size:${tamanhoNome}px;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;font-weight:${item.negrito === false ? 400 : 900};overflow:hidden;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.02;height:72%;box-sizing:border-box;padding:0 8px;">${linhas.map(linha => `<span style="display:block;white-space:nowrap;max-width:100%;overflow:hidden;">${escHtml(linha)}</span>`).join('')}</div>
       <div class="grande-qr"></div>
     `;
     const qrCanvas = await generateQR(item.qrText, 260);
@@ -1288,7 +1319,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 
   for (let i = 0; i < itens.length; i++) {
     const item = itens[i];
-    const linhas = linhasNomeSaida(item.nome);
+    const linhas = linhasNomeSaida(item.nome, item.fonteAuto !== false);
     const fonteNome = tamanhoFonteSaida(linhas, item);
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
@@ -1299,10 +1330,10 @@ document.getElementById('print-saida').addEventListener('click', async () => {
       <!-- Stripe bottom-right -->
       <div class="stripe-five" style="position:absolute;right:0.58in;bottom:1.09in;width:4.20in;height:0.28in;"></div>
       <!-- Nome OUT -->
-      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:3.20in;overflow:hidden;
+      <div style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:44%;height:3.20in;overflow:hidden;box-sizing:border-box;padding:0 .10in;
         font-size:${fonteNome}pt;font-weight:${item.negrito === false ? 400 : 900};font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;
         display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.02;">
-        ${linhas.map(linha => `<div style="white-space:nowrap;max-width:100%;">${escHtml(linha)}</div>`).join('')}
+        ${linhas.map(linha => `<div style="display:block;white-space:nowrap;max-width:100%;overflow:hidden;">${escHtml(linha)}</div>`).join('')}
       </div>
       <!-- QR -->
       <div style="position:absolute;right:8%;top:50%;transform:translateY(-50%);width:3.40in;height:3.40in;
