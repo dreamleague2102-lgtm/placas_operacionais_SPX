@@ -280,7 +280,7 @@ function renderLotes() {
       <div class="batch-font-controls">
         <label><input type="checkbox" data-saida-auto="${index}" ${item.fonteAuto !== false ? 'checked' : ''}> Automático</label>
         <select data-saida-familia="${index}" aria-label="Fonte da placa ${index + 1}">${['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'].map(f => `<option value="${f}" ${(item.familia || 'Calibri') === f ? 'selected' : ''}>${f}</option>`).join('')}</select>
-        <input type="number" min="6" max="160" value="${item.fonte || 65}" data-saida-fonte="${index}" ${item.fonteAuto !== false ? 'disabled' : ''} aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
+        <input type="number" min="6" max="160" value="${item.fonte || 65}" data-saida-fonte="${index}" aria-label="Tamanho da fonte da placa ${index + 1}"><span>pt</span>
         <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-saida-negrito="${index}" title="Ativar ou remover negrito">B</button>
         <button type="button" data-remove-saida="${index}">Remover</button>
       </div>
@@ -440,10 +440,27 @@ document.getElementById('saida-lista').addEventListener('change', event => {
   const fonte = event.target.closest('[data-saida-fonte]');
   const familia = event.target.closest('[data-saida-familia]');
   if (auto) saidaLote[Number(auto.dataset.saidaAuto)].fonteAuto = auto.checked;
-  else if (fonte) saidaLote[Number(fonte.dataset.saidaFonte)].fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 65));
+  else if (fonte) {
+    const item = saidaLote[Number(fonte.dataset.saidaFonte)];
+    item.fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 65));
+    item.fonteAuto = false;
+  }
   else if (familia) saidaLote[Number(familia.dataset.saidaFamilia)].familia = familia.value;
   else return;
   renderLotes(); updatePreview();
+});
+
+document.getElementById('saida-lista').addEventListener('input', event => {
+  const fonte = event.target.closest('[data-saida-fonte]');
+  if (!fonte) return;
+  const indice = Number(fonte.dataset.saidaFonte);
+  const item = saidaLote[indice];
+  if (!item) return;
+  item.fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || 6));
+  item.fonteAuto = false;
+  const automatico = document.querySelector(`[data-saida-auto="${indice}"]`);
+  if (automatico) automatico.checked = false;
+  updatePreview();
 });
 
 document.getElementById('shopee-lista').addEventListener('click', event => {
