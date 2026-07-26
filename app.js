@@ -985,7 +985,7 @@ async function renderSaidaPreview(area) {
   wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;';
 
   for (const item of itens) {
-    const linhas = linhasNomeSaida(item.nome, item.fonteAuto !== false);
+    const linhas = linhasNomeSaida(item.nome);
     const tamanhoPt = tamanhoFonteSaida(linhas, item);
     const tamanhoNome = Math.max(5, Math.round(tamanhoPt * .83));
     const card = document.createElement('div');
@@ -1336,7 +1336,7 @@ document.getElementById('print-saida').addEventListener('click', async () => {
 
   for (let i = 0; i < itens.length; i++) {
     const item = itens[i];
-    const linhas = linhasNomeSaida(item.nome, item.fonteAuto !== false);
+    const linhas = linhasNomeSaida(item.nome);
     const fonteNome = tamanhoFonteSaida(linhas, item);
     const qrDataURL = await generateQRDataURL(item.qrText, 600);
     pages += `<section class="out-print-page" style="width:10.98in;height:8.48in;position:relative;overflow:hidden;background:#fff;break-after:page;page-break-after:always;">
