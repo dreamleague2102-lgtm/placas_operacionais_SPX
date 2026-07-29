@@ -2013,6 +2013,8 @@ html[data-theme="light"] .inline-bulk-panel > p {
   width:23.93cqw;
   height:10.08cqw;
   flex:0 0 23.93cqw;
+  display:block;
+  object-fit:contain;
 }
 .gaiola-mode .preview-gaiola .gaiola-spx-badge > span {
   font-size:9.07cqw;
