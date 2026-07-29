@@ -1896,9 +1896,9 @@ html[data-theme="light"] .inline-bulk-panel > p {
   box-shadow:0 16px 48px rgba(0,0,0,.65);
 }
 .gaiola-mode .preview-gaiola .gaiola-header-bar {
-  min-height:135px;
-  padding:28px 34px 42px;
-  gap:54px;
+  min-height:118px;
+  padding:20px 20px 30px;
+  gap:75px;
   position:relative;
   background:#d5d5d5;
 }
@@ -1906,29 +1906,265 @@ html[data-theme="light"] .inline-bulk-panel > p {
   content:"";
   position:absolute;
   left:-5%; right:-5%; bottom:-1px;
-  height:25px;
+  height:14px;
   background:#fff;
   border-radius:50% 50% 0 0 / 100% 100% 0 0;
 }
-.gaiola-mode .preview-gaiola .gaiola-spx-badge { font:italic 900 42px/1 Arial,sans-serif; padding:0; }
-.gaiola-mode .preview-gaiola .gaiola-spx-badge::after { content:" EXPRESS"; font-size:8px; font-style:normal; }
+.gaiola-mode .preview-gaiola .gaiola-spx-badge {
+  width:112px;
+  height:58px;
+  padding:0;
+  position:relative;
+  flex:0 0 112px;
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge > span {
+  position:absolute;
+  left:0;
+  top:0;
+  font:italic 900 39px/1 Arial,sans-serif;
+  letter-spacing:-3px;
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge > i {
+  position:absolute;
+  left:4px;
+  bottom:7px;
+  width:72px;
+  height:7px;
+  transform:skewX(-38deg);
+  background:repeating-linear-gradient(90deg,#000 0 21px,transparent 21px 27px);
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge > small {
+  position:absolute;
+  right:0;
+  bottom:3px;
+  font:700 7px Arial,sans-serif;
+  letter-spacing:0;
+}
 .gaiola-mode .preview-gaiola .gaiola-title { font-size:32px; }
-.gaiola-mode .preview-gaiola .gaiola-warn { font-size:22px; font-weight:500; padding:15px 12px; margin:0 22px; border-top:1px solid #bbb; border-bottom:1px solid #bbb; }
-.gaiola-mode .preview-gaiola .gaiola-body { flex:1; padding:0 16px 0; gap:28px; align-items:stretch; }
-.gaiola-mode .preview-gaiola .gaiola-instrucoes { padding-top:0; }
+.gaiola-mode .preview-gaiola .gaiola-warn { font-size:21px; font-weight:500; padding:14px 12px; margin:0 20px; border-top:1px solid #bbb; border-bottom:1px solid #bbb; }
+.gaiola-mode .preview-gaiola .gaiola-body {
+  flex:1;
+  padding:0 14px;
+  gap:24px;
+  align-items:stretch;
+  display:grid;
+  grid-template-columns:250px minmax(0,1fr);
+}
+.gaiola-mode .preview-gaiola .gaiola-instrucoes { min-width:0; padding-top:0; }
 .gaiola-mode .preview-gaiola .gaiola-instrucoes h4 { font-size:15px; padding:9px 10px; margin:0 0 12px; border-radius:4px; }
-.gaiola-mode .preview-gaiola .gaiola-instrucoes h4:nth-of-type(2) { margin-top:48px; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes h4:nth-of-type(2) { margin-top:66px; }
 .gaiola-mode .preview-gaiola .gaiola-instrucoes ul { padding-left:18px; }
-.gaiola-mode .preview-gaiola .gaiola-instrucoes ul li { font-size:11px; line-height:1.55; margin-bottom:13px; color:#000; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes ul li { font-size:11px; line-height:1.55; margin-bottom:14px; color:#000; }
 .gaiola-mode .preview-gaiola .gaiola-instrucoes ul li b { color:#000; }
-.gaiola-mode .preview-gaiola .gaiola-right { width:310px; padding-top:72px; }
+.gaiola-mode .preview-gaiola .gaiola-right { width:100%; min-width:0; padding-top:78px; }
 .gaiola-mode .preview-gaiola .gaiola-qr-label { font-size:11px; color:#000; margin-bottom:3px; }
-.gaiola-mode .preview-gaiola .gaiola-qr-box { width:285px; min-height:435px; padding:16px; border:1px solid #777; border-radius:4px; gap:20px; }
+.gaiola-mode .preview-gaiola .gaiola-qr-box { width:305px; min-height:465px; padding:16px; border:1px solid #777; border-radius:4px; gap:20px; }
 .gaiola-mode .preview-gaiola .gaiola-cg { font-size:45px; margin-top:34px; }
-.gaiola-mode .preview-gaiola .gaiola-qr { width:205px; height:205px; }
+.gaiola-mode .preview-gaiola .gaiola-qr { width:220px; height:220px; }
 .gaiola-mode .preview-gaiola .gaiola-qr img,
-.gaiola-mode .preview-gaiola .gaiola-qr canvas { width:205px !important; height:205px !important; }
+.gaiola-mode .preview-gaiola .gaiola-qr canvas { width:220px !important; height:220px !important; }
 .gaiola-mode .preview-gaiola .gaiola-rodape { font-size:15px; padding:13px; background:#d3d3d3; }
+
+/* QR Gaiola SPX: geometria original em uma prancheta fixa 794 × 1123. */
+.gaiola-mode .preview-gaiola {
+  width:min(100%, 650px);
+  min-height:0;
+  aspect-ratio:794 / 1123;
+  container-type:inline-size;
+  position:relative;
+  display:block;
+  overflow:hidden;
+  border-radius:5px;
+}
+.gaiola-mode .preview-gaiola .gaiola-header-bar {
+  position:absolute;
+  z-index:2;
+  left:0;
+  top:0;
+  width:100%;
+  height:21.41cqw;
+  min-height:0;
+  padding:0 4.03cqw;
+  gap:3.53cqw;
+  display:flex;
+  align-items:center;
+  background:transparent;
+  overflow:visible;
+}
+.gaiola-mode .preview-gaiola .gaiola-header-bar::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0 0 auto;
+  height:16.12cqw;
+  background:#d3d3d3;
+}
+.gaiola-mode .preview-gaiola .gaiola-header-bar::after { display:none; }
+.gaiola-mode .preview-gaiola .gaiola-header-wave {
+  position:absolute;
+  z-index:-1;
+  top:16cqw;
+  left:0;
+  width:100%;
+  height:5.29cqw;
+  display:block;
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge {
+  width:18.89cqw;
+  height:8.19cqw;
+  flex:0 0 18.89cqw;
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge > span {
+  font-size:6.05cqw;
+  letter-spacing:-.38cqw;
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge > i {
+  left:.50cqw;
+  bottom:.88cqw;
+  width:11.46cqw;
+  height:.88cqw;
+  background:repeating-linear-gradient(90deg,#000 0 2.65cqw,transparent 2.65cqw 3.40cqw);
+}
+.gaiola-mode .preview-gaiola .gaiola-spx-badge > small {
+  bottom:.38cqw;
+  font-size:1.01cqw;
+}
+.gaiola-mode .preview-gaiola .gaiola-title {
+  flex:1;
+  padding-right:5.04cqw;
+  text-align:center;
+  font-size:6.80cqw;
+  font-weight:800;
+  letter-spacing:-.13cqw;
+  line-height:1;
+}
+.gaiola-mode .preview-gaiola .gaiola-warn {
+  position:absolute;
+  z-index:2;
+  top:22.42cqw;
+  left:0;
+  width:100%;
+  height:11.34cqw;
+  margin:0;
+  padding:0;
+  border:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:4.28cqw;
+  font-weight:500;
+}
+.gaiola-mode .preview-gaiola .gaiola-warn::before,
+.gaiola-mode .preview-gaiola .gaiola-warn::after {
+  content:"";
+  position:absolute;
+  left:3.53cqw;
+  right:3.53cqw;
+  height:1px;
+  background:#b0b0b0;
+}
+.gaiola-mode .preview-gaiola .gaiola-warn::before { top:0; }
+.gaiola-mode .preview-gaiola .gaiola-warn::after { bottom:0; }
+.gaiola-mode .preview-gaiola .gaiola-body {
+  position:absolute;
+  z-index:2;
+  top:33.75cqw;
+  left:2.52cqw;
+  right:2.52cqw;
+  bottom:7.56cqw;
+  padding:0;
+  gap:2.02cqw;
+  display:flex;
+  align-items:stretch;
+}
+.gaiola-mode .preview-gaiola .gaiola-instrucoes {
+  width:37.78cqw;
+  flex:0 0 37.78cqw;
+  min-width:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.gaiola-mode .preview-gaiola .gaiola-instrucoes h4 {
+  font-size:2.77cqw;
+  padding:1.13cqw 1.76cqw;
+  margin:0 0 1.76cqw;
+  border-radius:.76cqw;
+}
+.gaiola-mode .preview-gaiola .gaiola-instrucoes h4:nth-of-type(2) { margin-top:0; }
+.gaiola-mode .preview-gaiola .gaiola-instrucoes ul {
+  padding:0 0 0 2.52cqw;
+  margin:0;
+}
+.gaiola-mode .preview-gaiola .gaiola-instrucoes ul li {
+  font-size:2.02cqw;
+  line-height:1.65;
+  margin-bottom:2.02cqw;
+  color:#000;
+}
+.gaiola-mode .preview-gaiola .gaiola-instrucoes ul li:last-child { margin-bottom:0; }
+.gaiola-mode .preview-gaiola .gaiola-right {
+  flex:1;
+  width:auto;
+  min-width:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.gaiola-mode .preview-gaiola .gaiola-qr-label {
+  width:47.61cqw;
+  font-size:2.02cqw;
+  font-weight:500;
+  color:#000;
+  text-align:center;
+  margin:0 0 1.01cqw;
+}
+.gaiola-mode .preview-gaiola .gaiola-qr-box {
+  width:47.61cqw;
+  min-height:0;
+  height:71.41cqw;
+  box-sizing:border-box;
+  padding:1.76cqw 1.26cqw;
+  border:2px solid #808080;
+  border-radius:.76cqw;
+  gap:1.76cqw;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.gaiola-mode .preview-gaiola .gaiola-cg {
+  font-size:8.56cqw;
+  letter-spacing:-.25cqw;
+  line-height:1;
+  margin:0;
+}
+.gaiola-mode .preview-gaiola .gaiola-qr { width:40.30cqw; height:40.30cqw; }
+.gaiola-mode .preview-gaiola .gaiola-qr img,
+.gaiola-mode .preview-gaiola .gaiola-qr canvas {
+  width:40.30cqw !important;
+  height:40.30cqw !important;
+  display:block;
+  image-rendering:pixelated;
+}
+.gaiola-mode .preview-gaiola .gaiola-rodape {
+  position:absolute;
+  z-index:2;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:7.30cqw;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:2.77cqw;
+  font-weight:600;
+  background:#d3d3d3;
+}
 
 @media (max-width:1200px) {
   .gaiola-mode .panel-grid { grid-template-columns:1fr; }
