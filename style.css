@@ -1985,7 +1985,7 @@ html[data-theme="light"] .inline-bulk-panel > p {
   height:21.41cqw;
   min-height:0;
   padding:0 4.03cqw;
-  gap:3.53cqw;
+  gap:1.76cqw;
   display:flex;
   align-items:center;
   background:transparent;
@@ -2010,26 +2010,26 @@ html[data-theme="light"] .inline-bulk-panel > p {
   display:block;
 }
 .gaiola-mode .preview-gaiola .gaiola-spx-badge {
-  width:18.89cqw;
-  height:8.19cqw;
-  flex:0 0 18.89cqw;
+  width:23.93cqw;
+  height:10.08cqw;
+  flex:0 0 23.93cqw;
 }
 .gaiola-mode .preview-gaiola .gaiola-spx-badge > span {
-  font-size:6.05cqw;
-  letter-spacing:-.38cqw;
+  font-size:9.07cqw;
+  letter-spacing:-.57cqw;
 }
 .gaiola-mode .preview-gaiola .gaiola-spx-badge > i {
-  left:.50cqw;
-  bottom:.88cqw;
-  width:11.46cqw;
-  height:.88cqw;
-  background:repeating-linear-gradient(90deg,#000 0 2.65cqw,transparent 2.65cqw 3.40cqw);
+  left:.76cqw;
+  bottom:.25cqw;
+  width:17.63cqw;
+  height:1.26cqw;
+  background:repeating-linear-gradient(90deg,#000 0 3.78cqw,transparent 3.78cqw 4.79cqw);
 }
 .gaiola-mode .preview-gaiola .gaiola-spx-badge > small {
-  left:11.84cqw;
+  left:18.14cqw;
   right:auto;
-  bottom:.38cqw;
-  font-size:1.13cqw;
+  bottom:.13cqw;
+  font-size:1.51cqw;
   font-weight:800;
 }
 .gaiola-mode .preview-gaiola .gaiola-title {

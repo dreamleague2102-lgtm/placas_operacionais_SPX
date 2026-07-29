@@ -1575,11 +1575,11 @@ document.getElementById('print-gaiola').addEventListener('click', async () => {
       </div>
 
       <div style="position:absolute;z-index:2;top:0;left:0;width:100%;height:130px;display:flex;align-items:center;padding-left:32px;">
-        <div style="width:150px;height:65px;margin-right:28px;position:relative;flex-shrink:0;
-          font:italic 900 58px/1 Arial,sans-serif;letter-spacing:-5px;">SPX
-          <span style="position:absolute;left:4px;bottom:5px;width:92px;height:8px;transform:skewX(-38deg);
-            background:repeating-linear-gradient(90deg,#000 0 27px,transparent 27px 34px);"></span>
-          <small style="position:absolute;left:94px;bottom:2px;font:800 9px Arial;letter-spacing:0;">EXPRESS</small>
+        <div style="width:190px;height:80px;margin-right:14px;position:relative;flex-shrink:0;
+          font:italic 900 72px/1 Arial,sans-serif;letter-spacing:-5px;">SPX
+          <span style="position:absolute;left:6px;bottom:2px;width:140px;height:10px;transform:skewX(-38deg);
+            background:repeating-linear-gradient(90deg,#000 0 30px,transparent 30px 38px);"></span>
+          <small style="position:absolute;left:144px;bottom:1px;font:800 12px Arial;letter-spacing:0;">EXPRESS</small>
         </div>
         <div style="flex:1;text-align:center;font-size:54px;font-weight:800;letter-spacing:-1px;padding-right:40px;">QR Code Shopee</div>
       </div>
