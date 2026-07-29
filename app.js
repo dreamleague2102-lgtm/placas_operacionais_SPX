@@ -331,6 +331,10 @@ function renderLotes() {
   document.getElementById('clear-nome').hidden = nomeLote.length === 0;
   document.getElementById('clear-nome-duplo').hidden = nomeDuploLote.length === 0;
   document.getElementById('clear-nome-quatro').hidden = nomeQuatroLote.length === 0;
+  document.getElementById('saida-aplicar-todas').hidden = saidaLote.length === 0;
+  document.getElementById('nome-aplicar-todas').hidden = nomeLote.length === 0;
+  document.getElementById('nome-duplo-aplicar-todas').hidden = nomeDuploLote.length === 0;
+  document.getElementById('nome-quatro-aplicar-todas').hidden = nomeQuatroLote.length === 0;
 }
 
 [
@@ -566,6 +570,32 @@ function ativarFonteIndividualEmTempoReal(listaId, seletorFonte, chaveFonte, atr
 ativarFonteIndividualEmTempoReal('nome-lista', '[data-nome-fonte]', 'nomeFonte', 'data-nome-auto', () => nomeLote, 70);
 ativarFonteIndividualEmTempoReal('nome-duplo-lista', '[data-nome-duplo-fonte]', 'nomeDuploFonte', 'data-nome-duplo-auto', () => nomeDuploLote, 70);
 ativarFonteIndividualEmTempoReal('nome-quatro-lista', '[data-nome-quatro-fonte]', 'nomeQuatroFonte', 'data-nome-quatro-auto', () => nomeQuatroLote, 60);
+
+const modelosComTamanhoGlobal = {
+  saida: () => saidaLote,
+  nome: () => nomeLote,
+  'nome-duplo': () => nomeDuploLote,
+  'nome-quatro': () => nomeQuatroLote
+};
+
+document.querySelectorAll('[data-apply-all]').forEach(botao => {
+  botao.addEventListener('click', () => {
+    const modelo = botao.dataset.applyAll;
+    const obterItens = modelosComTamanhoGlobal[modelo];
+    const campo = document.querySelector(`[data-all-size="${modelo}"]`);
+    if (!obterItens || !campo) return;
+    const itens = obterItens();
+    if (!itens.length) return;
+    const tamanho = Math.min(160, Math.max(6, parseInt(campo.value) || 6));
+    campo.value = String(tamanho);
+    itens.forEach(item => {
+      item.fonte = tamanho;
+      item.fonteAuto = false;
+    });
+    renderLotes();
+    updatePreview();
+  });
+});
 
 renderLotes();
 

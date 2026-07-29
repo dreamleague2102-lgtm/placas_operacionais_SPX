@@ -770,6 +770,59 @@ html[data-theme="light"] .batch-font-controls input[type="number"] {
   max-height: 190px;
   overflow-y: auto;
 }
+.batch-apply-all {
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+  padding:.75rem;
+  border:1px solid rgba(79,124,255,.58);
+  border-radius:var(--radius-sm);
+  background:rgba(79,124,255,.08);
+}
+.batch-apply-all[hidden],
+.plate-form.bulk-mode > .batch-apply-all { display:none; }
+.batch-apply-all > div:first-child {
+  display:flex;
+  flex-direction:column;
+  gap:.18rem;
+}
+.batch-apply-all strong {
+  color:var(--spx-text);
+  font:700 .78rem Inter,Arial,sans-serif;
+}
+.batch-apply-all > div:first-child span {
+  color:var(--spx-muted);
+  font:400 .67rem Inter,Arial,sans-serif;
+}
+.batch-apply-all-controls {
+  display:grid;
+  grid-template-columns:70px 24px minmax(0,1fr);
+  align-items:center;
+  gap:.45rem;
+}
+.batch-apply-all-controls input {
+  width:100%;
+  padding:.48rem .55rem;
+  border:1px solid var(--spx-border);
+  border-radius:6px;
+  background:#111;
+  color:#fff;
+  font:700 .78rem Inter,Arial,sans-serif;
+}
+.batch-apply-all-controls > span {
+  color:var(--spx-muted);
+  font-size:.72rem;
+}
+.batch-apply-all-controls button {
+  min-height:34px;
+  border:1px solid #4f7cff;
+  border-radius:6px;
+  background:#24304a;
+  color:#fff;
+  font:700 .72rem Inter,Arial,sans-serif;
+  cursor:pointer;
+}
+.batch-apply-all-controls button:hover { background:#31456d; }
 .btn-clear-list {
   width:100%;
   margin-top:.5rem;
@@ -1735,6 +1788,7 @@ html[data-theme="light"] .font-family-select option,
 html[data-theme="light"] .font-toolbar input[type="number"],
 html[data-theme="light"] .batch-font-controls select,
 html[data-theme="light"] .batch-font-controls input[type="number"],
+html[data-theme="light"] .batch-apply-all-controls input,
 html[data-theme="light"] .inline-bulk-panel .bulk-textarea {
   background:#fff;
   color:#17191d;
@@ -1743,6 +1797,16 @@ html[data-theme="light"] .inline-bulk-panel .bulk-textarea {
 html[data-theme="light"] .inline-bulk-panel {
   background:#f7f9fc;
   border-color:#cbd5e7;
+}
+html[data-theme="light"] .batch-apply-all {
+  background:#eef3ff;
+  border-color:#aebfe9;
+}
+html[data-theme="light"] .batch-apply-all strong { color:#17191d; }
+html[data-theme="light"] .batch-apply-all-controls button {
+  background:#e4ecff;
+  color:#183c8f;
+  border-color:#376de8;
 }
 html[data-theme="light"] .inline-bulk-title {
   border-bottom-color:#d5dae1;

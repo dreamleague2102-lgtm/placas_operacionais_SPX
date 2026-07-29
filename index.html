@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260726-4" />
+  <link rel="stylesheet" href="style.css?v=20260729-1" />
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -275,6 +275,14 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="saida">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-saida">+ Adicionar placa à lista</button>
             <div class="plate-batch" id="saida-lista" aria-live="polite"></div>
+            <div class="batch-apply-all" id="saida-aplicar-todas" hidden>
+              <div><strong>Tamanho para todas</strong><span>Altera todas as placas da lista de uma vez.</span></div>
+              <div class="batch-apply-all-controls">
+                <input type="number" min="6" max="160" value="65" data-all-size="saida" aria-label="Tamanho para todas as placas com QR Code" />
+                <span>pt</span>
+                <button type="button" data-apply-all="saida">Aplicar em todas</button>
+              </div>
+            </div>
             <button class="btn-clear-list" type="button" id="clear-saida" hidden>Remover todas</button>
             <button class="btn-print" id="print-saida">
               📄 Gerar PDF — Placas com QR Code
@@ -322,6 +330,14 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="nome">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-lista" aria-live="polite"></div>
+            <div class="batch-apply-all" id="nome-aplicar-todas" hidden>
+              <div><strong>Tamanho para todas</strong><span>Altera todas as placas da lista de uma vez.</span></div>
+              <div class="batch-apply-all-controls">
+                <input type="number" min="6" max="160" value="70" data-all-size="nome" aria-label="Tamanho para todas as placas de nome" />
+                <span>pt</span>
+                <button type="button" data-apply-all="nome">Aplicar em todas</button>
+              </div>
+            </div>
             <button class="btn-clear-list" type="button" id="clear-nome" hidden>Remover todas</button>
             <button class="btn-print" id="print-nome">
               📄 Gerar PDF — Placas de Nome
@@ -367,6 +383,14 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="nome-duplo">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome-duplo">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-duplo-lista" aria-live="polite"></div>
+            <div class="batch-apply-all" id="nome-duplo-aplicar-todas" hidden>
+              <div><strong>Tamanho para todas</strong><span>Altera todas as placas da lista de uma vez.</span></div>
+              <div class="batch-apply-all-controls">
+                <input type="number" min="6" max="160" value="70" data-all-size="nome-duplo" aria-label="Tamanho para todas as placas, duas por folha" />
+                <span>pt</span>
+                <button type="button" data-apply-all="nome-duplo">Aplicar em todas</button>
+              </div>
+            </div>
             <button class="btn-clear-list" type="button" id="clear-nome-duplo" hidden>Remover todas</button>
             <button class="btn-print" id="print-nome-duplo">📄 Gerar PDF — Nomes (2 por Folha)</button>
           </div>
@@ -392,6 +416,14 @@
             <button class="btn-bulk-open" type="button" data-bulk-model="nome-quatro">📋 Importar lista em lote</button>
             <button class="btn-add-plate" type="button" id="add-nome-quatro">+ Adicionar nome à lista</button>
             <div class="plate-batch" id="nome-quatro-lista" aria-live="polite"></div>
+            <div class="batch-apply-all" id="nome-quatro-aplicar-todas" hidden>
+              <div><strong>Tamanho para todas</strong><span>Altera todas as placas da lista de uma vez.</span></div>
+              <div class="batch-apply-all-controls">
+                <input type="number" min="6" max="160" value="60" data-all-size="nome-quatro" aria-label="Tamanho para todas as placas, quatro por folha" />
+                <span>pt</span>
+                <button type="button" data-apply-all="nome-quatro">Aplicar em todas</button>
+              </div>
+            </div>
             <button class="btn-clear-list" type="button" id="clear-nome-quatro" hidden>Remover todas</button>
             <button class="btn-print" id="print-nome-quatro">📄 Gerar PDF — Nomes (4 por Folha)</button>
           </div>
@@ -501,6 +533,6 @@
   <!-- PRINT AREA (hidden, only for printing) -->
   <div id="printArea" class="print-only"></div>
 
-  <script src="app.js?v=20260726-4"></script>
+  <script src="app.js?v=20260729-1"></script>
 </body>
 </html>
