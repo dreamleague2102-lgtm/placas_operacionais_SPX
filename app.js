@@ -1579,7 +1579,7 @@ document.getElementById('print-gaiola').addEventListener('click', async () => {
           font:italic 900 58px/1 Arial,sans-serif;letter-spacing:-5px;">SPX
           <span style="position:absolute;left:4px;bottom:5px;width:92px;height:8px;transform:skewX(-38deg);
             background:repeating-linear-gradient(90deg,#000 0 27px,transparent 27px 34px);"></span>
-          <small style="position:absolute;right:0;bottom:2px;font:700 8px Arial;letter-spacing:0;">EXPRESS</small>
+          <small style="position:absolute;left:94px;bottom:2px;font:800 9px Arial;letter-spacing:0;">EXPRESS</small>
         </div>
         <div style="flex:1;text-align:center;font-size:54px;font-weight:800;letter-spacing:-1px;padding-right:40px;">QR Code Shopee</div>
       </div>

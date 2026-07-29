@@ -2026,8 +2026,11 @@ html[data-theme="light"] .inline-bulk-panel > p {
   background:repeating-linear-gradient(90deg,#000 0 2.65cqw,transparent 2.65cqw 3.40cqw);
 }
 .gaiola-mode .preview-gaiola .gaiola-spx-badge > small {
+  left:11.84cqw;
+  right:auto;
   bottom:.38cqw;
-  font-size:1.01cqw;
+  font-size:1.13cqw;
+  font-weight:800;
 }
 .gaiola-mode .preview-gaiola .gaiola-title {
   flex:1;
