@@ -1468,39 +1468,12 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 .preview-ws .ws-shopee-logo {
   position:absolute;
   z-index:3;
-  right:3.5%;
-  top:3%;
-  display:flex;
-  align-items:center;
-  gap:5px;
-  color:#000;
-  padding:3px 5px 3px 4px;
-  background:#fff;
-  border-radius:3px;
-}
-.preview-ws .ws-shopee-logo strong { font:500 16px Arial,sans-serif; line-height:1; }
-.preview-ws .ws-shopee-bag {
-  width:27px;
-  height:29px;
-  border-radius:2px;
-  background:#050505;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font:bold 14px Arial,sans-serif;
-  position:relative;
-}
-.preview-ws .ws-shopee-bag::before {
-  content:"";
-  position:absolute;
-  left:6px;
-  right:6px;
-  top:-9px;
-  height:10px;
-  border:2px solid #000;
-  border-bottom:0;
-  border-radius:7px 7px 0 0;
+  right:2%;
+  top:2.3%;
+  width:42%;
+  height:13%;
+  display:block;
+  object-fit:contain;
 }
 .preview-ws .ws-body {
   position:absolute;
