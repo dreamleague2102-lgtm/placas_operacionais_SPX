@@ -999,6 +999,7 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   div.className = 'preview-ws';
   div.innerHTML = `
     <div class="ws-stripe ws-stripe-top"></div>
+    <div class="ws-shopee-logo"><span class="ws-shopee-bag">S</span><strong>Shopee</strong></div>
     <div class="ws-body">
       <div class="ws-name" style="font-size:${titulo.fonte}px;line-height:1.08">${titulo.linhas.map(escHtml).join('<br>')}</div>
       <div class="ws-num" style="font-size:${superior.fonte}px">${preenchida ? escHtml(numero) : ''}</div>
@@ -1046,17 +1047,20 @@ function buildWsPrintPages(itens) {
       const titulo = formatarTextoWs(item?.codigo, 20, 205, 2);
       const superior = formatarTextoWs(item?.numero, 14, 205, 1);
       const inferior = formatarTextoWs(item?.rodape, 14, 205, 1);
-      return `<div style="height:5.2in;border:1.5px solid #111;display:flex;flex-direction:column;overflow:hidden;background:#fff;">
-        <div class="stripe-five" style="width:60%;height:.32in;"></div>
-        <div style="flex:1;position:relative;text-align:center;font-family:Calibri,Arial,sans-serif;">
-          <div style="font-size:${titulo.fonte}pt;font-weight:700;padding:.13in .12in 0;text-align:center;line-height:1.05;min-height:.55in;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
-          <div style="font-size:${superior.fonte}pt;font-weight:700;margin-top:.08in;height:.25in;text-align:center;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
-          <div style="height:2.35in;margin-top:.24in;display:flex;align-items:center;justify-content:center;">
-            ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:2.25in;height:2.25in;display:block;" />` : ''}
-          </div>
-          <div style="width:100%;margin-top:.26in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
+      return `<div style="height:3.95in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
+        <div class="stripe-five" style="position:absolute;left:0;top:0;width:55%;height:.22in;"></div>
+        <div style="position:absolute;right:.14in;top:.15in;display:flex;align-items:center;gap:.05in;color:#000;background:#fff;padding-left:.03in;">
+          <span style="width:.28in;height:.30in;border-radius:.025in;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font:bold 11pt Arial;position:relative;">S
+            <i style="position:absolute;left:.065in;right:.065in;top:-.09in;height:.12in;border:1.5px solid #000;border-bottom:0;border-radius:.08in .08in 0 0;"></i>
+          </span><strong style="font:500 15pt Arial;">Shopee</strong>
         </div>
-        <div class="stripe-five" style="width:60%;height:.32in;margin-left:40%;"></div>
+        <div style="position:absolute;left:.12in;right:.12in;top:.24in;height:.36in;font-size:${titulo.fonte}pt;font-weight:700;text-align:center;line-height:1.05;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
+        <div style="position:absolute;left:.12in;right:.12in;top:.67in;height:.28in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
+        <div style="position:absolute;left:50%;top:1.11in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
+          ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:1.86in;height:1.86in;display:block;" />` : ''}
+        </div>
+        <div style="position:absolute;left:.12in;right:.12in;top:3.32in;height:.28in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
+        <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:55%;height:.22in;"></div>
       </div>`;
     }).join('');
 
