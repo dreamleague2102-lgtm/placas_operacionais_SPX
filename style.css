@@ -1469,7 +1469,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   position:absolute;
   z-index:3;
   right:2%;
-  top:2.3%;
+  top:.5%;
   width:42%;
   height:13%;
   display:block;
@@ -1493,7 +1493,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   position:absolute;
   left:5%;
   right:5%;
-  top:12%;
+  top:14%;
   width:auto;
   line-height: 1.15;
 }
@@ -1504,7 +1504,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   position:absolute;
   left:5%;
   right:5%;
-  top:21%;
+  top:27%;
   width:auto;
   display: flex;
   justify-content: center;
@@ -1513,7 +1513,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 .preview-ws .ws-qr {
   position:absolute;
   left:50%;
-  top:30%;
+  top:34%;
   width:58%;
   aspect-ratio:1;
   height:auto;
