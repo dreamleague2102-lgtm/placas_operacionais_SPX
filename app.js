@@ -1049,17 +1049,17 @@ function buildWsPrintPages(itens) {
       const inferior = formatarTextoWs(item?.rodape, 14, 205, 1);
       return `<div style="height:3.95in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
         <div class="stripe-five" style="position:absolute;left:0;top:0;width:55%;height:.22in;"></div>
-        <div style="position:absolute;right:.14in;top:.15in;display:flex;align-items:center;gap:.05in;color:#000;background:#fff;padding-left:.03in;">
-          <span style="width:.28in;height:.30in;border-radius:.025in;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font:bold 11pt Arial;position:relative;">S
-            <i style="position:absolute;left:.065in;right:.065in;top:-.09in;height:.12in;border:1.5px solid #000;border-bottom:0;border-radius:.08in .08in 0 0;"></i>
-          </span><strong style="font:500 15pt Arial;">Shopee</strong>
+        <div style="position:absolute;right:.10in;top:.12in;display:flex;align-items:center;gap:.06in;color:#000;background:#fff;padding:.04in .06in .04in .04in;border-radius:.03in;">
+          <span style="width:.34in;height:.36in;border-radius:.025in;background:#050505;color:#fff;display:flex;align-items:center;justify-content:center;font:bold 14pt Arial;position:relative;">S
+            <i style="position:absolute;left:.075in;right:.075in;top:-.10in;height:.13in;border:2px solid #000;border-bottom:0;border-radius:.09in .09in 0 0;"></i>
+          </span><strong style="font:500 17pt/1 Arial;">Shopee</strong>
         </div>
-        <div style="position:absolute;left:.12in;right:.12in;top:.24in;height:.36in;font-size:${titulo.fonte}pt;font-weight:700;text-align:center;line-height:1.05;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
-        <div style="position:absolute;left:.12in;right:.12in;top:.67in;height:.28in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
-        <div style="position:absolute;left:50%;top:1.11in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;left:.12in;right:.12in;top:.47in;height:.36in;font-size:${titulo.fonte}pt;font-weight:700;text-align:center;line-height:1.05;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
+        <div style="position:absolute;left:.12in;right:.12in;top:.83in;height:.28in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
+        <div style="position:absolute;left:50%;top:1.19in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
           ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:1.86in;height:1.86in;display:block;" />` : ''}
         </div>
-        <div style="position:absolute;left:.12in;right:.12in;top:3.32in;height:.28in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
+        <div style="position:absolute;left:.12in;right:.12in;top:3.36in;height:.28in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:55%;height:.22in;"></div>
       </div>`;
     }).join('');
