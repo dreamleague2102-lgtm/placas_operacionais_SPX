@@ -640,7 +640,14 @@ function prepararLoteInline(painel, modelo) {
     painel.querySelector('[data-inline-contagem]').textContent = `${selecionadas} de ${itens.length} placas`;
     painel.querySelector('[data-inline-todos]').checked = Boolean(itens.length) && selecionadas === itens.length;
     painel.querySelector('[data-inline-gerar]').disabled = !selecionadas;
-    painel.querySelector('[data-inline-lista]').innerHTML = itens.length ? itens.map((item, index) => `<label class="batch-item"><input type="checkbox" data-inline-item="${index}" ${item.selecionada ? 'checked' : ''}><div><strong>${escHtml(item.id)}</strong><span>${escHtml(item.nome)}</span></div></label>`).join('') : '<div class="batch-empty">Nenhuma linha importada.</div>';
+    painel.querySelector('[data-inline-lista]').innerHTML = itens.length ? itens.map((item, index) => `
+      <div class="batch-item inline-editable-item">
+        <input type="checkbox" data-inline-item="${index}" ${item.selecionada ? 'checked' : ''} aria-label="Selecionar placa ${index + 1}">
+        <div class="inline-item-content">
+          <strong>${escHtml(item.id)}</strong><span>${escHtml(item.nome)}</span>
+          ${controlesFonteLoteInline(modelo, item, index)}
+        </div>
+      </div>`).join('') : '<div class="batch-empty">Nenhuma linha importada.</div>';
   };
   painel.querySelector('[data-fechar-lote]').addEventListener('click', () => painel.previousElementSibling.click());
   painel.querySelector('[data-inline-importar]').addEventListener('click', () => {
@@ -653,10 +660,39 @@ function prepararLoteInline(painel, modelo) {
       const nomes = painel.querySelector('[data-inline-nomes]').value;
       lotesPorModelo[modelo] = interpretarColunasLote(ids, nomes);
     }
+    normalizarEstilosLoteInline(modelo, lotesPorModelo[modelo]);
+    sincronizarLoteInlineComModelo(modelo);
     render();
   });
-  painel.querySelector('[data-inline-lista]').addEventListener('change', event => { const item = event.target.closest('[data-inline-item]'); if (!item) return; lotesPorModelo[modelo][Number(item.dataset.inlineItem)].selecionada = item.checked; render(); });
-  painel.querySelector('[data-inline-todos]').addEventListener('change', event => { lotesPorModelo[modelo].forEach(item => { item.selecionada = event.target.checked; }); render(); });
+  painel.querySelector('[data-inline-lista]').addEventListener('change', event => {
+    const selecao = event.target.closest('[data-inline-item]');
+    const auto = event.target.closest('[data-inline-auto]');
+    const familia = event.target.closest('[data-inline-familia]');
+    if (selecao) lotesPorModelo[modelo][Number(selecao.dataset.inlineItem)].selecionada = selecao.checked;
+    if (auto) lotesPorModelo[modelo][Number(auto.dataset.inlineAuto)].fonteAuto = auto.checked;
+    if (familia) lotesPorModelo[modelo][Number(familia.dataset.inlineFamilia)].familia = familia.value;
+    sincronizarLoteInlineComModelo(modelo);
+    render();
+  });
+  painel.querySelector('[data-inline-lista]').addEventListener('input', event => {
+    const fonte = event.target.closest('[data-inline-fonte]');
+    if (!fonte) return;
+    const item = lotesPorModelo[modelo][Number(fonte.dataset.inlineFonte)];
+    item.fonte = Math.min(160, Math.max(6, parseInt(fonte.value) || tamanhoPadraoLoteInline(modelo)));
+    item.fonteAuto = false;
+    const auto = painel.querySelector(`[data-inline-auto="${fonte.dataset.inlineFonte}"]`);
+    if (auto) auto.checked = false;
+    sincronizarLoteInlineComModelo(modelo);
+  });
+  painel.querySelector('[data-inline-lista]').addEventListener('click', event => {
+    const negrito = event.target.closest('[data-inline-negrito]');
+    if (!negrito) return;
+    const item = lotesPorModelo[modelo][Number(negrito.dataset.inlineNegrito)];
+    item.negrito = item.negrito === false;
+    sincronizarLoteInlineComModelo(modelo);
+    render();
+  });
+  painel.querySelector('[data-inline-todos]').addEventListener('change', event => { lotesPorModelo[modelo].forEach(item => { item.selecionada = event.target.checked; }); sincronizarLoteInlineComModelo(modelo); render(); });
   painel.querySelector('[data-inline-limpar]').addEventListener('click', () => {
     lotesPorModelo[modelo] = [];
     painel.querySelectorAll('textarea').forEach(campo => { campo.value = ''; });
@@ -671,6 +707,57 @@ function prepararLoteInline(painel, modelo) {
     gerador.click();
   });
   render();
+}
+
+const fontesLoteInline = ['Calibri', 'Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Georgia', 'Times New Roman', 'Arial Black', 'Impact'];
+
+function tamanhoPadraoLoteInline(modelo) {
+  if (modelo === 'saida') return 65;
+  if (modelo === 'nome-quatro') return 60;
+  return 70;
+}
+
+function modeloLoteInlineTemFonte(modelo) {
+  return ['saida', 'nome', 'nome-duplo', 'nome-quatro'].includes(modelo);
+}
+
+function normalizarEstilosLoteInline(modelo, itens) {
+  if (!modeloLoteInlineTemFonte(modelo)) return;
+  itens.forEach(item => {
+    if (item.fonteAuto === undefined) item.fonteAuto = true;
+    if (!item.fonte) item.fonte = tamanhoPadraoLoteInline(modelo);
+    if (!item.familia) item.familia = 'Calibri';
+    if (item.negrito === undefined) item.negrito = true;
+  });
+}
+
+function controlesFonteLoteInline(modelo, item, index) {
+  if (!modeloLoteInlineTemFonte(modelo)) return '';
+  return `<div class="inline-font-controls">
+    <label><input type="checkbox" data-inline-auto="${index}" ${item.fonteAuto !== false ? 'checked' : ''}> Automático</label>
+    <select data-inline-familia="${index}" aria-label="Fonte da placa ${index + 1}">
+      ${fontesLoteInline.map(fonte => `<option value="${fonte}" ${(item.familia || 'Calibri') === fonte ? 'selected' : ''}>${fonte}</option>`).join('')}
+    </select>
+    <input type="number" min="6" max="160" value="${item.fonte || tamanhoPadraoLoteInline(modelo)}" data-inline-fonte="${index}" aria-label="Tamanho da placa ${index + 1}"><span>pt</span>
+    <button type="button" class="batch-bold-button ${item.negrito === false ? '' : 'active'}" data-inline-negrito="${index}" title="Ativar ou remover negrito">B</button>
+  </div>`;
+}
+
+function sincronizarLoteInlineComModelo(modelo) {
+  const itens = lotesPorModelo[modelo] || [];
+  if (modelo === 'shopee') {
+    shopeeLote = itens.map(item => ({ codigo:item.codigo || item.nome, numero:item.numero || item.id, rodape:item.rodape || '', qrText:item.qrText || item.id }));
+  } else if (modelo === 'saida') {
+    saidaLote = itens.map(item => ({ nome:item.nome, qrText:item.id, qtd:1, fonteAuto:item.fonteAuto, fonte:item.fonte, familia:item.familia, negrito:item.negrito }));
+  } else if (modelo === 'nome') {
+    nomeLote = itens.map(item => ({ nome:item.nome, qtd:1, fonteAuto:item.fonteAuto, fonte:item.fonte, familia:item.familia, negrito:item.negrito }));
+  } else if (modelo === 'nome-duplo') {
+    nomeDuploLote = itens.map(item => ({ nome:item.nome, qtd:1, fonteAuto:item.fonteAuto, fonte:item.fonte, familia:item.familia, negrito:item.negrito }));
+  } else if (modelo === 'nome-quatro') {
+    nomeQuatroLote = itens.map(item => ({ nome:item.nome, qtd:1, fonteAuto:item.fonteAuto, fonte:item.fonte, familia:item.familia, negrito:item.negrito }));
+  }
+  renderLotes();
+  updatePreview();
 }
 
 function descricaoLoteInline(modelo) {
@@ -778,13 +865,13 @@ document.getElementById('gerar-lote').addEventListener('click', () => {
   if (modelo === 'shopee') {
     shopeeLote = registros.map(item => ({ codigo: item.codigo || item.nome, numero: item.numero || item.id, rodape: item.rodape || '', qrText: item.qrText || item.id }));
   } else if (modelo === 'saida') {
-    saidaLote = registros.map(item => ({ nome: item.nome, qrText: item.id, qtd: 1, fonteAuto: true, fonte: 65, familia: 'Calibri', negrito: true }));
+    saidaLote = registros.map(item => ({ nome: item.nome, qrText: item.id, qtd: 1, fonteAuto: item.fonteAuto ?? true, fonte: item.fonte || 65, familia: item.familia || 'Calibri', negrito: item.negrito ?? true }));
   } else if (modelo === 'nome') {
-    nomeLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
+    nomeLote = registros.map(item => ({ nome: item.nome, ...estiloNome, fonteAuto:item.fonteAuto ?? true, fonte:item.fonte || 70, familia:item.familia || 'Calibri', negrito:item.negrito ?? true }));
   } else if (modelo === 'nome-duplo') {
-    nomeDuploLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
+    nomeDuploLote = registros.map(item => ({ nome: item.nome, ...estiloNome, fonteAuto:item.fonteAuto ?? true, fonte:item.fonte || 70, familia:item.familia || 'Calibri', negrito:item.negrito ?? true }));
   } else if (modelo === 'nome-quatro') {
-    nomeQuatroLote = registros.map(item => ({ nome: item.nome, ...estiloNome }));
+    nomeQuatroLote = registros.map(item => ({ nome: item.nome, ...estiloNome, fonteAuto:item.fonteAuto ?? true, fonte:item.fonte || 60, familia:item.familia || 'Calibri', negrito:item.negrito ?? true }));
   }
   renderLotes();
   document.getElementById(`print-${modelo}`).click();

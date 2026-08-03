@@ -503,6 +503,17 @@ html[data-theme="light"] .batch-font-controls input[type="number"] {
 .inline-bulk-columns .bulk-textarea { min-height:155px; padding:.7rem; font-size:.72rem; white-space:pre; }
 .inline-bulk-panel .bulk-actions { background:rgba(255,255,255,.025); }
 .inline-bulk-panel .bulk-list { max-height:210px; }
+.inline-bulk-panel .bulk-list:has(.inline-editable-item) { max-height:340px; }
+.inline-editable-item { align-items:flex-start; gap:.55rem; padding:.65rem; }
+.inline-editable-item > input[type="checkbox"] { flex:0 0 auto; margin-top:.2rem; }
+.inline-item-content { flex:1; min-width:0; display:flex; flex-direction:column; gap:.18rem; }
+.inline-font-controls { display:grid; grid-template-columns:auto minmax(82px,1fr) 54px auto 32px; gap:.35rem; align-items:center; margin-top:.45rem; }
+.inline-font-controls label { display:flex; flex-direction:row; align-items:center; gap:.25rem; color:#ddd; font-size:.62rem; }
+.inline-font-controls select,
+.inline-font-controls input[type="number"] { min-width:0; height:30px; border:1px solid rgba(255,255,255,.14); border-radius:6px; background:#101116; color:#fff; padding:0 .4rem; font:600 .65rem Inter,sans-serif; }
+.inline-font-controls > span { color:#999; font-size:.62rem; }
+.inline-font-controls .batch-bold-button { width:30px; height:30px; }
+@media (max-width:520px) { .inline-font-controls { grid-template-columns:auto 1fr 48px auto; } .inline-font-controls .batch-bold-button { grid-column:4; } }
 .inline-bulk-panel .btn-print { width:100%; }
 @media (max-width:520px) { .inline-bulk-columns { grid-template-columns:1fr; } }
 .plate-form.bulk-mode > .btn-add-plate,
@@ -914,6 +925,49 @@ html[data-theme="light"] .batch-font-controls input[type="number"] {
   color:#17498f;
 }
 .batch-font-controls button { margin-left:auto; }
+
+/* Controles individuais exibidos diretamente na importação em lote. */
+.inline-bulk-panel .batch-item .inline-item-content {
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:.18rem;
+}
+.inline-bulk-panel .batch-item .inline-font-controls {
+  width:100%;
+  display:grid;
+  grid-template-columns:auto minmax(82px,1fr) 54px auto 30px;
+  align-items:center;
+  gap:.35rem;
+  margin-top:.45rem;
+}
+.inline-bulk-panel .inline-font-controls label {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:.25rem;
+  white-space:nowrap;
+}
+.inline-bulk-panel .inline-font-controls .batch-bold-button {
+  width:30px;
+  height:30px;
+  margin:0;
+  border:1px solid var(--spx-border);
+  border-radius:5px;
+  color:#aaa;
+  font-weight:800;
+}
+.inline-bulk-panel .inline-font-controls .batch-bold-button.active {
+  background:#d8e6ff;
+  color:#17498f;
+}
+html[data-theme="light"] .inline-font-controls select,
+html[data-theme="light"] .inline-font-controls input[type="number"] {
+  background:#fff;
+  color:#111827;
+  border-color:#cbd5e1;
+}
+html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 
 /* A grade de quatro placas possui ajustes individuais mais completos. */
 .nome-quatro-mode .panel-grid {
