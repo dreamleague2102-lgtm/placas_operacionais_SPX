@@ -1240,16 +1240,6 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
       #fff 5px, #fff 10px
     );
   }
-  .print-ws-shopee-logo {
-    position: absolute;
-    right: 0;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    font-size: 9pt;
-    font-weight: 700;
-  }
-
   /* ---- Placa Grande (OUT) ---- */
   /* Landscape Letter: 11in × 8.5in */
   @page { size: auto; }
@@ -1465,16 +1455,6 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 }
 .preview-ws .ws-stripe-top { left:0; top:0; }
 .preview-ws .ws-stripe-bottom { right:0; bottom:0; }
-.preview-ws .ws-shopee-logo {
-  position:absolute;
-  z-index:3;
-  right:2%;
-  top:.5%;
-  width:42%;
-  height:13%;
-  display:block;
-  object-fit:contain;
-}
 .preview-ws .ws-body {
   position:absolute;
   inset:0;

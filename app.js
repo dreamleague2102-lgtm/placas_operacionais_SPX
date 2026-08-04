@@ -999,7 +999,6 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   div.className = 'preview-ws';
   div.innerHTML = `
     <div class="ws-stripe ws-stripe-top"></div>
-    <img class="ws-shopee-logo" src="assets/shopee-logo.svg" alt="Shopee" />
     <div class="ws-body">
       <div class="ws-name" style="font-size:${titulo.fonte}px;line-height:1.08">${titulo.linhas.map(escHtml).join('<br>')}</div>
       <div class="ws-num" style="font-size:${superior.fonte}px">${preenchida ? escHtml(numero) : ''}</div>
@@ -1051,8 +1050,6 @@ function buildWsPrintPages(itens) {
       const inferior = formatarTextoWs(item?.rodape, 14, 205, 1);
       return `<div style="height:3.95in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
         <div class="stripe-five" style="position:absolute;left:0;top:0;width:55%;height:.22in;"></div>
-        <img src="${new URL('assets/shopee-logo.svg', window.location.href).href}" alt="Shopee"
-          style="position:absolute;right:.06in;top:.02in;width:1.25in;height:.46in;display:block;object-fit:contain;" />
         <div style="position:absolute;left:.12in;right:.12in;top:.55in;height:.48in;font-size:${titulo.fonte}pt;font-weight:700;text-align:center;line-height:1.05;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
         <div style="position:absolute;left:.12in;right:.12in;top:1.07in;height:.28in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
         <div style="position:absolute;left:50%;top:1.34in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 285 90" role="img" aria-label="Shopee">
-  <path d="M25 25V16C25 6 33 1.5 42 1.5S59 6 59 16v9" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round"/>
-  <path d="M7 23h70l-4 61H11Z" fill="#000"/>
-  <text x="42" y="70" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="51" font-weight="400" text-anchor="middle">S</text>
-  <text x="89" y="69" fill="#000" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="400">Shopee</text>
-</svg>
