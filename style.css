@@ -1458,10 +1458,10 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 .preview-ws .ws-spx-logo {
   position:absolute;
   z-index:3;
-  right:2.5%;
-  top:2.2%;
-  width:38%;
-  height:11.5%;
+  right:3%;
+  top:2.7%;
+  width:34%;
+  height:10%;
   object-fit:contain;
   object-position:center;
   display:block;
@@ -1731,12 +1731,12 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 .preview-ws-sheet {
   width: min(100%, 920px);
   min-width: 720px;
-  aspect-ratio: 11 / 6.1;
-  padding: 14px;
+  aspect-ratio: 11 / 4.55;
+  padding: 18px;
   background: #fff;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 18px;
   box-shadow: 0 4px 18px rgba(0,0,0,.35);
 }
 .preview-pages {
