@@ -1052,7 +1052,7 @@ function buildWsPrintPages(itens) {
       return `<div style="height:3.95in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
         <div class="stripe-five" style="position:absolute;left:0;top:0;width:55%;height:.22in;"></div>
         <img src="${new URL('assets/spx-logo.svg', window.location.href).href}" alt="SPX Express"
-          style="position:absolute;right:.10in;top:.09in;width:.88in;height:.38in;object-fit:contain;object-position:center;display:block;" />
+          style="position:absolute;right:.06in;top:.05in;width:1.02in;height:.46in;object-fit:contain;object-position:center;display:block;" />
         <div style="position:absolute;left:.12in;right:.12in;top:.55in;height:.48in;font-size:${titulo.fonte}pt;font-weight:700;text-align:center;line-height:1.05;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
         <div style="position:absolute;left:.12in;right:.12in;top:1.00in;height:.24in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
         <div style="position:absolute;left:50%;top:1.43in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
@@ -1423,7 +1423,7 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
         <!-- Stripe top -->
         <div class="stripe-five" style="position:absolute;left:${xq}in;top:${STRIPE_TOP_Y + offsetY}in;width:2.57in;height:0.30in;"></div>
         <img src="${new URL('assets/spx-logo.svg', window.location.href).href}" alt="SPX Express"
-          style="position:absolute;left:${xq + 1.68}in;top:${STRIPE_TOP_Y + 0.04 + offsetY}in;width:.78in;height:.30in;object-fit:contain;display:block;" />
+          style="position:absolute;left:${xq + 1.55}in;top:${STRIPE_TOP_Y + 0.01 + offsetY}in;width:.96in;height:.40in;object-fit:contain;display:block;" />
         <!-- Name -->
         <div style="position:absolute;left:${xn}in;top:${NAME_Y + offsetY}in;width:2.42in;height:0.30in;
           font-size:14pt;font-weight:800;font-family:Inter,sans-serif;
