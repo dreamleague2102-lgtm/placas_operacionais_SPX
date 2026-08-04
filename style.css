@@ -1484,7 +1484,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   position:absolute;
   left:5%;
   right:5%;
-  top:27%;
+  top:24%;
   width:auto;
   display: flex;
   justify-content: center;
@@ -1493,7 +1493,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 .preview-ws .ws-qr {
   position:absolute;
   left:50%;
-  top:34%;
+  top:36%;
   width:58%;
   aspect-ratio:1;
   height:auto;
@@ -1509,7 +1509,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   position:absolute;
   left:5%;
   right:5%;
-  top:85%;
+  top:88%;
   width:auto;
   margin:0;
   display: flex;

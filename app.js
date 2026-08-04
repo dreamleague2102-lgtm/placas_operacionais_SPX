@@ -1051,11 +1051,11 @@ function buildWsPrintPages(itens) {
       return `<div style="height:3.95in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
         <div class="stripe-five" style="position:absolute;left:0;top:0;width:55%;height:.22in;"></div>
         <div style="position:absolute;left:.12in;right:.12in;top:.55in;height:.48in;font-size:${titulo.fonte}pt;font-weight:700;text-align:center;line-height:1.05;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
-        <div style="position:absolute;left:.12in;right:.12in;top:1.07in;height:.28in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
-        <div style="position:absolute;left:50%;top:1.34in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;left:.12in;right:.12in;top:1.00in;height:.24in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
+        <div style="position:absolute;left:50%;top:1.43in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
           ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:1.86in;height:1.86in;display:block;" />` : ''}
         </div>
-        <div style="position:absolute;left:.12in;right:.12in;top:3.36in;height:.28in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
+        <div style="position:absolute;left:.12in;right:.12in;top:3.53in;height:.24in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:55%;height:.22in;"></div>
       </div>`;
     }).join('');
@@ -1394,8 +1394,8 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
   // Stripe positions (slightly above name, below posto)
   const STRIPE_TOP_Y = 0.35;
   const NAME_Y = 0.78;
-  const QR_Y = 1.65;
-  const POSTO_Y = 4.65;
+  const QR_Y = 1.78;
+  const POSTO_Y = 4.88;
   const STRIPE_BOT_Y = 7.45;
   const SHOPEE_Y = 0.40;
 
