@@ -1058,7 +1058,7 @@ function buildWsPrintPages(itens) {
         <div style="position:absolute;left:50%;top:1.43in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
           ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:1.86in;height:1.86in;display:block;" />` : ''}
         </div>
-        <div style="position:absolute;left:.12in;right:.12in;top:3.65in;height:.24in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
+        <div style="position:absolute;left:.12in;right:.12in;top:3.45in;height:.24in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:55%;height:.22in;"></div>
       </div>`;
     }).join('');
