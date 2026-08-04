@@ -1455,6 +1455,17 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 }
 .preview-ws .ws-stripe-top { left:0; top:0; }
 .preview-ws .ws-stripe-bottom { right:0; bottom:0; }
+.preview-ws .ws-spx-logo {
+  position:absolute;
+  z-index:3;
+  right:3%;
+  top:3.2%;
+  width:31%;
+  height:9%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+}
 .preview-ws .ws-body {
   position:absolute;
   inset:0;

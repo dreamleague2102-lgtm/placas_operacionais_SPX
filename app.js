@@ -999,6 +999,7 @@ function buildShopeeCard(codigo, numero, rodape, preenchida = true) {
   div.className = 'preview-ws';
   div.innerHTML = `
     <div class="ws-stripe ws-stripe-top"></div>
+    <img class="ws-spx-logo" src="assets/spx-logo.svg" alt="SPX Express" />
     <div class="ws-body">
       <div class="ws-name" style="font-size:${titulo.fonte}px;line-height:1.08">${titulo.linhas.map(escHtml).join('<br>')}</div>
       <div class="ws-num" style="font-size:${superior.fonte}px">${preenchida ? escHtml(numero) : ''}</div>
@@ -1050,6 +1051,8 @@ function buildWsPrintPages(itens) {
       const inferior = formatarTextoWs(item?.rodape, 14, 205, 1);
       return `<div style="height:3.95in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
         <div class="stripe-five" style="position:absolute;left:0;top:0;width:55%;height:.22in;"></div>
+        <img src="${new URL('assets/spx-logo.svg', window.location.href).href}" alt="SPX Express"
+          style="position:absolute;right:.10in;top:.09in;width:.88in;height:.38in;object-fit:contain;object-position:center;display:block;" />
         <div style="position:absolute;left:.12in;right:.12in;top:.55in;height:.48in;font-size:${titulo.fonte}pt;font-weight:700;text-align:center;line-height:1.05;overflow:hidden;">${preenchida ? titulo.linhas.map(escHtml).join('<br>') : ''}</div>
         <div style="position:absolute;left:.12in;right:.12in;top:1.00in;height:.24in;font-size:${superior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.numero) : ''}</div>
         <div style="position:absolute;left:50%;top:1.43in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
@@ -1419,6 +1422,8 @@ document.getElementById('print-shopee').addEventListener('click', async () => {
           border:1.5px solid #111;box-sizing:border-box;"></div>
         <!-- Stripe top -->
         <div class="stripe-five" style="position:absolute;left:${xq}in;top:${STRIPE_TOP_Y + offsetY}in;width:2.57in;height:0.30in;"></div>
+        <img src="${new URL('assets/spx-logo.svg', window.location.href).href}" alt="SPX Express"
+          style="position:absolute;left:${xq + 1.68}in;top:${STRIPE_TOP_Y + 0.04 + offsetY}in;width:.78in;height:.30in;object-fit:contain;display:block;" />
         <!-- Name -->
         <div style="position:absolute;left:${xn}in;top:${NAME_Y + offsetY}in;width:2.42in;height:0.30in;
           font-size:14pt;font-weight:800;font-family:Inter,sans-serif;
