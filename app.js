@@ -1049,7 +1049,7 @@ function buildWsPrintPages(itens) {
       const titulo = formatarTextoWs(item?.codigo, 20, 205, 2);
       const superior = formatarTextoWs(item?.numero, 14, 205, 1);
       const inferior = formatarTextoWs(item?.rodape, 14, 205, 1);
-      return `<div style="height:3.95in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
+      return `<div style="height:4.20in;border:1.5px solid #111;position:relative;overflow:hidden;background:#fff;font-family:Calibri,Arial,sans-serif;">
         <div class="stripe-five" style="position:absolute;left:0;top:0;width:55%;height:.22in;"></div>
         <img src="${new URL('assets/spx-logo.svg', window.location.href).href}" alt="SPX Express"
           style="position:absolute;right:.08in;top:.07in;width:.94in;height:.42in;object-fit:contain;object-position:center;display:block;" />
@@ -1058,7 +1058,7 @@ function buildWsPrintPages(itens) {
         <div style="position:absolute;left:50%;top:1.43in;width:1.86in;height:1.86in;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;">
           ${preenchida && item.qrDataURL ? `<img src="${item.qrDataURL}" style="width:1.86in;height:1.86in;display:block;" />` : ''}
         </div>
-        <div style="position:absolute;left:.12in;right:.12in;top:3.53in;height:.24in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
+        <div style="position:absolute;left:.12in;right:.12in;top:3.65in;height:.24in;font-size:${inferior.fonte}pt;font-weight:700;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;">${preenchida ? escHtml(item.rodape) : ''}</div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:55%;height:.22in;"></div>
       </div>`;
     }).join('');
