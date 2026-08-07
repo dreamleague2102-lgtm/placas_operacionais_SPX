@@ -1237,7 +1237,7 @@ function renderNomeDuploPreview(area) {
     return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:24px;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:24px;"></div>
-      <div style="position:absolute;inset:35px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>
+      <div style="position:absolute;inset:35px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:.96;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;overflow:hidden;">${linhas.map(linha => `<span style="display:block;width:100%;max-width:100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;">${escHtml(linha)}</span>`).join('')}</div>
     </div>`;
   }).join('');
   area.appendChild(folha);
@@ -1256,7 +1256,7 @@ function renderNomeQuatroPreview(area) {
     return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;color:#000;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:22px;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:22px;"></div>
-      <div style="position:absolute;inset:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>
+      <div style="position:absolute;inset:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}px;line-height:.96;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;overflow:hidden;">${linhas.map(linha => `<span style="display:block;width:100%;max-width:100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;">${escHtml(linha)}</span>`).join('')}</div>
     </div>`;
   }).join('');
   area.appendChild(folha);
@@ -1535,7 +1535,7 @@ document.getElementById('print-nome').addEventListener('click', () => {
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:4.20in;height:.28in;"></div>
       <div style="position:absolute;inset:1.05in .72in;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
-        ${linhas.map(linha => `<div style="white-space:nowrap;">${escHtml(linha)}</div>`).join('')}
+        ${linhas.map(linha => `<div style="display:block;width:100%;max-width:100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;">${escHtml(linha)}</div>`).join('')}
       </div>
     </div>
   </section>`;
@@ -1592,7 +1592,7 @@ document.getElementById('print-nome-quatro').addEventListener('click', () => {
       return `<div style="position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
         ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.25in;"></div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.25in;"></div>
-        <div style="position:absolute;inset:.45in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;overflow:hidden;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>` : ''}
+        <div style="position:absolute;inset:.45in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:.96;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;overflow:hidden;">${linhas.map(linha => `<span style="display:block;width:100%;max-width:100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;">${escHtml(linha)}</span>`).join('')}</div>` : ''}
       </div>`;
     }).join('');
     paginas.push(`<section style="width:10.98in;height:8.48in;padding:.5in;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.35in;background:#fff;overflow:hidden;page-break-after:always;break-after:page;">${placas}</section>`);
@@ -1624,7 +1624,7 @@ document.getElementById('print-nome-duplo').addEventListener('click', () => {
       return `<div style="height:3.65in;position:relative;border:1.5px solid #777;overflow:hidden;background:#fff;">
         ${item ? `<div class="stripe-five" style="position:absolute;left:0;top:0;width:42%;height:.28in;"></div>
         <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:42%;height:.28in;"></div>
-        <div style="position:absolute;inset:.55in .65in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.05;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;overflow:hidden;">${linhas.map(linha => `<span style="white-space:nowrap;">${escHtml(linha)}</span>`).join('')}</div>` : ''}
+        <div style="position:absolute;inset:.55in .65in;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.06in;font-weight:${item?.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:.96;font-family:'${item?.familia || 'Calibri'}',Arial,sans-serif;color:#000;text-transform:uppercase;overflow:hidden;">${linhas.map(linha => `<span style="display:block;width:100%;max-width:100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;">${escHtml(linha)}</span>`).join('')}</div>` : ''}
       </div>`;
     }).join('');
     paginas.push(`<section class="nome-duplo-print-page" style="width:10.98in;height:8.48in;padding:.38in .62in;display:grid;

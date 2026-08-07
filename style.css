@@ -1618,7 +1618,17 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   line-height: 1;
   font-size: 58px;
 }
-.preview-simples .simples-nome span { font-size: var(--nome-font-size, 25px); }
+.preview-simples .simples-nome span {
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  font-size:var(--nome-font-size, 25px);
+  line-height:.96;
+  text-align:center;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
 .preview-simples .simples-nome .linha-2 {
   width: 84%; padding: 8px 0; border: 1px solid #999;
   text-align: center; font-size: 29px;
