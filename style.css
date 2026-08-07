@@ -1796,7 +1796,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
 .preview-simples { width:min(100%, 760px); height:430px; border:0; }
 .preview-simples .simples-stripe-tl { top:14px; left:40px; width:300px; height:24px; }
 .preview-simples .simples-stripe-br { bottom:14px; right:40px; width:300px; height:24px; }
-.preview-simples .simples-nome { inset:54px 45px; gap:13px; }
+.preview-simples .simples-nome { inset:42px 30px; gap:6px; overflow:hidden; }
 .preview-simples .simples-nome span { font-size:var(--nome-font-size, 58px); }
 
 .preview-gaiola { width:min(100%, 600px); font-size:12px; }
@@ -1838,10 +1838,14 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   background-size:100% 100% !important;
 }
 .preview-simples .simples-nome span {
+  display:block;
+  width:100%;
   max-width:100%;
-  white-space:nowrap;
-  transform:scaleX(var(--nome-scale-x,1));
-  transform-origin:center;
+  min-width:0;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  transform:none;
 }
 
 /* Contraste completo da interface no tema claro */

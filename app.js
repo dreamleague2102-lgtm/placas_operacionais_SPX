@@ -1533,8 +1533,8 @@ document.getElementById('print-nome').addEventListener('click', () => {
     <div style="width:100%;height:100%;position:relative;overflow:hidden;">
       <div class="stripe-five" style="position:absolute;left:0;top:0;width:4.20in;height:.28in;"></div>
       <div class="stripe-five" style="position:absolute;right:0;bottom:0;width:4.20in;height:.28in;"></div>
-      <div style="position:absolute;inset:1.05in .72in;display:flex;flex-direction:column;align-items:center;justify-content:center;
-        font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:1.08;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
+      <div style="position:absolute;inset:.48in .34in;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;
+        font-weight:${item.negrito === false ? 400 : 700};font-size:${fonte}pt;line-height:.96;font-family:'${item.familia || 'Calibri'}',Arial,sans-serif;text-align:center;color:#000;">
         ${linhas.map(linha => `<div style="display:block;width:100%;max-width:100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;">${escHtml(linha)}</div>`).join('')}
       </div>
     </div>
