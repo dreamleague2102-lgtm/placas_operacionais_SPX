@@ -1627,7 +1627,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   text-align:center;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
-  word-break:break-word;
+  word-break:break-all;
 }
 .preview-simples .simples-nome .linha-2 {
   width: 84%; padding: 8px 0; border: 1px solid #999;
@@ -1844,7 +1844,7 @@ html[data-theme="light"] .inline-font-controls label { color:#1f2937; }
   min-width:0;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
-  word-break:break-word;
+  word-break:break-all;
   transform:none;
 }
 
