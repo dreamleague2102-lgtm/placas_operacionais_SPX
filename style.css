@@ -2285,3 +2285,5 @@ html[data-theme="light"] .inline-bulk-panel > p {
   .preview-grande, .preview-simples { width: 100%; min-width: unset; }
   .panel-grid { gap: 1rem; }
 }
+/* Acesso discreto ao painel administrativo */
+.admin-shortcut{color:var(--text-secondary,#aaa);font-size:12px;font-weight:700;text-decoration:none;border:1px solid var(--border-color,#333);padding:8px 12px;border-radius:999px}.admin-shortcut:hover{color:var(--text-primary,#fff);border-color:#ee0029}
