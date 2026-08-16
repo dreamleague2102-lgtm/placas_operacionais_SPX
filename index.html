@@ -33,6 +33,7 @@
         </div>
       </div>
       <div class="header-actions">
+        <a class="admin-shortcut" href="admin.html" title="Abrir o painel administrativo">Administrar</a>
         <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Mudar para tema claro" title="Alternar tema">
           <span class="theme-icon" aria-hidden="true">☀️</span>
           <span class="theme-label">Tema claro</span>
@@ -210,7 +211,7 @@
               <label class="field-label" for="shopee-numero">
                 <span class="field-icon">🔤</span> Nome acima do QR Code
               </label>
-              <input class="field-input" type="text" id="shopee-numero" placeholder="NOME" />
+              <input class="field-input" type="text" id="shopee-numero" value="WORKSTATION" placeholder="WORKSTATION" />
               <span class="field-hint">Texto que aparece centralizado imediatamente acima do QR Code.</span>
             </div>
             <div class="field-group">
@@ -533,6 +534,9 @@
   <!-- PRINT AREA (hidden, only for printing) -->
   <div id="printArea" class="print-only"></div>
 
-  <script src="app.js?v=20260810-1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="models-sync.js?v=20260814-1"></script>
+  <script src="app.js?v=20260815-1"></script>
 </body>
 </html>

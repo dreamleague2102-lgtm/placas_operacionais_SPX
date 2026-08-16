@@ -28,3 +28,26 @@ Projeto configurado para Vercel (site estático).
 - [qrcode.js](https://github.com/soldair/node-qrcode) via CDN
 - Google Fonts (Inter)
 - Vercel (deploy)
+
+## Painel administrativo
+
+Abra `/admin.html` para editar os modelos sem usar IA. Antes do primeiro acesso:
+
+1. Execute `supabase/migrations/20260814_admin_modelos.sql` no Editor SQL.
+2. Crie seu usuário em **Authentication > Users** no Supabase.
+3. Em **Project Settings > API**, copie a URL e a chave pública `publishable` ou `anon`.
+4. Informe esses dados em `/admin.html` e entre com seu usuário.
+
+Para que as alterações apareçam para todos os visitantes, informe a URL e a chave pública em `supabase-config.js` antes de publicar.
+
+Nunca utilize a chave `service_role` no navegador.
+
+## Atualizar GitHub e Vercel
+
+```powershell
+git add index.html style.css admin.html admin.css admin.js supabase README.md
+git commit -m "Adiciona painel administrativo com Supabase"
+git push origin main
+```
+
+O repositório conectado à Vercel será implantado automaticamente após o `git push`.

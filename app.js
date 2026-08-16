@@ -360,9 +360,10 @@ document.getElementById('add-shopee').addEventListener('click', () => {
   if (!codigo) { alert('Preencha o nome da placa.'); return; }
   shopeeLote.push({ codigo, numero, rodape, qrText: qrText || `${codigo}-${numero}` });
   renderLotes(); updatePreview();
-  ['shopee-codigo', 'shopee-numero', 'shopee-rodape', 'shopee-qr'].forEach(id => {
+  ['shopee-codigo', 'shopee-rodape', 'shopee-qr'].forEach(id => {
     document.getElementById(id).value = '';
   });
+  document.getElementById('shopee-numero').value = 'WORKSTATION';
   document.getElementById('shopee-qr').dataset.manual = '';
   document.getElementById('shopee-codigo').focus();
 });
@@ -961,7 +962,7 @@ async function updatePreview() {
 // ---- SHOPEE / WS ----
 async function renderShopeePreview(area) {
   const codigo = document.getElementById('shopee-codigo').value || 'NOME';
-  const numero = document.getElementById('shopee-numero').value || 'NOME';
+  const numero = document.getElementById('shopee-numero').value || 'WORKSTATION';
   const rodape = document.getElementById('shopee-rodape').value || 'NOME';
   const qrText = document.getElementById('shopee-qr').value || `${codigo}-${numero}`;
   const itens = shopeeLote.length ? shopeeLote : [{ codigo, numero, rodape, qrText }];
